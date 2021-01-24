@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+    frontend:
+        build:
+            context: ./frontend
+        stdin_open: true
+        volumes:
+            - ./frontend:/code
+        ports:
+            - 3000:3000
+        env_file: ./env/frontend.env
+        networks:
+            - erp-app
+
+    backend:
+        build:
+            context: ./backend
+        volumes:
+            - ./backend:/code
+        ports:
+            - 5000:5000
+        depends_on: 
+            - database
+        env_file: ./env/backend.env
+        networks:
+            - erp-app
+
+    database:
+        image: mysql:latest
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+            - 3306:3306
+        env_file: ./env/database.env
+        networks:
+            - erp-app
+
+networks:
+    erp-app:
+        driver: bridge

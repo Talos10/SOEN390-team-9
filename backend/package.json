@@ -5,7 +5,7 @@
     "build": "ts-node build.ts",
     "lint": "eslint . --ext .ts",
     "start:prod": "node -r module-alias/register ./dist --env=production",
-    "start": "nodemon",
+    "start": "nodemon --legacy-watch",
     "test": "nodemon --config ./spec/nodemon.json"
   },
   "nodemonConfig": {
