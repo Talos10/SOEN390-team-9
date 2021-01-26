@@ -23,12 +23,6 @@ CREATE TABLE `soen_390_db`.`user` (
 INSERT INTO `soen_390_db`.`user` (`name`, `role`, `email`, `password`)
 VALUES ('Jake', 'Admin', 'jake@email.com', 'jake');
 
-INSERT INTO `soen_390_db`.`user` (`name`, `role`, `email`, `password`)
-VALUES ('Paul', 'Employee', 'paul@email.com', 'paul');
-
-INSERT INTO `soen_390_db`.`user` (`name`, `role`, `email`, `password`)
-VALUES ('Naruto', 'Employee', 'naruto@email.com', 'naruto');
-
 -- run the line below by itself if you want to delete the adminuser from your sql db:
 -- drop user if exists 'adminuser'@'localhost';
 
