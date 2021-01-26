@@ -12,7 +12,7 @@ import logger from '@shared/Logger';
 const app = express();
 const { BAD_REQUEST } = StatusCodes;
 
-
+var userRouter = require("./routes/user.routes");
 
 /************************************************************************************
  *                              Set basic express settings
@@ -34,6 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Add APIs
 app.use('/', BaseController);
+app.use('/user', userRouter);
 
 // Print API errors
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
