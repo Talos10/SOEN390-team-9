@@ -29,6 +29,8 @@ services:
         ports:
             - 3306:3306
         env_file: ./env/database.env
+        volumes: 
+            - ./scripts/createNewDbUser.sql:/docker-entrypoint-initdb.d/createNewDbUser.sql
         networks:
             - erp-app
 
