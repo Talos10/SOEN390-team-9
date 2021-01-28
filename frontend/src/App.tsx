@@ -1,9 +1,16 @@
 import React from 'react';
+import Signup from './components/Signup'
+import Welcome from './components/Welcome'
+import Background from './assets/background/geometric.jpg'
+import styles from './css/App.module.css'
+import Button from 'react-bootstrap/Button'
 
 function App() {
   return (
     <div className="App">
-      Welcome to ERP app frontend
+      <div className={styles.html}>
+        <Welcome></Welcome>
+      </div>
     </div>
   );
 }
