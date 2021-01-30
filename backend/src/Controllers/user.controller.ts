@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import UserService from './Service';
+import UserService from '../Services/user.service';
 
 class Controller {
     public path = '/user';
@@ -13,13 +13,13 @@ class Controller {
 
     private initRoutes() {
         // Retrieve all users.
-        this.router.get('/', async (req: Request, res: Response) =>  {
+        this.router.get('/', async (req: Request, res: Response) => {
             const result = await this.userService.getAllUsers();
             res.json(result);
         });
 
         // Create new user.
-        this.router.post('/', async (req: Request, res: Response) =>  {
+        this.router.post('/', async (req: Request, res: Response) => {
             const { name, email, role, password } = req.body;
             const result = await this.userService.createNewUser(name, role, email, password);
             res.json(result);

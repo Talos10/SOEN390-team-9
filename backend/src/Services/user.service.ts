@@ -1,7 +1,7 @@
-import UserModel from './Model';
+import UserModel from '../Models/user.model';
 
 class Service {
-    
+
     public async getAllUsers() {
         const allUsers = await UserModel.getAll();
         return allUsers;
@@ -9,10 +9,10 @@ class Service {
 
     public async createNewUser(name: string, role: string, email: string, password: string) {
         const newUser = new UserModel({
-            name:name,
-            role:role,
-            email:email,
-            password:password
+            name: name,
+            role: role,
+            email: email,
+            password: password
         });
         const res = await UserModel.addUser(newUser);
         return res;
@@ -30,10 +30,10 @@ class Service {
 
     public async updateUser(id: number, name: string, role: string, email: string, password: string) {
         const newUser = new UserModel({
-            name:name,
-            role:role,
-            email:email,
-            password:password
+            name: name,
+            role: role,
+            email: email,
+            password: password
         });
         const res = await UserModel.updateById(id, newUser);
         return res;
