@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser'
 
 import { config } from '../config';
 
-import UserController from './Controllers/user.controller';
+import UserController from './User/user.controller';
 
 
 // Start the server

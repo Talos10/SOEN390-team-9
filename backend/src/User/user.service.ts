@@ -1,4 +1,4 @@
-import UserModel from '../Models/user.model';
+import UserModel from './user.model';
 
 class Service {
 

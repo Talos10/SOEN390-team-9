@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import UserService from '../Services/user.service';
+import UserService from './user.service';
 
 class Controller {
     public path = '/user';

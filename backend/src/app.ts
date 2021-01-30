@@ -57,7 +57,7 @@ class App {
     }
 
     private error() {
-        const  { BAD_REQUEST } = StatusCodes;
+        const { BAD_REQUEST } = StatusCodes;
         this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
             logger.err(err, true);
             return res.status(BAD_REQUEST).json({
