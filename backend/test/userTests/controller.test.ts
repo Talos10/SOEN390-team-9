@@ -12,6 +12,7 @@ import UserController from '../../src/User/user.controller';
 sinonStubPromise(sinon);
 
 let sandbox: sinon.SinonSandbox;
+const testPort = 5001;
 
 describe('User Controller Test', () => {
   
@@ -26,7 +27,7 @@ describe('User Controller Test', () => {
   it('Test default route', async () => {
     const mockUserService = sandbox.createStubInstance(UserService);
     const app = new App({
-        port: 5000,
+        port: testPort,
         controllers: [
             new UserController(mockUserService)
         ],
@@ -44,7 +45,7 @@ describe('User Controller Test', () => {
     const mockUserService = sandbox.createStubInstance(UserService);
     mockUserService.getAllUsers.resolves('foo');
     const app = new App({
-        port: 5000,
+        port: testPort,
         controllers: [
             new UserController(mockUserService)
         ],
@@ -62,7 +63,7 @@ describe('User Controller Test', () => {
     const mockUserService = sandbox.createStubInstance(UserService);
     mockUserService.createNewUser.resolves('foo');
     const app = new App({
-        port: 5000,
+        port: testPort,
         controllers: [
             new UserController(mockUserService)
         ],
