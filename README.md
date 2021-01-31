@@ -22,7 +22,7 @@ The name of the container can either be frontend, backend, or database.
 
 ### Important additional information:
 
-When running a docker container for the first time, the required dependencies are automatically downloaded and cached such that subsequent runs of the containers will be faster. In the case that there are changes in the dependencies (i.e. the case where you would run the command npm install), the docker containers will need to be rebuilt. Therefore, in order to do that, simply run the following command: `docker-compose up --build`\
+When running a docker container for the first time, the required dependencies are automatically downloaded and cached such that subsequent runs of the containers will be faster. In the case that there are changes in the dependencies (i.e. the case where you would run the command npm install), the docker containers will need to be rebuilt. In order to do that, simply run the following command: `docker-compose up --build`\
 This command will rebuild all docker containers (and thereby update their dependencies). If you wish to rebuild a specific container only, you may run the following command: `docker-compose up --build nameOfTheContainer`\
 The name of the container can either be frontend, backend, or database.
 
