@@ -1,0 +1,30 @@
+matrix:
+  include:
+    - language: node_js
+      node_js:
+        - "12.20.1"
+      cache:
+        directories:
+          - node_modules
+      before_install:
+        - cd frontend
+      script:
+        - npm test
+      after_success:
+        - echo "success"
+      after_failure:
+        - echo "failure"
+    - language: node_js
+      node_js:
+        - "12.20.1"
+      cache:
+        directories:
+          - node_modules
+      before_install:
+        - cd backend
+      script:
+        - npm run coverage
+      after_success:
+        - echo "success"
+      after_failure:
+        - echo "failure"

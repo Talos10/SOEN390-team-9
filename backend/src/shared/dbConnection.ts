@@ -1,21 +1,31 @@
 import * as mysql from 'mysql';
 import { config } from '../../config';
 import logger from './Logger';
+import MockConnection from '../../test/others/mySqlMock';
 
-//creating a connection to local db and then testing it
-const connection = mysql.createConnection({
-    host: config.database.host,
-    user: config.database.user,
-    password: config.database.password,
-    database: config.database.name,
-    port: config.database.port
-});
+let connection: any;
 
-//open the MySQL connection
-connection.connect((error: any) => {
-    if (error) throw error;
-    logger.info('Successfully connected to the database.');
-});
+if( config.env === 'development' || config.env === 'production') {
+    //creating a connection to local db and then testing it
+    connection = mysql.createConnection({
+        host: config.database.host,
+        user: config.database.user,
+        password: config.database.password,
+        database: config.database.name,
+        port: config.database.port
+    });
 
+    //open the MySQL connection
+    connection.connect((error: any) => {
+        if (error) {
+            logger.err('Failed to connected to the database. Error: ' + error);
+            throw error;
+        }
+        logger.info('Successfully connected to the database.');
+    });
+}
+else {
+    connection = new MockConnection();
+}
 
 export default connection
