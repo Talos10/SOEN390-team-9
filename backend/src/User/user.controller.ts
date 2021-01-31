@@ -6,8 +6,8 @@ class Controller {
     public router = Router();
     private userService: UserService;
 
-    constructor() {
-        this.userService = new UserService();
+    constructor(userService: any = null) {
+        this.userService = userService || new UserService();
         this.initRoutes();
     }
 

@@ -1,0 +1,22 @@
+matrix:
+  include:
+    - language: node_js
+      node_js:
+        - "12.20.1"
+      cache:
+        directories:
+          - node_modules
+      before_install:
+        - cd frontend
+      script:
+        - npm test
+    - language: node_js
+      node_js:
+        - "12.20.1"
+      cache:
+        directories:
+          - node_modules
+      before_install:
+        - cd backend
+      script:
+        - npm run coverage
