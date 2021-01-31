@@ -1,7 +1,6 @@
 import UserModel from './user.model';
 
 class Service {
-
     public async getAllUsers() {
         const allUsers = await UserModel.getAll();
         return allUsers;

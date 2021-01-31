@@ -6,4 +6,4 @@ const accessLogger = (req: Request, resp: Response, next: NextFunction) => {
     next()
 }
 
-export default accessLogger
+export default accessLogger;

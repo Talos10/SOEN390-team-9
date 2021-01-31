@@ -7,7 +7,6 @@ import { config } from '../config';
 
 import UserController from './User/user.controller';
 
-
 // Start the server
 const port = config.port;
 

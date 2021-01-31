@@ -1,4 +1,3 @@
-
 import * as mysql from 'mysql';
 import { config } from '../../config';
 import logger from './Logger';

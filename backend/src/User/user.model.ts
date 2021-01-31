@@ -1,4 +1,3 @@
-import connection from '@shared/dbConnection';
 import helper from '../shared/Helper';
 
 class User {
