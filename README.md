@@ -1,4 +1,20 @@
-# SOEN390 - Team 9
+# ERP Web Application - SOEN390 - Team 9
+
+## Project description:
+This project is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes.
+
+## Tech stack:
+The frontend has been created in React (TypeScript), the backend in Node.js (TypeScript) using the Express.js framework, and the database was implemented using MySQL.
+
+## Team members:
+- Sébastien	Blain-Nadeau
+- Razvan	Ivan
+- Jason	Kim
+- David	Rossi
+- Cosmin	Sustac
+- Patrick	Youssef
+- Huy Phong	Le
+- Tommy	Josépovic
 
 ## How to run the project in docker:
 
@@ -20,7 +36,7 @@ Note that when you choose to run the backend container only, the database contai
 If you wish to stop a specific container, you may run the following command: `docker-compose stop CONTAINER`\
 where CONTAINER is the name of the specific container which can either be frontend, backend, or database.
 
-### Important additional information:
+#### Important additional information:
 
 When running a docker container for the first time, the required dependencies are automatically downloaded and cached such that subsequent runs of the containers will be faster. In the case that there are changes in the dependencies (i.e. the case where you would run the command npm install), the docker containers will need to be rebuilt. In order to do that, simply run the following command: `docker-compose up --build`\
 This command will rebuild all docker containers (and thereby update their dependencies). If you wish to rebuild a specific container only, you may run the following command: `docker-compose up --build CONTAINER`\
