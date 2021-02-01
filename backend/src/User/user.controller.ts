@@ -32,21 +32,21 @@ class Controller {
         });
 
         // Create new user.
-        this.router.post('/', async (req: Request, res: Response) => {
+        this.router.post('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const { name, email, role, password } = req.body;
             const result = await this.userService.createNewUser(name, role, email, password);
             res.json(result);
         });
 
         // Retrieve a single user with userID.
-        this.router.get('/:userID', async (req: Request, res: Response) => {
+        this.router.get('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const id = Number(req.params.userID);
             const result = await this.userService.findUserById(id);
             res.json(result);
         });
 
         // Update a user with userID.
-        this.router.put('/:userID', async (req: Request, res: Response) => {
+        this.router.put('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const id = Number(req.params.userID);
             const { name, email, role, password } = req.body;
             const result = await this.userService.updateUser(id, name, role, email, password);
@@ -54,7 +54,7 @@ class Controller {
         });
 
         // Delete a user with userID.
-        this.router.delete('/:userID', async (req: Request, res: Response) => {
+        this.router.delete('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const id = Number(req.params.userID);
             const result = await this.userService.deleteUser(id);
             res.json(result);
@@ -62,7 +62,7 @@ class Controller {
 
 
         // Delete all users.
-        this.router.delete('/', async (req: Request, res: Response) => {
+        this.router.delete('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const result = await this.userService.deleteAll();
             res.json(result);
         });

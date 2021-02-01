@@ -16,7 +16,9 @@ const options = {
 
 passport.use(new JwtStrategy(options, async function (jwtPayload: any, done: any) {
     try {
-        console.log('here')
+        // If we are here, the token is valid (expiry date, payload)
+
+        // Now we check the database, but we could skip and trust the token
         const user = await UserModel.findById(jwtPayload.id);
         if (user) {
             logger.debug('Token verified')
