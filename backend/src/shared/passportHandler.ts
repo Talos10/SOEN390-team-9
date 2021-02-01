@@ -1,5 +1,6 @@
 import { config } from '../../config';
 import UserModel from '../User/user.model';
+import logger from './Logger';
 
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -18,8 +19,10 @@ passport.use(new JwtStrategy(options, async function (jwtPayload: any, done: any
         console.log('here')
         const user = await UserModel.findById(jwtPayload.id);
         if (user) {
+            logger.debug('Token verified')
             return done(null, user, jwtPayload);
         } else {
+            logger.warn('User not found from token id')
             return done(new Error("User not found from token id"));
         }
     } catch (error) {

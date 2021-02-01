@@ -13,6 +13,7 @@ import logger from './shared/Logger';
 class App {
     public app: Application;
     public port: number;
+    public server: any;
 
     constructor(appInit: { port: number; middleWares: any; controllers: any; }) {
         this.app = express();
@@ -60,7 +61,7 @@ class App {
     private error() {
         const { INTERNAL_SERVER_ERROR } = StatusCodes;
         this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-            logger.err(err, true);
+            logger.accessError(req, err.stack, err.message);
             return res.status(INTERNAL_SERVER_ERROR).json({
                 error: err.message,
             });
@@ -68,9 +69,13 @@ class App {
     }
 
     public listen() {
-        this.app.listen(this.port, () => {
+        this.server = this.app.listen(this.port, () => {
             logger.info(`App listening on the http://localhost:${this.port}`)
         });
+    }
+
+    public shutdown() {
+        this.server.close();
     }
 }
 
