@@ -6,7 +6,7 @@ class Helper {
         const promise = new Promise((resolve, reject) => {
             database.query(query, (err: any, res: any[]) => {
                 if (err) {
-                    logger.err(`Error while calling the following query: ${query}`, err);
+                    logger.error(`Error while calling the following query: ${query}`, ['database'], err);
                     throw err;
                 }
                 resolve(res);
@@ -21,7 +21,7 @@ class Helper {
         const promise = new Promise((resolve, reject) => {
             database.query(query, arr, (err: any, res: any[]) => {
                 if (err) {
-                    logger.err(`Error while calling the following query: ${query}`, err);
+                    logger.error(`Error while calling the following query: ${query}`, ['database'],err);
                     throw err;
                 }
                 resolve(res);
