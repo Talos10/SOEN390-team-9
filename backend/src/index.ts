@@ -5,6 +5,8 @@ import * as bodyParser from 'body-parser'
 
 import { config } from '../config';
 
+import passport from 'passport'
+
 import UserController from './User/user.controller';
 
 // Start the server
@@ -18,7 +20,9 @@ const app = new App({
     middleWares: [
         bodyParser.json(),
         bodyParser.urlencoded({ extended: true }),
-        accessLogger
+        accessLogger,
+        passport.initialize()
+
     ]
 });
 

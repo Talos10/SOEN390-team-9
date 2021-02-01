@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import UserService from './user.service';
+import passport from 'passport';
 
 class Controller {
     public path = '/user';
@@ -12,8 +13,20 @@ class Controller {
     }
 
     private initRoutes() {
+
+        // Login user
+        this.router.post('/login', async (req: Request, res: Response) => {
+            // If in here, it means the email and password are good, we can log the user
+            const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
+            const [email, password] = Buffer.from(b64auth, 'base64').toString().split(':')
+
+            const result = await this.userService.loginUser(email, password);
+
+            res.json(result)
+        })
+
         // Retrieve all users.
-        this.router.get('/', async (req: Request, res: Response) => {
+        this.router.get('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const result = await this.userService.getAllUsers();
             res.json(result);
         });
@@ -29,14 +42,6 @@ class Controller {
         this.router.get('/:userID', async (req: Request, res: Response) => {
             const id = Number(req.params.userID);
             const result = await this.userService.findUserById(id);
-            res.json(result);
-        });
-
-        // Retrieve a single user with email and password.
-        this.router.get('/auth/:email/:password', async (req: Request, res: Response) => {
-            const email = req.params.email;
-            const password = req.params.password;
-            const result = await this.userService.findUserByAuth(email, password);
             res.json(result);
         });
 

@@ -22,6 +22,7 @@ class App {
         this.routes(appInit.controllers);
         this.env();
         this.error();
+        require('./shared/passportHandler')
     }
 
     private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
@@ -57,10 +58,10 @@ class App {
     }
 
     private error() {
-        const { BAD_REQUEST } = StatusCodes;
+        const { INTERNAL_SERVER_ERROR } = StatusCodes;
         this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
             logger.err(err, true);
-            return res.status(BAD_REQUEST).json({
+            return res.status(INTERNAL_SERVER_ERROR).json({
                 error: err.message,
             });
         });
