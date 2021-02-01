@@ -8,7 +8,7 @@ class Service {
 
     public async loginUser(email: string, password: string) {
         if (email === '' || password === '') {
-            return { status: false, error: 'Invalid authorization header' }
+            return { status: false, error: 'Invalid authorization header' };
         }
 
         const user = await UserModel.findByEmailAuth(email);
@@ -17,7 +17,7 @@ class Service {
             return {
                 status: false,
                 error: 'User does not exist'
-            }
+            };
         }
 
         if (bcrypt.compareSync(password, user.password)) {
@@ -25,11 +25,11 @@ class Service {
             const payload = {
                 id: user.userId
             }
-            const token = jwt.sign(payload, config.jwt_public_key, { expiresIn: '1d' })
+            const token = jwt.sign(payload, config.jwt_public_key, { expiresIn: '1d' });
             return {
                 status: true,
                 token: token
-            }
+            };
         }
         return {
             status: false,
