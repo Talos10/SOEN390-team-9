@@ -18,10 +18,11 @@ if( config.env === 'development' || config.env === 'production') {
     //open the MySQL connection
     connection.connect((error: any) => {
         if (error) {
-            logger.err('Failed to connected to the database. Error: ' + error);
-            throw error;
+            logger.error('Failed to connected to the database', ['database'], error);
         }
-        logger.info('Successfully connected to the database.');
+        else {
+            logger.info('Successfully connected to the database.');
+        }
     });
 }
 else {
