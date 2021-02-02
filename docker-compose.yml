@@ -1,6 +1,26 @@
 version: "3.8"
 
+networks:
+    erp-app:
+        driver: bridge
+
 services:
+
+    database:
+        image: mysql:latest
+        container_name: mysql_db
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        expose:
+            - 3306
+        ports:
+            - 3306:3306
+        env_file: ./env/database.env
+        volumes: 
+            - ./scripts/createNewDbUser.sql:/docker-entrypoint-initdb.d/createNewDbUser.sql
+        networks:
+            - erp-app
+
     frontend:
         build:
             context: ./frontend
@@ -12,26 +32,13 @@ services:
             - erp-app
 
     backend:
+        depends_on: 
+            - database
+        command: sh -c "/wait && npm start"
         build:
             context: ./backend
         ports:
             - 5000:5000
-        depends_on: 
-            - database
         env_file: ./env/backend.env
         networks:
             - erp-app
-
-    database:
-        image: mysql:latest
-        command: --default-authentication-plugin=mysql_native_password
-        restart: always
-        ports:
-            - 3306:3306
-        env_file: ./env/database.env
-        networks:
-            - erp-app
-
-networks:
-    erp-app:
-        driver: bridge
