@@ -1,8 +1,7 @@
 import UserModel from './user.model';
 import { config } from '../../config';
-
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 class Service {
 

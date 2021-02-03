@@ -100,6 +100,7 @@
     "@types/mysql": "^2.15.17",
     "@types/node": "^14.14.22",
     "@types/passport": "^1.0.5",
+    "@types/passport-jwt": "^3.0.3",
     "@types/sinon": "^9.0.10",
     "@types/sinon-chai": "^3.2.5",
     "@types/sinon-stub-promise": "^2.1.7",
