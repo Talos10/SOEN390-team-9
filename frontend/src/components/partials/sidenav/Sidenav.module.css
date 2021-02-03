@@ -1,0 +1,78 @@
+.Sidenav {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+.Sidenav nav {
+  height: 100%;
+  background-color: var(--sidenav-bg);
+  color: var(--sidenav-text);
+  z-index: 2;
+  font-size: 14px;
+  font-weight: 500;
+  transform: translateX(-110vw);
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidenavOpen nav {
+  transform: translateX(0);
+}
+
+.SidenavShadow {
+  background-color: var(--sidenav-shadow);
+  position: fixed;
+  display: block;
+  border: none;
+  z-index: 1;
+  top: 0;
+  width: 100vw;
+  right: 0;
+  height: 100vh;
+  outline: none;
+}
+
+@media (min-width: 768px) {
+  .Sidenav {
+    display: block;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    width: 320px;
+  }
+
+  .Sidenav nav {
+    transition: none;
+    transform: translateX(0);
+  }
+
+  .SidenavShadow {
+    display: none;
+  }
+}
+
+.SidenavLogo {
+  background-color: var(--sidenav-bg-dark);
+  color: var(--text-white);
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.SidenavLogo,
+.SidenavItem {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+a.SidenavLogo,
+a.SidenavItem {
+  color: inherit;
+}
+
+.SidenavLogo:hover,
+.SidenavItem:hover {
+  background-color: var(--sidenav-bg-dark);
+}

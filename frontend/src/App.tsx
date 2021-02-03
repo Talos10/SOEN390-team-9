@@ -1,10 +1,13 @@
 import React from 'react';
+import Container from './components/partials/container/Container';
 
 function App() {
   return (
-    <div className="App">
-      Welcome to ERP app frontend
-    </div>
+    <Container>
+      <div>
+        Welcome to ERP app frontend
+      </div>
+    </Container>
   );
 }
 
