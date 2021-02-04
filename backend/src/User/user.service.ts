@@ -22,11 +22,13 @@ class Service {
         if (bcrypt.compareSync(password, user.password)) {
             // Return the JWT token
             const payload = {
-                id: user.userId
+                id: user.userId,
+                role: user.role
             }
             const token = jwt.sign(payload, config.jwt_public_key, { expiresIn: '1d' });
             return {
                 status: true,
+                name: user.name,
                 token: token
             };
         }

@@ -1,8 +1,7 @@
 import { config } from '../../config';
-import UserModel from '../User/user.model';
 import logger from './Logger';
 
-const passport = require('passport');
+import passport from 'passport';
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
@@ -15,19 +14,9 @@ const options = {
 
 
 passport.use(new JwtStrategy(options, async function (jwtPayload: any, done: any) {
-    try {
-        // If we are here, the token is valid (expiry date, payload)
+    // If we are here, the token is valid (expiry date, payload)
+    logger.debug('Token verified');
 
-        // Now we check the database, but we could skip and trust the token
-        const user = await UserModel.findById(jwtPayload.id);
-        if (user) {
-            logger.debug('Token verified')
-            return done(null, user, jwtPayload);
-        } else {
-            logger.warn('User not found from token id')
-            return done(new Error("User not found from token id"));
-        }
-    } catch (error) {
-        return done(error);
-    }
+    // We return the jwtPayload to the controller which can retrieve it using req.user
+    return done(null, jwtPayload);
 }));
