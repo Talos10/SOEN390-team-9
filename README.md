@@ -4,7 +4,7 @@
 This project is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes.
 
 ## Tech stack:
-The frontend has been created in React (TypeScript), the backend in Node.js (TypeScript) using the Express.js framework, and the database was implemented using MySQL.
+The frontend has been created in React (TypeScript) with Axios, the backend in Node.js (TypeScript) using the Express.js framework, and the database was implemented using MySQL.
 
 ## Team members:
 - Sébastien	Blain-Nadeau
