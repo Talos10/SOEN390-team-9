@@ -10,8 +10,6 @@ import 'express-async-errors';
 
 import logger from './shared/Logger';
 
-import cors from 'cors';
-
 class App {
     public app: Application;
     public port: number;
@@ -20,13 +18,11 @@ class App {
     constructor(appInit: { port: number; middleWares: any; controllers: any; }) {
         this.app = express();
         this.port = appInit.port;
-        this.app.use(cors())
 
         this.middlewares(appInit.middleWares);
         this.routes(appInit.controllers);
         this.env();
         this.error();
-        require('./shared/passportHandler')
     }
 
     private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
@@ -62,10 +58,10 @@ class App {
     }
 
     private error() {
-        const { INTERNAL_SERVER_ERROR } = StatusCodes;
+        const { BAD_REQUEST } = StatusCodes;
         this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
             logger.accessError(req, err.stack, err.message);
-            return res.status(INTERNAL_SERVER_ERROR).json({
+            return res.status(BAD_REQUEST).json({
                 error: err.message,
             });
         });
