@@ -10,6 +10,8 @@ import 'express-async-errors';
 
 import logger from './shared/Logger';
 
+import cors from 'cors';
+
 class App {
     public app: Application;
     public port: number;
@@ -18,6 +20,7 @@ class App {
     constructor(appInit: { port: number; middleWares: any; controllers: any; }) {
         this.app = express();
         this.port = appInit.port;
+        this.app.use(cors())
 
         this.middlewares(appInit.middleWares);
         this.routes(appInit.controllers);

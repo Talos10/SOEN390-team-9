@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../css/WelcomeButtons.module.css'
-//import Button from 'react-bootstrap/Button'
 
 type WelcomeButtonsPage = {
 
@@ -14,13 +14,15 @@ export class WelcomeButtons extends Component<{}, WelcomeButtonsPage>{
             <table>
                 <tr>
                     <td>
-                    <button className={styles.Logbutton}>Log in</button>
+                        <Link to="/login">
+                            <button className={styles.Logbutton}>Log in</button>
+                        </Link>
                     </td>
                     <td>
                         <p></p>
                     </td>
                     <td>
-                        Not a member? <a href="#example">Create an account</a>
+                        
                     </td>
                 </tr>
             </table>

@@ -1,3 +1,4 @@
+import Container from './partials/container/Container';
 import { render } from '@testing-library/react';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button'
@@ -10,10 +11,12 @@ export class Home extends Component<{}, HomePage>{
 
     render() {
         return <div>
-            <h1>AHGD(ASGBF(DASFJADSNJKFBASIFDASDHFBNASUI</h1>
+            <Container>
+                <div>
+                    Welcome to ERP app frontend
+      </div>
+            </Container>
         </div>
-
-        
     }
 }
 

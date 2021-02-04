@@ -1,3 +1,4 @@
+  
 -- Create a local db user in order for the backend to be able to access the data.
 drop user if exists 'admin'@'localhost';
 create user 'admin'@'localhost' identified by 'admin';
