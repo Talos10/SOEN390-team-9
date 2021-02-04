@@ -1,0 +1,15 @@
+.centerMessage{
+    height: 10em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 300%;
+  font: bolder;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.centerComponent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

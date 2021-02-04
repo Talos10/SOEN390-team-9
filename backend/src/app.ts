@@ -23,7 +23,7 @@ class App {
         this.routes(appInit.controllers);
         this.env();
         this.error();
-        require('./shared/passportHandler')
+        require('./shared/passportHandler');
     }
 
     private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
@@ -59,7 +59,7 @@ class App {
     }
 
     private error() {
-        const { INTERNAL_SERVER_ERROR } = StatusCodes;
+        const { INTERNAL_SERVER_ERROR  } = StatusCodes;
         this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
             logger.accessError(req, err.stack, err.message);
             return res.status(INTERNAL_SERVER_ERROR).json({

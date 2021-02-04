@@ -1,13 +1,14 @@
 import React from 'react';
-import Container from './components/partials/container/Container';
+import Main from './components/Main'
+import styles from './css/App.module.css'
 
 function App() {
   return (
-    <Container>
-      <div>
-        Welcome to ERP app frontend
+    <div className="App">
+      <div className={styles.html}>
+        <Main></Main>
       </div>
-    </Container>
+    </div>
   );
 }
 

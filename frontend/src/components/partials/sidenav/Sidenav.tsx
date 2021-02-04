@@ -15,7 +15,7 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
         <div className={styles.SidenavLogo}>
           ERP Software
         </div>
-        <a href="/" className={styles.SidenavItem}>
+        <a href="/home" className={styles.SidenavItem}>
           <Home style={{ paddingRight: 16 }} />
           Home
         </a>
