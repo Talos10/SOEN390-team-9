@@ -4,6 +4,7 @@ import Welcome from './components/Welcome'
 import Background from './assets/background/geometric.jpg'
 import styles from './css/App.module.css'
 import Button from 'react-bootstrap/Button'
+import Container from './components/partials/container/Container';
 
 function App() {
   return (

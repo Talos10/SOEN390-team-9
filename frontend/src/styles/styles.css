@@ -1,0 +1,69 @@
+/* Colors */
+:root {
+  /* Primary Colors */
+  --primary: #3A89F0;
+  --bg: #FFFFFF;
+  --bg-dark: #F6F7F9;
+  --border: #DADCE0;
+  --text: #000000;
+  --text-white: #FFFFFF;
+  --text-faded: #5F6368;
+  --text-title: #476282;
+
+  /* Sidenav */
+  --sidenav-bg: #122C44;
+  --sidenav-bg-dark: #051E34;
+  --sidenav-text: #C4C4C4;
+  --sidenav-shadow: #00000066;
+}
+
+body {
+  background-color: var(--bg-dark);
+}
+
+/* Typography */
+body {
+  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: var(--text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+h1,
+.h1 {
+  font-size: 96px;
+  font-weight: 300;
+  letter-spacing: -1.5px;
+}
+
+h1,
+.h1 {
+  font-size: 96px;
+  font-weight: 300;
+  letter-spacing: -1.5px;
+}
+
+.subtitle1 {
+  font-size: 1rem;
+  letter-spacing: 0.15px;
+}
+
+.subtitle2 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.caption {
+  font-size: 12px;
+  letter-spacing: 0.4px;
+}

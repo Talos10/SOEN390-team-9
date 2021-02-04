@@ -1,0 +1,22 @@
+.Container {
+  display: grid;
+  grid: [stack] 1fr / min-content [stack] 1fr;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .Container>* {
+    grid-area: stack;
+  }
+}
+
+.main {
+  margin: 16px;
+
+}
+
+@media (min-width: 768px) {
+  .main {
+    margin: 24px
+  }
+}

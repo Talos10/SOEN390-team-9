@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import UserService from './user.service';
+import passport from 'passport';
 
 class Controller {
     public path = '/user';
@@ -9,39 +10,52 @@ class Controller {
     constructor(userService: any = null) {
         this.userService = userService || new UserService();
         this.initRoutes();
+        this.initInitialAdminAccount();
+    }
+
+    private async initInitialAdminAccount() {
+        const users = await this.userService.getAllUsers();
+        if (users.length === 0) {
+            // Create the initial admin account if there are no users in db
+            this.userService.createNewUser('Admin', 'Admin', 'admin@email.com', 'admin');
+        }
     }
 
     private initRoutes() {
+
+        // Login user
+        this.router.post('/login', async (req: Request, res: Response) => {
+            // If in here, it means the email and password are good, we can log the user
+            const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
+            const [email, password] = Buffer.from(b64auth, 'base64').toString().split(':');
+
+            const result = await this.userService.loginUser(email, password);
+
+            res.json(result);
+        })
+
         // Retrieve all users.
-        this.router.get('/', async (req: Request, res: Response) => {
+        this.router.get('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const result = await this.userService.getAllUsers();
             res.json(result);
         });
 
         // Create new user.
-        this.router.post('/', async (req: Request, res: Response) => {
+        this.router.post('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const { name, email, role, password } = req.body;
             const result = await this.userService.createNewUser(name, role, email, password);
             res.json(result);
         });
 
         // Retrieve a single user with userID.
-        this.router.get('/:userID', async (req: Request, res: Response) => {
+        this.router.get('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const id = Number(req.params.userID);
             const result = await this.userService.findUserById(id);
             res.json(result);
         });
 
-        // Retrieve a single user with email and password.
-        this.router.get('/auth/:email/:password', async (req: Request, res: Response) => {
-            const email = req.params.email;
-            const password = req.params.password;
-            const result = await this.userService.findUserByAuth(email, password);
-            res.json(result);
-        });
-
         // Update a user with userID.
-        this.router.put('/:userID', async (req: Request, res: Response) => {
+        this.router.put('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const id = Number(req.params.userID);
             const { name, email, role, password } = req.body;
             const result = await this.userService.updateUser(id, name, role, email, password);
@@ -49,7 +63,7 @@ class Controller {
         });
 
         // Delete a user with userID.
-        this.router.delete('/:userID', async (req: Request, res: Response) => {
+        this.router.delete('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const id = Number(req.params.userID);
             const result = await this.userService.deleteUser(id);
             res.json(result);
@@ -57,7 +71,7 @@ class Controller {
 
 
         // Delete all users.
-        this.router.delete('/', async (req: Request, res: Response) => {
+        this.router.delete('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
             const result = await this.userService.deleteAll();
             res.json(result);
         });

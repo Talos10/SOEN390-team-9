@@ -1,6 +1,7 @@
-import helper from '../shared/Helper';
+import db from '../shared/dbConnection';
 
 class User {
+    public userId!: number;
     public name: string;
     public role: string;
     public email: string;
@@ -13,48 +14,33 @@ class User {
         this.password = user.password;
     }
 
-    public static async getAll() {
-        const query = 'SELECT userID, name, role, email FROM user';
-        const result = await helper.doQuery(query);
-        return result;
+    public static async getAll(): Promise<User[]> {
+        return await db('user').select('userID', 'name', 'role', 'email');
     }
 
-    public static async addUser(user: User) {
-        const query = 'INSERT INTO user SET ?';
-        const result = await helper.doQueryParams(query, user);
-        return result;
+    public static async addUser(user: User): Promise<number> {
+        return await db('user').insert(user);
     }
 
-    public static async findById(userID: number) {
-        const query = `SELECT userID, name, role, email FROM user WHERE userID = ${userID}`;
-        const result = await helper.doQuery(query);
-        return result[0];
+    public static async findById(userID: number): Promise<User> {
+        return await db('user').select('userId', 'name', 'role', 'email').where('userID', userID).first();
     }
 
-    public static async findByIdAuth(email: string, password: string) {
-        const query = 'SELECT userID, name, role, email FROM user WHERE email = ? AND password = ?';
-        const result = await helper.doQueryParams(query, [email, password]);
-        return result[0];
+    public static async findByEmailAuth(email: string): Promise<User> {
+        return await db('user').select('userId', 'name', 'role', 'email', 'password').where('email', email).first();
     }
 
-    public static async updateById(userID: number, user: User) {
-        const query = 'UPDATE user SET name = ?, role = ?, email = ?, password = ? WHERE userID = ?'
-        const result = await helper.doQueryParams(query,
-            [user.name, user.role, user.email, user.password, userID]);
-        return result;
-
+    public static async updateById(userID: number, user: User): Promise<number> {
+        return await db('user').update({ 'name': user.name, 'role': user.role, 'email': user.email, 'password': user.password }).where('userID', userID);
     }
 
-    public static async deleteUser(userId: number) {
-        const query = 'DELETE FROM user WHERE userID = ?'
-        const result = await helper.doQueryParams(query, userId);
-        return result[0];
+    public static async deleteUser(userId: number): Promise<number> {
+        return await db('user').where('userID', userId).del();
     }
 
-    public static async deleteAll() {
-        const query = 'DELETE FROM user';
-        const result = await helper.doQuery(query);
-        await helper.doQuery('ALTER TABLE user AUTO_INCREMENT = 1');
+    public static async deleteAll(): Promise<number> {
+        const result = await db('user').del();
+        await db.raw('ALTER TABLE user AUTO_INCREMENT = 1');
         return result;
     }
 }
