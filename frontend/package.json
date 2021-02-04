@@ -54,6 +54,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.9",
+    "@types/mocha": "^8.2.0",
     "@types/cors": "^2.8.9"
   }
 }
