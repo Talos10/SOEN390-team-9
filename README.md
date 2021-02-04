@@ -44,3 +44,6 @@ where CONTAINER is the name of the specific container which can either be fronte
 
 Finally, if nothing is working and you want to start over, run the following command: `docker system prune -a`\
 You may then run `docker-compose up` in order to run all the containers (their dependencies will also be rebuilt) and it will be as if you ran that command for the first time with these containers.
+
+## Login information:
+The default login information is `admin@email.com` for the email and `admin` for the password.
