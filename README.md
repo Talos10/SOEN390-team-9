@@ -8,7 +8,7 @@ The frontend has been created in React (TypeScript), the backend in Node.js (Typ
 
 ## Team members:
 - Sébastien	Blain-Nadeau
-- Razvan	Ivan
+- Razvan Ivan
 - Jason	Kim
 - David	Rossi
 - Cosmin	Sustac
