@@ -1,7 +1,5 @@
-import Container from './partials/container/Container';
-import { render } from '@testing-library/react';
+import Container from '../../components/partials/container/Container';
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button'
 
 type HomePage = {
 

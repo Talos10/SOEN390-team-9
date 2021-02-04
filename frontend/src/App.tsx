@@ -1,15 +1,13 @@
 import React from 'react';
-import Main from './components/Main'
-import styles from './css/App.module.css'
+import Router from './Router'
+import styles from './App.module.css'
 
-function App() {
+export default function App() {
   return (
     <div className="App">
       <div className={styles.html}>
-        <Main></Main>
+        <Router></Router>
       </div>
     </div>
   );
 }
-
-export default App;

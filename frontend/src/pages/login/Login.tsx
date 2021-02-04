@@ -129,11 +129,11 @@ const Login = () => {
     }
   }, [state.email, state.password]);
 
-  async function handleLogin (this: any){
+  async function handleLogin(this: any) {
 
-   
 
-    userPromise =  await axiosPostCall("http://localhost:5000/user/login/", state.email, state.password);
+
+    userPromise = await axiosPostCall("http://localhost:5000/user/login/", state.email, state.password);
 
     console.log(userPromise)
 
@@ -159,8 +159,8 @@ const Login = () => {
 
 
   async function axiosPostCall(url: string, email: string, pass: string) {
-    const response = await axios.post(url,{}, {
-      auth:{
+    const response = await axios.post(url, {}, {
+      auth: {
         username: email,
         password: pass
       }
@@ -223,14 +223,14 @@ const Login = () => {
           </div>
         </CardContent>
         <CardActions>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              className={classes.loginBtn}
-              onClick={handleLogin}
-              disabled={state.isButtonDisabled}>
-              Login
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            className={classes.loginBtn}
+            onClick={handleLogin}
+            disabled={state.isButtonDisabled}>
+            Login
             </Button>
         </CardActions>
       </Card>

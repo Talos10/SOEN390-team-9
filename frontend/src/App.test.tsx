@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Home } from './components/Home';
-import Login from './components/Login';
+import { Home } from './pages/home/Home';
+import Login from './pages/login/Login';
 
 test('renders title', () => {
   render(<Home />);
