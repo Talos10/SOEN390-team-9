@@ -14,14 +14,11 @@ CREATE TABLE `soen_390_db`.`user` (
   `name` VARCHAR(45) NOT NULL,
   `role` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` CHAR(60) NOT NULL,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   PRIMARY KEY (`userID`))
 
   collate = utf8mb4_unicode_ci;
-  
-INSERT INTO `soen_390_db`.`user` (`name`, `role`, `email`, `password`)
-VALUES ('Jake', 'Admin', 'jake@email.com', 'jake');
 
 -- run the line below by itself if you want to delete the adminuser from your sql db:
 -- drop user if exists 'admin'@'localhost';
