@@ -27,8 +27,8 @@ class Controller {
         // Login user
         this.router.post('/login', async (req: Request, res: Response) => {
             const user = auth(req);
-            const name = user ? user.name : undefined;
-            const pass = user ? user.pass : undefined;
+            const name = user?.name;
+            const pass = user?.pass;
 
             const result = await this.userService.loginUser(name, pass);
 
