@@ -32,7 +32,7 @@ If you wish to run a specific container only, you may run the following command:
 where CONTAINER is the name of the specific container which can either be frontend, backend, or database.
 Note that when you choose to run the backend container only, the database container will also be started since it is required in order for the backend to function properly.
 
-4. **In order to open the website, click on the following link:** `http://localhost:3000/`
+4. **In order to open the website, enter the following link in your browser:** `http://localhost:3000/`
 
 4. **In order to shut down all running docker containers, run the following command:** `docker-compose stop`\
 If you wish to stop a specific container, you may run the following command: `docker-compose stop CONTAINER`\
