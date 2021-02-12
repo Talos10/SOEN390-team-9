@@ -32,7 +32,7 @@ export default function LoginV2({ setLoggedIn }: Props) {
 
     const request = await fetch("http://localhost:5000/user/login/", {
       method: 'POST',
-      headers: { "A0uthorization": basicAuthToken },
+      headers: { "Authorization": basicAuthToken },
     });
 
     const response = await request.json() as ErrorResponse | SuccessResponse;
