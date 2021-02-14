@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 
 import Theme from './Theme';
 import './styles/normalize.css';
-import './styles/styles.css';
+import './styles/styles.scss';
 
 ReactDOM.render(
   <ThemeProvider theme={Theme}>

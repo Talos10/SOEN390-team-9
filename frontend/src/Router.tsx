@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Login, Home, NotFound } from './pages';
+import { Login, Home, NotFound, Inventory, AddItem } from './pages';
 
 export default function Router() {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -22,7 +22,11 @@ export default function Router() {
           : <Login {...{ setLoggedIn }} />}
       </Route>
       {loggedIn &&
-        <Route path="/home" component={Home} exact />}
+        <>
+          <Route path="/home" component={Home} exact />
+          <Route path="/inventory" component={Inventory} exact />
+          <Route path="/inventory/add-item" component={AddItem} exact />
+        </>}
       <Route component={NotFound} />
     </Switch>
   )

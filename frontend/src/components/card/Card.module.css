@@ -1,0 +1,18 @@
+.Card {
+  background-color: var(--bg);
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+  .Card {
+    border-radius: 8px;
+    padding: 24px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 24px;
+  }
+}
