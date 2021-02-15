@@ -1,7 +1,5 @@
-import Container from './partials/container/Container';
-import { render } from '@testing-library/react';
+import { Container } from '../../components';
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button'
 
 type HomePage = {
 
@@ -13,8 +11,8 @@ export class Home extends Component<{}, HomePage>{
         return <div>
             <Container>
                 <div>
-                    Welcome to ERP app frontend
-      </div>
+                    Welcome {localStorage.getItem("name")}.
+                </div>
             </Container>
         </div>
     }

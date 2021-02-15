@@ -1,0 +1,64 @@
+.Login {
+  // Background
+  min-height: 100vh;
+  background-image: url('../../assets/background/login-background.png');
+  background-position: center;
+  background-size: cover;
+
+  // Flex
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  @media (min-width: 768px) {
+    align-items: center;
+  }
+
+  .login-card {
+    box-sizing: border-box;
+    margin: 16px;
+    padding: 24px;
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
+
+    @media (min-width: 768px) {
+      padding: 40px;
+    }
+
+    &__title {
+      text-align: center;
+    }
+
+    &__header {
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+
+      @media (min-width: 768px) {
+        margin-bottom: 64px;
+      }
+    }
+
+    &__form {
+      &__email {
+        margin-bottom: 32px;
+      }
+
+      &__password {
+        margin-bottom: 64px;
+
+        @media (min-width: 768px) {
+          margin-bottom: 128px;
+        }
+      }
+
+      &__submit {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+}

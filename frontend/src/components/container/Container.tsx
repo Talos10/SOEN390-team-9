@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Sidenav from '../sidenav/Sidenav';
-import Appbar from '../appbar/Appbar';
+import Sidenav from './sidenav/Sidenav';
+import Appbar from './appbar/Appbar';
 
 import style from './Container.module.css';
 

@@ -1,16 +1,12 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Home } from './components/Home';
-import Login from './components/Login';
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
+
+import { Home } from './pages';
 
 test('renders title', () => {
-  render(<Home />);
-  const linkElement = screen.getByText(/Welcome to ERP app frontend/i);
-  expect(linkElement).toBeInTheDocument();
-});
-
-test('renders login', () => {
-  render(<Login />);
-  const linkElement = screen.getByText(/Log in/i);
+  const history = createMemoryHistory()
+  render(<Router history={history}><Home /></Router>);
+  const linkElement = screen.getByText(/Welcome/i);
   expect(linkElement).toBeInTheDocument();
 });
