@@ -1,0 +1,42 @@
+.ProfileOptions {
+  position: absolute;
+  z-index: 2;
+  top: 48px;
+  right: 0;
+  margin: 16px;
+  max-width: 250px;
+  width: 100%;
+  padding: 16px;
+  box-shadow: var(--shadow-soft);
+  background-color: var(--bg);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text);
+
+  .profile-icon {
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    margin-bottom: 16px;
+  }
+
+  .name {
+    margin-bottom: 36px;
+  }
+
+  &-shadow {
+    position: fixed;
+    background: none;
+    display: block;
+    border: none;
+    z-index: 1;
+    top: 0;
+    width: 100vw;
+    right: 0;
+    height: 100vh;
+    outline: none;
+  }
+}
