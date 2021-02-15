@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken';
 
 class Service {
 
-    public async loginUser(email: string, password: string) {
-        if (email === '' || password === '') {
+    public async loginUser(email?: string, password?: string) {
+        if ( !email || !password) {
             return { status: false, error: 'Invalid authorization header' };
         }
 
