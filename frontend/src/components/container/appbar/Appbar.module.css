@@ -1,4 +1,5 @@
 .Appbar {
+  z-index: 1;
   background-color: var(--primary);
   color: var(--text-white);
   position: sticky;
@@ -21,9 +22,15 @@
 
 @media (min-width: 768px) {
   .Appbar {
-    padding-left: 24px;
+    padding-left: 8px;
     padding-right: 24px;
     margin-bottom: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .Appbar {
+    padding-left: 24px;
   }
 
   .Appbar__menu {
