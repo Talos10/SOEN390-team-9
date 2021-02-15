@@ -11,6 +11,7 @@ create schema `soen_390_db`;
 
 USE `soen_390_db`;
 
+-- Table to store the users.
 CREATE TABLE `soen_390_db`.`user` (
   `userID` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
@@ -21,7 +22,8 @@ CREATE TABLE `soen_390_db`.`user` (
   PRIMARY KEY (`userID`))
 
   collate = utf8mb4_unicode_ci;
-  
+
+-- Table to store the customer orders (orders of bikes).
 CREATE TABLE `soen_390_db`.`customer_order` (
   `customer_order_id` INT NOT NULL AUTO_INCREMENT,
   `status` VARCHAR(45) NOT NULL,
@@ -31,302 +33,326 @@ CREATE TABLE `soen_390_db`.`customer_order` (
   PRIMARY KEY (`customer_order_id`))
   
   collate = utf8mb4_unicode_ci;
+
+-- Table to store the different orders of raw materials needed for producing bikes.
+CREATE TABLE `soen_390_db`.`raw_material_order` (
+  `raw_material_order_id` INT NOT NULL AUTO_INCREMENT,
+  `status` VARCHAR(45) NOT NULL,
+  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_time_finished` DATETIME,
+  `price` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`raw_material_order_id`))
   
+  collate = utf8mb4_unicode_ci;
+
+-- Table to store the different orders given by the manufacturing division
+-- in order to create various semi-finished and finished goods.
 CREATE TABLE `soen_390_db`.`production_order` (
   `production_order_id` INT NOT NULL AUTO_INCREMENT,
   `status` VARCHAR(45) NOT NULL,
   `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_time_finished` DATETIME,
-  `price` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`production_order_id`))
   
   collate = utf8mb4_unicode_ci;
 
+-- Table to store the raw materials, semi-finished goods, and finished goods all
+-- under one table.
+CREATE TABLE `soen_390_db`.`inventory_item` (
+  `inventory_item_id` INT NOT NULL AUTO_INCREMENT,
+  `inventory_item_name` VARCHAR(45) NOT NULL,
+  `inventory_item_type` VARCHAR(45) NOT NULL,
+  `quantity` INT NOT NULL DEFAULT 0,
+  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`inventory_item_id`),
+  CONSTRAINT `validItemType`
+    CHECK (`inventory_item_type` IN ("raw", "semi-finished", "finished")))
+  
+  collate = utf8mb4_unicode_ci;
+
+CREATE TABLE `soen_390_db`.`inventory_item_composed_of` (
+  `inventory_item_id` INT NOT NULL,
+  `made_from_inventory_item_id` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  PRIMARY KEY (`inventory_item_id`, `made_from_inventory_item_id`),
+  CONSTRAINT `inventoryItemIDComposedOfForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `madeFromInventoryItemIDComposedOfForeignKey`
+    FOREIGN KEY (`made_from_inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `notMadeFromSameItem`
+    CHECK (`inventory_item_id` != `made_from_inventory_item_id`))
+    
+	collate = utf8mb4_unicode_ci;
+
+-- Table to store the raw materials needed to build the semi-finished goods.
 CREATE TABLE `soen_390_db`.`raw_material` (
   `raw_material_id` INT NOT NULL AUTO_INCREMENT,
-  `raw_material_name` VARCHAR(45) NOT NULL,
-  `quantity` INT NOT NULL,
+  `inventory_item_id` INT NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `vendor` VARCHAR(45),
-  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`raw_material_id`),
-  UNIQUE INDEX `raw_material_name_UNIQUE` (`raw_material_name` ASC) VISIBLE)
+  CONSTRAINT `rawMaterialInventoryItemIDForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
   
   collate = utf8mb4_unicode_ci;
-    
+
+-- Table to store the semi-finished goods needed to build the finished goods.
 CREATE TABLE `soen_390_db`.`semi_finished_good` (
   `semi_finished_good_id` INT NOT NULL AUTO_INCREMENT,
-  `semi_finished_good_name` VARCHAR(45) NOT NULL,
-  `quantity` INT NOT NULL,
+  `inventory_item_id` INT NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
-  `vendor` VARCHAR(45),
-  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`semi_finished_good_id`),
-  UNIQUE INDEX `semi_finished_good_name_UNIQUE` (`semi_finished_good_name` ASC) VISIBLE)
+  CONSTRAINT `semiFinishedInventoryItemIDForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
   
   collate = utf8mb4_unicode_ci;
-    
+
+-- Table to store the finished goods that will be sold to the customers.
 CREATE TABLE `soen_390_db`.`finished_good` (
   `finished_good_id` INT NOT NULL AUTO_INCREMENT,
-  `finished_good_name` VARCHAR(45) NOT NULL,
-  `quantity` INT NOT NULL,
+  `inventory_item_id` INT NOT NULL,
   `price_of_construction` DECIMAL(10,2) NOT NULL,
   `price_of_selling` DECIMAL(10,2) NOT NULL,
   `archived` TINYINT(1) NOT NULL,
-  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`finished_good_id`),
-  UNIQUE INDEX `finished_good_name_UNIQUE` (`finished_good_name` ASC) VISIBLE)
+  CONSTRAINT `finishedInventoryItemIDForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
   
   collate = utf8mb4_unicode_ci;
-  
+
+-- Table to store the various properties of the inventory items.
+CREATE TABLE `soen_390_db`.`property_of_inventory_item` (
+  `inventory_item_id` INT NOT NULL,
+  `property_name` VARCHAR(45) NOT NULL,
+  `property_value` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`inventory_item_id`, `property_name`),
+  CONSTRAINT `inventoryItemIDPropertyForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+    
+	collate = utf8mb4_unicode_ci;
+
+-- Table to store the various raw materials that make up each raw material order.
 CREATE TABLE `soen_390_db`.`ordered_raw_material` (
-  `production_order_id` INT NOT NULL,
-  `raw_material_id` INT NOT NULL,
+  `raw_material_order_id` INT NOT NULL,
+  `inventory_item_id` INT NOT NULL,
   `quantity` INT NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`production_order_id`, `raw_material_id`),
-  CONSTRAINT `rawMaterialProductionOrderIDForeignKey`
-    FOREIGN KEY (`production_order_id`)
-    REFERENCES `soen_390_db`.`production_order` (`production_order_id`)
+  `vendor` VARCHAR(45),
+  PRIMARY KEY (`raw_material_order_id`, `inventory_item_id`),
+  CONSTRAINT `rawMaterialOrderIDForeignKey`
+    FOREIGN KEY (`raw_material_order_id`)
+    REFERENCES `soen_390_db`.`raw_material_order` (`raw_material_order_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `rawMaterialIDForeignKey`
-    FOREIGN KEY (`raw_material_id`)
-    REFERENCES `soen_390_db`.`raw_material` (`raw_material_id`)
+  CONSTRAINT `orderedRawInventoryItemIDForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
     
 	collate = utf8mb4_unicode_ci;
 
-CREATE TABLE `soen_390_db`.`property_of_raw_material` (
-  `raw_material_id` INT NOT NULL,
-  `property_name` VARCHAR(45) NOT NULL,
-  `property_value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`raw_material_id`, `property_name`),
-  CONSTRAINT `rawMaterialIDPropertyForeignKey`
-    FOREIGN KEY (`raw_material_id`)
-    REFERENCES `soen_390_db`.`raw_material` (`raw_material_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-    
-	collate = utf8mb4_unicode_ci;
-
-CREATE TABLE `soen_390_db`.`property_of_semi_finished_good` (
-  `semi_finished_good_id` INT NOT NULL,
-  `property_name` VARCHAR(45) NOT NULL,
-  `property_value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`semi_finished_good_id`, `property_name`),
-  CONSTRAINT `semiFinishedGoodPropertyIDForeignKey`
-    FOREIGN KEY (`semi_finished_good_id`)
-    REFERENCES `soen_390_db`.`semi_finished_good` (`semi_finished_good_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-    
-	collate = utf8mb4_unicode_ci;
-
-CREATE TABLE `soen_390_db`.`property_of_finished_good` (
-  `finished_good_id` INT NOT NULL,
-  `property_name` VARCHAR(45) NOT NULL,
-  `property_value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`finished_good_id`, `property_name`),
-  CONSTRAINT `finishedGoodPropertyIDForeignKey`
-    FOREIGN KEY (`finished_good_id`)
-    REFERENCES `soen_390_db`.`finished_good` (`finished_good_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-    
-	collate = utf8mb4_unicode_ci;
-    
+-- Table to store the various semi-finished goods that production has given an order to
+-- produce for each production order.
 CREATE TABLE `soen_390_db`.`ordered_semi_finished` (
   `production_order_id` INT NOT NULL,
-  `semi_finished_good_id` INT NOT NULL,
+  `inventory_item_id` INT NOT NULL,
   `quantity` INT NOT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`production_order_id`, `semi_finished_good_id`),
+  PRIMARY KEY (`production_order_id`, `inventory_item_id`),
   CONSTRAINT `semiFinishedProductionOrderIDForeignKey`
     FOREIGN KEY (`production_order_id`)
     REFERENCES `soen_390_db`.`production_order` (`production_order_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `semiFinishedGoodIDForeignKey`
-    FOREIGN KEY (`semi_finished_good_id`)
-    REFERENCES `soen_390_db`.`semi_finished_good` (`semi_finished_good_id`)
+  CONSTRAINT `semiFinishedGoodInventoryItemIDForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
     
 	collate = utf8mb4_unicode_ci;
 
+-- Table to store the various finished goods that a customer has placed an order for
+-- for each customer order.
 CREATE TABLE `soen_390_db`.`ordered_finished_by_customer` (
   `customer_order_id` INT NOT NULL,
-  `finished_good_id` INT NOT NULL,
+  `inventory_item_id` INT NOT NULL,
   `quantity` INT NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`customer_order_id`, `finished_good_id`),
+  PRIMARY KEY (`customer_order_id`, `inventory_item_id`),
   CONSTRAINT `finishedCustomerOrderIDForeignKey`
     FOREIGN KEY (`customer_order_id`)
     REFERENCES `soen_390_db`.`customer_order` (`customer_order_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `finishedGoodIDForeignKey`
-    FOREIGN KEY (`finished_good_id`)
-    REFERENCES `soen_390_db`.`finished_good` (`finished_good_id`)
+  CONSTRAINT `finishedGoodInventoryItemIDForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
     
 	collate = utf8mb4_unicode_ci;
-    
+
+-- Table to store the various finished goods that production has given an order to
+-- produce for each production order.
 CREATE TABLE `soen_390_db`.`ordered_finished_by_production` (
   `production_order_id` INT NOT NULL,
-  `finished_good_id` INT NOT NULL,
+  `inventory_item_id` INT NOT NULL,
   `quantity` INT NOT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`production_order_id`, `finished_good_id`),
+  PRIMARY KEY (`production_order_id`, `inventory_item_id`),
   CONSTRAINT `finishedProductionOrderIDForeignKey`
     FOREIGN KEY (`production_order_id`)
     REFERENCES `soen_390_db`.`production_order` (`production_order_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `finishedGoodByProductionIDForeignKey`
-    FOREIGN KEY (`finished_good_id`)
-    REFERENCES `soen_390_db`.`finished_good` (`finished_good_id`)
+  CONSTRAINT `finishedGoodByProductionInventoryItemIDForeignKey`
+    FOREIGN KEY (`inventory_item_id`)
+    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
     
 	collate = utf8mb4_unicode_ci;
-    
-CREATE TABLE `soen_390_db`.`semi_finished_composed_of` (
-  `semi_finished_good_id` INT NOT NULL,
-  `raw_material_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  PRIMARY KEY (`semi_finished_good_id`, `raw_material_id`),
-  CONSTRAINT `semiFinishedGoodIDComposedOfForeignKey`
-    FOREIGN KEY (`semi_finished_good_id`)
-    REFERENCES `soen_390_db`.`semi_finished_good` (`semi_finished_good_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `rawMaterialIDComposedOfForeignKey`
-    FOREIGN KEY (`raw_material_id`)
-    REFERENCES `soen_390_db`.`raw_material` (`raw_material_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    
-	collate = utf8mb4_unicode_ci;
-    
-CREATE TABLE `soen_390_db`.`finished_composed_of` (
-  `finished_good_id` INT NOT NULL,
-  `semi_finished_good_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  PRIMARY KEY (`finished_good_id`, `semi_finished_good_id`),
-  CONSTRAINT `finishedGoodIDComposedOfForeignKey`
-    FOREIGN KEY (`finished_good_id`)
-    REFERENCES `soen_390_db`.`finished_good` (`finished_good_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `semiFinishedGoodIDComposedOf2ForeignKey`
-    FOREIGN KEY (`semi_finished_good_id`)
-    REFERENCES `soen_390_db`.`semi_finished_good` (`semi_finished_good_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    
-	collate = utf8mb4_unicode_ci;
-    
--- date is of the format yyyy-mm-dd and the price can be given with a maximum of two digits after the dot
-INSERT `raw_material` (`raw_material_id`, `raw_material_name`, `quantity`, `price`, `vendor`) 
+
+-- date is of the format yyyy-mm-dd and the price can be given with a maximum of two digits after the dot.
+
+INSERT `inventory_item` (`inventory_item_name`, `inventory_item_type`, `quantity`) 
 VALUES
-(null, "carbon fiber", 5, 5, "Maxon Factory"),
-(null, "steel", 10, 20, "Steelworks Laval"),
-(null, "rubber", 7, 23, "Rubber.co"),
-(null, "leather", 5, 50.69, "Tanning Frank")
+("carbon fiber", "raw", 5),
+("steel", "raw", 10),
+("rubber", "raw", 7),
+("leather", "raw", 5),
+("titanum dioxide", "raw", 5),
+("ethylene glycol", "raw", 5),
+("alkyd", "raw", 7),
+("paint", "semi-finished", 4),
+("bike seat", "semi-finished", 2),
+("carbon frame", "semi-finished", 3),
+("rubber tire", "semi-finished", 4),
+("steel wheel frame", "semi-finished", 4),
+("steel bike handles", "semi-finished", 2),
+("bike gears", "semi-finished", 3),
+("steel breaks", "semi-finished", 2),
+("le sebastien", "finished", 2)
 ;
 
-INSERT `semi_finished_good` (`semi_finished_good_id`, `semi_finished_good_name`, `quantity`, `price`, `vendor`) 
+INSERT `raw_material` (`inventory_item_id`, `price`, `vendor`) 
 VALUES
-(null, "blue paint", 4, 10.52, "Value Paint"),
-(null, "bike seat", 2, 20.20, null),
-(null, "carbon frame", 3, 80.50, null),
-(null, "rubber tire", 4, 50.37, null),
-(null, "steel wheel frame", 4, 44.10, null),
-(null, "steel bike handles", 2, 24.78, null),
-(null, "bike gears", 3, 70.25, null),
-(null, "steel breaks", 2, 49.36, null)
+(1, 5, "Maxon Factory"),
+(2, 20, "Steelworks Laval"),
+(3, 23, "Rubber.co"),
+(4, 50.69, "Tanning Frank"),
+(5, 20, "Chemical Facility Quebec"),
+(6, 23, "Chemical Facility Quebec"),
+(7, 50.69, "Chemical Facility Quebec")
 ;
 
-INSERT `finished_good` (`finished_good_id`, `finished_good_name`, `quantity`, `price_of_construction`, `price_of_selling`, `archived`) 
+INSERT `semi_finished_good` (`inventory_item_id`, `price`) 
 VALUES
-(null, "le sebastien", '1', 682.85, 1245.99, 0)
+(8, 10.52),
+(9, 20.20),
+(10, 80.50),
+(11, 50.37),
+(12, 44.10),
+(13, 24.78),
+(14, 70.25),
+(15, 49.36)
 ;
 
-INSERT `customer_order` (`customer_order_id`, `status`, `price`) 
+INSERT `finished_good` (`inventory_item_id`, `price_of_construction`, `price_of_selling`, `archived`) 
 VALUES
-(null, "awaiting fulfillment", 1245.99)
+(16, 682.85, 1245.99, 0)
 ;
 
-INSERT `production_order` (`production_order_id`, `status`, `price`) 
+INSERT `raw_material_order` (`status`, `price`) 
 VALUES
-(null, "completed", 4.23),
-(null, "completed", 14.01)
+("awaiting fulfillment", 4.23)
 ;
 
-INSERT `semi_finished_composed_of` 
+INSERT `customer_order` (`status`, `price`) 
 VALUES
-(2, 2, 1),
-(2, 4, 1),
-(3, 1, 4),
-(4, 3, 2),
-(5, 4, 1),
-(6, 2, 1),
-(7, 4, 1),
-(8, 2, 1)
+("awaiting fulfillment", 1245.99)
 ;
 
-INSERT `finished_composed_of` 
+INSERT `production_order` (`status`) 
 VALUES
-(1, 1, 1),
-(1, 2, 1),
-(1, 3, 1),
-(1, 4, 4),
-(1, 5, 4),
-(1, 6, 2),
-(1, 7, 1),
-(1, 8, 2)
+("shipping")
 ;
 
-INSERT `ordered_finished_by_customer` 
+INSERT `production_order` (`status`, `date_time_added`, `date_time_finished`) 
 VALUES
-(1, 1, 1, 1245.99)
+("completed", '2015-05-10 13:17:17', '2015-05-30 23:21:02')
 ;
 
-INSERT `ordered_finished_by_production` 
+INSERT `inventory_item_composed_of` (`inventory_item_id`, `made_from_inventory_item_id`, `quantity`)
 VALUES
-(1, 1, 1, 1245.99)
+(8, 5, 1),
+(8, 6, 1),
+(8, 7, 1),
+(9, 2, 1),
+(9, 4, 1),
+(10, 1, 2),
+(11, 3, 2),
+(12, 2, 1),
+(13, 2, 1),
+(14, 2, 2),
+(15, 2, 1),
+(16, 8, 1),
+(16, 9, 1),
+(16, 10, 1),
+(16, 11, 2),
+(16, 12, 2),
+(16, 13, 2),
+(16, 14, 1),
+(16, 15, 2)
 ;
 
-INSERT `ordered_raw_material` 
+INSERT `ordered_finished_by_customer` (`customer_order_id`, `inventory_item_id`, `quantity`, `price`)
 VALUES
-(1, 1, 1, 4.23)
+(1, 16, 1, 1245.99)
 ;
 
-INSERT `ordered_semi_finished` 
+INSERT `ordered_finished_by_production` (`production_order_id`, `inventory_item_id`, `quantity`)
 VALUES
-(2, 1, 1, 14.01)
+(1, 16, 1)
 ;
 
-INSERT `property_of_raw_material` 
+INSERT `ordered_raw_material` (`raw_material_order_id`, `inventory_item_id`, `quantity`, `price`, `vendor`)
 VALUES
-(4, "leather quality", "full-grain")
+(1, 1, 1, 4.23, "Metal United")
 ;
 
-INSERT `property_of_semi_finished_good` 
+INSERT `ordered_semi_finished` (`production_order_id`, `inventory_item_id`, `quantity`)
 VALUES
-(3, "size", "18"),
-(3, "finish", "chrome"),
-(7, "number of speeds", "12")
+(1, 10, 1)
 ;
 
-INSERT `property_of_finished_good` 
+INSERT `property_of_inventory_item` (`inventory_item_id`, `property_name`, `property_value`)
 VALUES
-(1, "color", "blue"),
-(1, "size", "medium")
+(4, "leather quality", "full-grain"),
+(8, "color", "red"),
+(10, "size", "18"),
+(14, "number of speeds", "12"),
+(16, "finish", "chrome"),
+(16, "color", "red"),
+(16, "number of speeds", "12")
 ;
 
 -- run the line below by itself if you want to delete the adminuser from your sql db:
