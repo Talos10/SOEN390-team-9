@@ -121,6 +121,14 @@ p,
   margin-top: 0;
 }
 
+.body2 {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.25px;
+  line-height: 20px;
+}
+
 label,
 .label {
   @extend p;
