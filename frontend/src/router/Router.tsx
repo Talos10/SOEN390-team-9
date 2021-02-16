@@ -17,10 +17,12 @@ export default function Router() {
 
   return (
     <Switch>
-      <Guard path="/" component={() => Login({ setLoggedIn })} guard={!loggedIn} redirect="/home" exact />
-      <Guard path="/home" component={() => <Home />} guard={loggedIn} exact />
-      <Guard path="/inventory" component={Inventory} guard={loggedIn} exact />
-      <Guard path="/inventory/add-item" component={AddItem} guard={loggedIn} exact />
+      <Guard path="/" allowIf={!loggedIn} redirect="/home" exact>
+        <Login {...{ setLoggedIn }} />
+      </Guard>
+      <Guard path="/home" component={Home} allowIf={loggedIn} exact />
+      <Guard path="/inventory" component={Inventory} allowIf={loggedIn} exact />
+      <Guard path="/inventory/add-item" component={AddItem} allowIf={loggedIn} exact />
       <Route component={NotFound} />
     </Switch >
   )
