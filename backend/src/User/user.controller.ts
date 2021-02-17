@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import UserService from './user.service';
 import passport from 'passport';
+import auth from 'basic-auth';
 
 class Controller {
     public path = '/user';
@@ -25,11 +26,11 @@ class Controller {
 
         // Login user
         this.router.post('/login', async (req: Request, res: Response) => {
-            // If in here, it means the email and password are good, we can log the user
-            const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
-            const [email, password] = Buffer.from(b64auth, 'base64').toString().split(':');
+            const user = auth(req);
+            const name = user?.name;
+            const pass = user?.pass;
 
-            const result = await this.userService.loginUser(email, password);
+            const result = await this.userService.loginUser(name, pass);
 
             res.json(result);
         })
