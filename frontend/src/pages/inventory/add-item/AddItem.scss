@@ -9,11 +9,7 @@
     &__buttons {
       a {
         display: inline-block;
-        margin-right: 16px;
-
-        @media (min-width: 768px) {
-          margin-right: 24px;
-        }
+        margin-right: var(--padding);
       }
     }
   }
@@ -22,7 +18,18 @@
     margin-bottom: 4px;
   }
 
+  p {
+    font-weight: 500;
+  }
+
   .MuiFormControl-root:not(:last-child) {
     margin-bottom: 16px;
+  }
+
+  .bottom {
+    border-top: 1px solid var(--border);
+    padding-top: var(--padding);
+    display: flex;
+    justify-content: flex-end;
   }
 }

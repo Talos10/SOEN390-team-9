@@ -5,6 +5,7 @@ import './Inventory.scss';
 
 export default function Inventory() {
 
+  // Replace with backend logic
   const items = [
     { name: "Bike", quantity: 19, type: "Finished-Good", vendor: '' },
     { name: "Steel", quantity: 10, type: "Raw Material", vendor: 'Mike\'s Steel Factory' },
@@ -36,7 +37,7 @@ export default function Inventory() {
               {items.map(item =>
                 <tr key={item.name}>
                   <td className="name">{item.name}</td>
-                  <td>{item.quantity}</td>
+                  <td>{item.quantity} in stock</td>
                   <td>{item.type}</td>
                   <td>{item.vendor}</td>
                 </tr>

@@ -5,7 +5,7 @@ import Guard from './Guard';
 
 export default function Router() {
   const location = useLocation();
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>();
 
   const checkIfLoggedIn = () => {
     const token = localStorage.getItem("token");
