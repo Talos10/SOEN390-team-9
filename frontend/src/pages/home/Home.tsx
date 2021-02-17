@@ -1,4 +1,4 @@
-import Container from '../../components/partials/container/Container';
+import { Container } from '../../components';
 import React, { Component } from 'react';
 
 type HomePage = {
@@ -11,8 +11,8 @@ export class Home extends Component<{}, HomePage>{
         return <div>
             <Container>
                 <div>
-                    Welcome to ERP app frontend
-      </div>
+                    Welcome {localStorage.getItem("name")}.
+                </div>
             </Container>
         </div>
     }

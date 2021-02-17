@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Home } from '@material-ui/icons';
 
 import styles from './Sidenav.module.css';
@@ -15,10 +16,10 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
         <div className={styles.SidenavLogo}>
           ERP Software
         </div>
-        <a href="/home" className={styles.SidenavItem}>
+        <Link to="/home" className={styles.SidenavItem}>
           <Home style={{ paddingRight: 16 }} />
           Home
-        </a>
+        </Link>
       </nav>
       {showSidenav && <button onClick={() => toggleSidenav(!showSidenav)} className={styles.SidenavShadow} />}
     </aside>

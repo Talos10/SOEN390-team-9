@@ -17,7 +17,7 @@ services:
             - 3306:3306
         env_file: ./env/database.env
         volumes: 
-            - ./scripts/createNewDbUser.sql:/docker-entrypoint-initdb.d/createNewDbUser.sql
+            - ./scripts/createDB.sql:/docker-entrypoint-initdb.d/createDB.sql
         networks:
             - erp-app
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import style from './Welcome.module.css'
 import WelcomeButtons from './WelcomeButtons'
 

@@ -1,241 +1,114 @@
-import React, { useReducer, useEffect, useState } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { useState } from 'react';
+import { useHistory } from "react-router-dom";
+import { TextField, Button } from '@material-ui/core';
+import './Login.scss';
 
-import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
-import axios from "axios";
-import { BrowserRouter, Link, Route, useHistory } from 'react-router-dom';
-import { Switch } from '@material-ui/core';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      width: 400,
-      margin: `${theme.spacing(0)} auto`,
-    },
-    loginBtn: {
-      marginTop: theme.spacing(2),
-      flexGrow: 1
-    },
-    header: {
-      textAlign: 'center',
-      background: '#212121',
-      color: '#fff'
-    },
-    card: {
-      marginTop: theme.spacing(10)
-    },
-    loginHead: {
-      fontSize: 30,
-    }
-  })
-);
-
-//state type
-
-type State = {
-  email: string
-  password: string
-  isButtonDisabled: boolean
-  helperText: string
-  isError: boolean
-};
-
-const initialState: State = {
-  email: '',
-  password: '',
-  isButtonDisabled: true,
-  helperText: '',
-  isError: false
-};
-
-type Action = { type: 'setEmail', payload: string }
-  | { type: 'setPassword', payload: string }
-  | { type: 'setIsButtonDisabled', payload: boolean }
-  | { type: 'loginSuccess', payload: string }
-  | { type: 'loginFailed', payload: string }
-  | { type: 'setIsError', payload: boolean };
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case 'setEmail':
-      return {
-        ...state,
-        email: action.payload
-      };
-    case 'setPassword':
-      return {
-        ...state,
-        password: action.payload
-      };
-    case 'setIsButtonDisabled':
-      return {
-        ...state,
-        isButtonDisabled: action.payload
-      };
-    case 'loginSuccess':
-      return {
-        ...state,
-        helperText: action.payload,
-        isError: false
-      };
-    case 'loginFailed':
-      return {
-        ...state,
-        helperText: action.payload,
-        isError: true
-      };
-    case 'setIsError':
-      return {
-        ...state,
-        isError: action.payload
-      };
-  }
+interface Props {
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-var promiseData = {
-  userID: 0,
-  name: "",
-  role: "",
-  email: ""
+interface ErrorResponse {
+  status: false,
+  error: string
 }
 
-//let [userPromise, setUserPromise] = useState(Object)
+interface SuccessResponse {
+  status: true,
+  name: string,
+  token: string
+}
 
-let userPromise;
+export default function LoginV2({ setLoggedIn }: Props) {
+  const history = useHistory();
+  const [error, setError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-const Login = () => {
-  const classes = useStyles();
-  const [state, dispatch] = useReducer(reducer, initialState);
-  let history = useHistory();
+  const tryLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
 
-  useEffect(() => {
-    if (state.email.trim() && state.password.trim()) {
-      dispatch({
-        type: 'setIsButtonDisabled',
-        payload: false
-      });
-    } else {
-      dispatch({
-        type: 'setIsButtonDisabled',
-        payload: true
-      });
-    }
-  }, [state.email, state.password]);
+    const { email, password } = getCredentials(form);
+    const basicAuthToken = getBasicAuth(email, password);
 
-  async function handleLogin(this: any) {
-
-
-
-    userPromise = await axiosPostCall("http://localhost:5000/user/login/", state.email, state.password);
-
-    console.log(userPromise)
-
-
-    if ((userPromise.status)) {
-      dispatch({
-        type: 'loginSuccess',
-        payload: 'Login Successfully'
-      });
-      history.push('/home')
-      return true;
-
-    } else {
-      dispatch({
-        type: 'loginFailed',
-        payload: 'Incorrect email or password'
-      });
-
-      return false;
-    }
-
-  };
-
-
-  async function axiosPostCall(url: string, email: string, pass: string) {
-    const response = await axios.post(url, {}, {
-      auth: {
-        username: email,
-        password: pass
-      }
+    const request = await fetch("http://localhost:5000/user/login/", {
+      method: 'POST',
+      headers: { "Authorization": basicAuthToken },
     });
-    return response.data
+
+    const response = await request.json() as ErrorResponse | SuccessResponse;
+
+    if (!response.status) handleLoginError(response);
+    else handleLoginSuccess(response);
   }
 
-  const handleKeyPress = (event: React.KeyboardEvent) => {
-    if (event.keyCode === 13 || event.which === 13) {
-      state.isButtonDisabled || handleLogin();
-    }
-  };
+  const getCredentials = (form: HTMLFormElement) => {
+    const formData = new FormData(form);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    return { email, password };
+  }
 
-  const handleEmailChange: React.ChangeEventHandler<HTMLInputElement> =
-    (event) => {
-      dispatch({
-        type: 'setEmail',
-        payload: event.target.value
-      });
-    };
+  const getBasicAuth = (email: string, password: string): string => {
+    const hash = btoa(`${email}:${password}`);
+    const token = `Basic ${hash}`;
+    return token;
+  }
 
-  const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> =
-    (event) => {
-      dispatch({
-        type: 'setPassword',
-        payload: event.target.value
-      });
-    }
+  const handleLoginError = ({ error }: ErrorResponse) => {
+    setError(true);
+    setErrorMessage(error);
+  }
+
+  const handleLoginSuccess = ({ name, token }: SuccessResponse) => {
+    localStorage.setItem("name", name);
+    localStorage.setItem("token", token);
+    setLoggedIn(true);
+    history.push("/home");
+  }
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
-      <Card className={classes.card}>
-        <CardHeader className={classes.header} title="Supreme ERP" />
-        <CardContent>
-          <div className={classes.loginHead}>Log in</div>
-          <hr></hr>
-          <div>
+    <div className="Login">
+      <div className="login-card">
+        <p className="login-card__title lead">ERP Software</p>
+        <p className="login-card__header h4">Log In</p>
+
+        <form onSubmit={tryLogin} className="login-card__form">
+          <div className="login-card__form__email">
             <TextField
-              error={state.isError}
-              fullWidth
-              id="email"
+              name="email"
               type="email"
-              label="E-mail"
-              placeholder="E-mail"
-              margin="normal"
-              onChange={handleEmailChange}
-              onKeyPress={handleKeyPress}
-            />
-            <TextField
-              error={state.isError}
+              variant="outlined"
+              label="Email"
               fullWidth
-              id="password"
-              type="password"
-              label="Password"
-              placeholder="Password"
-              margin="normal"
-              helperText={state.helperText}
-              onChange={handlePasswordChange}
-              onKeyPress={handleKeyPress}
-            />
+              required
+              error={error}
+              InputLabelProps={{
+                shrink: true,
+              }} />
           </div>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            className={classes.loginBtn}
-            onClick={handleLogin}
-            disabled={state.isButtonDisabled}>
-            Login
+
+          <div className="login-card__form__password">
+            <TextField
+              name="password"
+              type="password"
+              variant="outlined"
+              label="Password"
+              error={error}
+              fullWidth
+              required
+              helperText={error ? errorMessage : ''}
+              InputLabelProps={{
+                shrink: true,
+              }} />
+          </div>
+
+          <div className="login-card__form__submit">
+            <Button type="submit" variant="contained" color="primary">
+              Log In
             </Button>
-        </CardActions>
-      </Card>
-    </form>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
-
-export default Login;
