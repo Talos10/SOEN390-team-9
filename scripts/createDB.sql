@@ -23,83 +23,29 @@ CREATE TABLE `soen_390_db`.`user` (
 
   collate = utf8mb4_unicode_ci;
 
--- Table to store the customer orders (orders of bikes).
-CREATE TABLE `soen_390_db`.`customer_order` (
-  `customer_order_id` INT NOT NULL AUTO_INCREMENT,
-  `status` VARCHAR(45) NOT NULL,
-  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_time_finished` DATETIME,
-  `price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`customer_order_id`))
-  
-  collate = utf8mb4_unicode_ci;
-
--- Table to store the different orders of raw materials needed for producing bikes.
-CREATE TABLE `soen_390_db`.`raw_material_order` (
-  `raw_material_order_id` INT NOT NULL AUTO_INCREMENT,
-  `status` VARCHAR(45) NOT NULL,
-  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_time_finished` DATETIME,
-  `price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`raw_material_order_id`))
-  
-  collate = utf8mb4_unicode_ci;
-
--- Table to store the different orders given by the manufacturing division
--- in order to create various semi-finished and finished goods.
-CREATE TABLE `soen_390_db`.`production_order` (
-  `production_order_id` INT NOT NULL AUTO_INCREMENT,
-  `status` VARCHAR(45) NOT NULL,
-  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_time_finished` DATETIME,
-  PRIMARY KEY (`production_order_id`))
-  
-  collate = utf8mb4_unicode_ci;
-
 -- Table to store the raw materials, semi-finished goods, and finished goods all
 -- under one table.
-CREATE TABLE `soen_390_db`.`inventory_item` (
-  `inventory_item_id` INT NOT NULL AUTO_INCREMENT,
-  `inventory_item_name` VARCHAR(45) NOT NULL,
-  `inventory_item_type` VARCHAR(45) NOT NULL,
+CREATE TABLE `soen_390_db`.`inventory_good` (
+  `inventory_good_id` INT NOT NULL AUTO_INCREMENT,
+  `inventory_good_name` VARCHAR(45) NOT NULL,
+  `inventory_good_type` VARCHAR(45) NOT NULL,
   `quantity` INT NOT NULL DEFAULT 0,
   `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`inventory_item_id`),
+  PRIMARY KEY (`inventory_good_id`),
   CONSTRAINT `validItemType`
-    CHECK (`inventory_item_type` IN ("raw", "semi-finished", "finished")))
+    CHECK (`inventory_good_type` IN ("raw", "semi-finished", "finished")))
   
   collate = utf8mb4_unicode_ci;
 
-CREATE TABLE `soen_390_db`.`inventory_item_composed_of` (
-  `inventory_item_id` INT NOT NULL,
-  `made_from_inventory_item_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  PRIMARY KEY (`inventory_item_id`, `made_from_inventory_item_id`),
-  CONSTRAINT `inventoryItemIDComposedOfForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `madeFromInventoryItemIDComposedOfForeignKey`
-    FOREIGN KEY (`made_from_inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `notMadeFromSameItem`
-    CHECK (`inventory_item_id` != `made_from_inventory_item_id`))
-    
-	collate = utf8mb4_unicode_ci;
-
--- Table to store the raw materials needed to build the semi-finished goods.
-CREATE TABLE `soen_390_db`.`raw_material` (
-  `raw_material_id` INT NOT NULL AUTO_INCREMENT,
-  `inventory_item_id` INT NOT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
-  `vendor` VARCHAR(45),
-  PRIMARY KEY (`raw_material_id`),
+-- Table to store the raw goods (materials) needed to build the semi-finished goods.
+CREATE TABLE `soen_390_db`.`raw_good` (
+  `inventory_good_id` INT NOT NULL,
+  `buying_cost` DECIMAL(10,2) NOT NULL,
+  `vendor` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`inventory_good_id`),
   CONSTRAINT `rawMaterialInventoryItemIDForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    FOREIGN KEY (`inventory_good_id`)
+    REFERENCES `soen_390_db`.`inventory_good` (`inventory_good_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
   
@@ -107,13 +53,12 @@ CREATE TABLE `soen_390_db`.`raw_material` (
 
 -- Table to store the semi-finished goods needed to build the finished goods.
 CREATE TABLE `soen_390_db`.`semi_finished_good` (
-  `semi_finished_good_id` INT NOT NULL AUTO_INCREMENT,
-  `inventory_item_id` INT NOT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`semi_finished_good_id`),
+  `inventory_good_id` INT NOT NULL,
+  `manufacturing_cost` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`inventory_good_id`),
   CONSTRAINT `semiFinishedInventoryItemIDForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    FOREIGN KEY (`inventory_good_id`)
+    REFERENCES `soen_390_db`.`inventory_good` (`inventory_good_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
   
@@ -121,119 +66,192 @@ CREATE TABLE `soen_390_db`.`semi_finished_good` (
 
 -- Table to store the finished goods that will be sold to the customers.
 CREATE TABLE `soen_390_db`.`finished_good` (
-  `finished_good_id` INT NOT NULL AUTO_INCREMENT,
-  `inventory_item_id` INT NOT NULL,
-  `price_of_construction` DECIMAL(10,2) NOT NULL,
-  `price_of_selling` DECIMAL(10,2) NOT NULL,
-  `archived` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`finished_good_id`),
+  `inventory_good_id` INT NOT NULL,
+  `manufacturing_cost` DECIMAL(10,2) NOT NULL,
+  `selling_price` DECIMAL(10,2) NOT NULL,
+  `archived` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`inventory_good_id`),
   CONSTRAINT `finishedInventoryItemIDForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    FOREIGN KEY (`inventory_good_id`)
+    REFERENCES `soen_390_db`.`inventory_good` (`inventory_good_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
   
   collate = utf8mb4_unicode_ci;
 
 -- Table to store the various properties of the inventory items.
-CREATE TABLE `soen_390_db`.`property_of_inventory_item` (
-  `inventory_item_id` INT NOT NULL,
+CREATE TABLE `soen_390_db`.`property_of_good` (
+  `inventory_good_id` INT NOT NULL,
   `property_name` VARCHAR(45) NOT NULL,
   `property_value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`inventory_item_id`, `property_name`),
+  PRIMARY KEY (`inventory_good_id`, `property_name`),
   CONSTRAINT `inventoryItemIDPropertyForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+    FOREIGN KEY (`inventory_good_id`)
+    REFERENCES `soen_390_db`.`inventory_good` (`inventory_good_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
     
 	collate = utf8mb4_unicode_ci;
 
--- Table to store the various raw materials that make up each raw material order.
-CREATE TABLE `soen_390_db`.`ordered_raw_material` (
-  `raw_material_order_id` INT NOT NULL,
-  `inventory_item_id` INT NOT NULL,
+CREATE TABLE `soen_390_db`.`composition_of_good` (
+  `inventory_good_id` INT NOT NULL,
+  `made_from_inventory_good_id` INT NOT NULL,
   `quantity` INT NOT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
-  `vendor` VARCHAR(45),
-  PRIMARY KEY (`raw_material_order_id`, `inventory_item_id`),
-  CONSTRAINT `rawMaterialOrderIDForeignKey`
-    FOREIGN KEY (`raw_material_order_id`)
-    REFERENCES `soen_390_db`.`raw_material_order` (`raw_material_order_id`)
+  PRIMARY KEY (`inventory_good_id`, `made_from_inventory_good_id`),
+  CONSTRAINT `inventoryItemIDComposedOfForeignKey`
+    FOREIGN KEY (`inventory_good_id`)
+    REFERENCES `soen_390_db`.`inventory_good` (`inventory_good_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `orderedRawInventoryItemIDForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
+  CONSTRAINT `madeFromInventoryItemIDComposedOfForeignKey`
+    FOREIGN KEY (`made_from_inventory_good_id`)
+    REFERENCES `soen_390_db`.`inventory_good` (`inventory_good_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `notMadeFromSameItem`
+    CHECK (`inventory_good_id` != `made_from_inventory_good_id`))
+    
+	collate = utf8mb4_unicode_ci;
+
+-- Table to store the different orders given by the manufacturing division
+-- in order to buy raw goods and to create semi-finished and finished goods.
+CREATE TABLE `soen_390_db`.`manufacturing_order` (
+  `manufacturing_order_id` INT NOT NULL AUTO_INCREMENT,
+  `status` VARCHAR(45) NOT NULL,
+  `total_cost` DECIMAL(10,2) DEFAULT 0,
+  `date_time_added` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_time_finished` DATETIME,
+  PRIMARY KEY (`manufacturing_order_id`))
+  
+  collate = utf8mb4_unicode_ci;
+
+-- Table to store the bought raw goods and to store the various semi-finished goods that
+-- the manufacturing division has given an order to produce for each manufacturing order.
+CREATE TABLE `soen_390_db`.`ordered_good` (
+  `manufacturing_order_id` INT NOT NULL,
+  `inventory_good_id` INT NOT NULL,
+  `total_item_cost` DECIMAL(10,2) DEFAULT 0,
+  `quantity` INT NOT NULL,
+  PRIMARY KEY (`manufacturing_order_id`, `inventory_good_id`),
+  CONSTRAINT `manufacturingOrderIDForeignKey`
+    FOREIGN KEY (`manufacturing_order_id`)
+    REFERENCES `soen_390_db`.`manufacturing_order` (`manufacturing_order_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `orderedGoodInventoryItemIDForeignKey`
+    FOREIGN KEY (`inventory_good_id`)
+    REFERENCES `soen_390_db`.`inventory_good` (`inventory_good_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
     
 	collate = utf8mb4_unicode_ci;
 
--- Table to store the various semi-finished goods that production has given an order to
--- produce for each production order.
-CREATE TABLE `soen_390_db`.`ordered_semi_finished` (
-  `production_order_id` INT NOT NULL,
-  `inventory_item_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  PRIMARY KEY (`production_order_id`, `inventory_item_id`),
-  CONSTRAINT `semiFinishedProductionOrderIDForeignKey`
-    FOREIGN KEY (`production_order_id`)
-    REFERENCES `soen_390_db`.`production_order` (`production_order_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `semiFinishedGoodInventoryItemIDForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE CASCADE)
-    
-	collate = utf8mb4_unicode_ci;
+-- Triggers:
 
--- Table to store the various finished goods that a customer has placed an order for
--- for each customer order.
-CREATE TABLE `soen_390_db`.`ordered_finished_by_customer` (
-  `customer_order_id` INT NOT NULL,
-  `inventory_item_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  `price` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`customer_order_id`, `inventory_item_id`),
-  CONSTRAINT `finishedCustomerOrderIDForeignKey`
-    FOREIGN KEY (`customer_order_id`)
-    REFERENCES `soen_390_db`.`customer_order` (`customer_order_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `finishedGoodInventoryItemIDForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE CASCADE)
-    
-	collate = utf8mb4_unicode_ci;
+DELIMITER $$
 
--- Table to store the various finished goods that production has given an order to
--- produce for each production order.
-CREATE TABLE `soen_390_db`.`ordered_finished_by_production` (
-  `production_order_id` INT NOT NULL,
-  `inventory_item_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  PRIMARY KEY (`production_order_id`, `inventory_item_id`),
-  CONSTRAINT `finishedProductionOrderIDForeignKey`
-    FOREIGN KEY (`production_order_id`)
-    REFERENCES `soen_390_db`.`production_order` (`production_order_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `finishedGoodByProductionInventoryItemIDForeignKey`
-    FOREIGN KEY (`inventory_item_id`)
-    REFERENCES `soen_390_db`.`inventory_item` (`inventory_item_id`)
-    ON DELETE NO ACTION
-    ON UPDATE CASCADE)
+-- Update the cost of the manufacturing order after adding an additional item to the order.
+CREATE TRIGGER before_ordered_good_insert
+BEFORE INSERT
+ON `ordered_good` FOR EACH ROW
+BEGIN
+    DECLARE itemCostTotal DECIMAL(10,2);
+    DECLARE goodType VARCHAR(45);
     
-	collate = utf8mb4_unicode_ci;
+    SELECT `Inv`.inventory_good_type
+	FROM `soen_390_db`.`inventory_good` as `Inv`
+	WHERE `Inv`.inventory_good_id = NEW.inventory_good_id
+	INTO goodType;
+    
+    IF goodType = "raw" THEN
+		SELECT `Raw`.buying_cost * NEW.quantity
+		FROM `soen_390_db`.`raw_good` as `Raw`
+		WHERE NEW.inventory_good_id = `Raw`.inventory_good_id
+		INTO itemCostTotal;
+    ELSEIF goodType = "semi-finished" THEN
+		SELECT `Semi`.manufacturing_cost * NEW.quantity
+		FROM `soen_390_db`.`semi_finished_good` as `Semi`
+		WHERE NEW.inventory_good_id = `Semi`.inventory_good_id
+		INTO itemCostTotal;
+	ELSE
+		SELECT `Finished`.manufacturing_cost * NEW.quantity
+		FROM `soen_390_db`.`finished_good` as `Finished`
+		WHERE NEW.inventory_good_id = `Finished`.inventory_good_id
+		INTO itemCostTotal;
+	END IF;
+    
+    SET NEW.total_item_cost = itemCostTotal;
+    
+    UPDATE `soen_390_db`.`manufacturing_order`
+		SET
+			`total_cost` = `total_cost` + itemCostTotal
+		WHERE `manufacturing_order_id` = NEW.manufacturing_order_id;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+-- Update the cost of the manufacturing order after modifying an existing item of the order.
+CREATE TRIGGER before_ordered_good_update
+BEFORE UPDATE
+ON `ordered_good` FOR EACH ROW
+BEGIN
+    DECLARE previousItemCostTotal DECIMAL(10,2);
+    DECLARE itemCost DECIMAL(10,2);
+    DECLARE goodType VARCHAR(45);
+    
+    SELECT `Inv`.inventory_good_type
+	FROM `soen_390_db`.`inventory_good` as `Inv`
+	WHERE `Inv`.inventory_good_id = NEW.inventory_good_id
+	INTO goodType;
+    
+    IF goodType = "raw" THEN
+		SELECT `Raw`.buying_cost
+		FROM `soen_390_db`.`raw_good` as `Raw`
+		WHERE NEW.inventory_good_id = `Raw`.inventory_good_id
+		INTO itemCost;
+    ELSEIF goodType = "semi-finished" THEN
+		SELECT `Semi`.manufacturing_cost
+		FROM `soen_390_db`.`semi_finished_good` as `Semi`
+		WHERE NEW.inventory_good_id = `Semi`.inventory_good_id
+		INTO itemCost;
+	ELSE
+		SELECT `Finished`.manufacturing_cost
+		FROM `soen_390_db`.`finished_good` as `Finished`
+		WHERE NEW.inventory_good_id = `Finished`.inventory_good_id
+		INTO itemCost;
+	END IF;
+    
+    SET NEW.total_item_cost = itemCost * NEW.quantity;
+    SET previousItemCostTotal = itemCost * OLD.quantity;
+
+    UPDATE `soen_390_db`.`manufacturing_order`
+		SET
+			`total_cost` = `total_cost` - previousItemCostTotal + NEW.total_item_cost
+		WHERE `manufacturing_order_id` = NEW.manufacturing_order_id;	
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+-- Update the cost of the manufacturing order after deleting an existing item of the order.
+CREATE TRIGGER after_ordered_good_delete
+AFTER DELETE
+ON `ordered_good` FOR EACH ROW
+BEGIN
+    UPDATE `soen_390_db`.`manufacturing_order`
+		SET
+			`total_cost` = `total_cost` - OLD.total_item_cost
+		WHERE `manufacturing_order_id` = OLD.manufacturing_order_id;	
+END $$
+
+DELIMITER ;
 
 -- date is of the format yyyy-mm-dd and the price can be given with a maximum of two digits after the dot.
 
-INSERT `inventory_item` (`inventory_item_name`, `inventory_item_type`, `quantity`) 
+INSERT `inventory_good` (`inventory_good_name`, `inventory_good_type`, `quantity`) 
 VALUES
 ("carbon fiber", "raw", 5),
 ("steel", "raw", 10),
@@ -253,7 +271,7 @@ VALUES
 ("le sebastien", "finished", 2)
 ;
 
-INSERT `raw_material` (`inventory_item_id`, `price`, `vendor`) 
+INSERT `raw_good` (`inventory_good_id`, `buying_cost`, `vendor`) 
 VALUES
 (1, 5, "Maxon Factory"),
 (2, 20, "Steelworks Laval"),
@@ -264,7 +282,7 @@ VALUES
 (7, 50.69, "Chemical Facility Quebec")
 ;
 
-INSERT `semi_finished_good` (`inventory_item_id`, `price`) 
+INSERT `semi_finished_good` (`inventory_good_id`, `manufacturing_cost`) 
 VALUES
 (8, 10.52),
 (9, 20.20),
@@ -276,32 +294,23 @@ VALUES
 (15, 49.36)
 ;
 
-INSERT `finished_good` (`inventory_item_id`, `price_of_construction`, `price_of_selling`, `archived`) 
+INSERT `finished_good` (`inventory_good_id`, `manufacturing_cost`, `selling_price`, `archived`) 
 VALUES
 (16, 682.85, 1245.99, 0)
 ;
 
-INSERT `raw_material_order` (`status`, `price`) 
+INSERT `manufacturing_order` (`status`) 
 VALUES
-("awaiting fulfillment", 4.23)
+("shipping"),
+("cancelled")
 ;
 
-INSERT `customer_order` (`status`, `price`) 
-VALUES
-("awaiting fulfillment", 1245.99)
-;
-
-INSERT `production_order` (`status`) 
-VALUES
-("shipping")
-;
-
-INSERT `production_order` (`status`, `date_time_added`, `date_time_finished`) 
+INSERT `manufacturing_order` (`status`, `date_time_added`, `date_time_finished`) 
 VALUES
 ("completed", '2015-05-10 13:17:17', '2015-05-30 23:21:02')
 ;
 
-INSERT `inventory_item_composed_of` (`inventory_item_id`, `made_from_inventory_item_id`, `quantity`)
+INSERT `composition_of_good` (`inventory_good_id`, `made_from_inventory_good_id`, `quantity`)
 VALUES
 (8, 5, 1),
 (8, 6, 1),
@@ -324,27 +333,16 @@ VALUES
 (16, 15, 2)
 ;
 
-INSERT `ordered_finished_by_customer` (`customer_order_id`, `inventory_item_id`, `quantity`, `price`)
+INSERT `ordered_good` (`manufacturing_order_id`, `inventory_good_id`, `quantity`)
 VALUES
-(1, 16, 1, 1245.99)
+(1, 16, 1),
+(2, 1, 1),
+(2, 2, 1),
+(2, 3, 1),
+(3, 11, 1)
 ;
 
-INSERT `ordered_finished_by_production` (`production_order_id`, `inventory_item_id`, `quantity`)
-VALUES
-(1, 16, 1)
-;
-
-INSERT `ordered_raw_material` (`raw_material_order_id`, `inventory_item_id`, `quantity`, `price`, `vendor`)
-VALUES
-(1, 1, 1, 4.23, "Metal United")
-;
-
-INSERT `ordered_semi_finished` (`production_order_id`, `inventory_item_id`, `quantity`)
-VALUES
-(1, 10, 1)
-;
-
-INSERT `property_of_inventory_item` (`inventory_item_id`, `property_name`, `property_value`)
+INSERT `property_of_good` (`inventory_good_id`, `property_name`, `property_value`)
 VALUES
 (4, "leather quality", "full-grain"),
 (8, "color", "red"),
