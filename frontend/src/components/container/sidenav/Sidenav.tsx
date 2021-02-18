@@ -5,17 +5,15 @@ import { Home, Widgets } from '@material-ui/icons';
 import styles from './Sidenav.module.css';
 
 interface Props {
-  showSidenav: boolean,
-  toggleSidenav: Dispatch<boolean>
+  showSidenav: boolean;
+  toggleSidenav: Dispatch<boolean>;
 }
 
 export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
   return (
     <aside className={`${styles.Sidenav} ${showSidenav ? styles.sidenavOpen : ''}`}>
       <nav>
-        <div className={styles.SidenavLogo}>
-          ERP Software
-        </div>
+        <div className={styles.SidenavLogo}>ERP Software</div>
         <Link to="/home" className={styles.SidenavItem}>
           <Home style={{ paddingRight: 16 }} />
           Home
@@ -26,7 +24,9 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
           Inventory
         </Link>
       </nav>
-      {showSidenav && <button onClick={() => toggleSidenav(!showSidenav)} className={styles.SidenavShadow} />}
+      {showSidenav && (
+        <button onClick={() => toggleSidenav(!showSidenav)} className={styles.SidenavShadow} />
+      )}
     </aside>
   );
 }

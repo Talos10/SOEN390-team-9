@@ -5,12 +5,4 @@ import Login from './login/Login';
 import NotFound from './not-found/NotFound';
 import Welcome from './welcome/Welcome';
 
-
-export {
-  Home,
-  Inventory,
-  AddItem,
-  Login,
-  NotFound,
-  Welcome
-}
+export { Home, Inventory, AddItem, Login, NotFound, Welcome };

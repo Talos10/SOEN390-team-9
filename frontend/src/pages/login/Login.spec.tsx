@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import Login from './Login';
 
 let loggedIn: boolean;
-const setLoggedIn: any = (value: boolean) => loggedIn = value;
+const setLoggedIn: any = (value: boolean) => (loggedIn = value);
 
 const setup = () => {
   const history = createMemoryHistory();
@@ -18,7 +18,7 @@ const setup = () => {
   const email = document.querySelector('input[name="email"]') as HTMLInputElement;
   const password = document.querySelector('input[name="password"]') as HTMLInputElement;
   return { form, email, password };
-}
+};
 
 test('cannot submit form if email is empty', () => {
   const { form, email, password } = setup();

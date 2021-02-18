@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import Appbar from './Appbar';
 
 let showSidenav: boolean;
-const toggleSidenav: any = (val: boolean) => showSidenav = val;
+const toggleSidenav: any = (val: boolean) => (showSidenav = val);
 
 test('toggles sidenav state from off to on', () => {
   showSidenav = false;
