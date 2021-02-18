@@ -10,27 +10,29 @@ interface Props {
 }
 
 export default function ProfileOptions({ setProfileOption }: Props) {
-  const name = localStorage.getItem("name");
+  const name = localStorage.getItem('name');
   const history = useHistory();
 
   const logout = () => {
     localStorage.clear();
-    history.push("/");
-  }
+    history.push('/');
+  };
 
   const closeModal = () => {
     setProfileOption(false);
-  }
+  };
 
   return (
     <div className="ProfileOptions">
       <img className="profile-icon" src={ProfileIcon} alt="Profile" />
       <p className="name">{name}</p>
-      <Button onClick={logout} variant="outlined">Log Out</Button>
+      <Button onClick={logout} variant="outlined">
+        Log Out
+      </Button>
 
       <Portal>
         <button onClick={closeModal} className="ProfileOptions-shadow" />
       </Portal>
     </div>
-  )
+  );
 }

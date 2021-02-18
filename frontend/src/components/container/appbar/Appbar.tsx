@@ -8,8 +8,8 @@ import styles from './Appbar.module.css';
 import { Portal } from '@material-ui/core';
 
 interface Props {
-  showSidenav: boolean,
-  toggleSidenav: React.Dispatch<React.SetStateAction<boolean>>
+  showSidenav: boolean;
+  toggleSidenav: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Appbar({ showSidenav, toggleSidenav }: Props) {
@@ -24,20 +24,18 @@ export default function Appbar({ showSidenav, toggleSidenav }: Props) {
           <Menu />
         </IconButton>
 
-        <span className="subtitle2">
-          Inventory
-        </span>
+        <span className="subtitle2">Inventory</span>
       </div>
 
       <button onClick={onProfileClick} type="button" className={styles.Appbar__profileButton}>
         <img className={styles.Appbar__profileIcon} src={ProfileIcon} alt="Profile" />
       </button>
 
-      {isProfileOptionOpened &&
+      {isProfileOptionOpened && (
         <Portal>
           <ProfileOptions setProfileOption={setProfileOption} />
         </Portal>
-      }
+      )}
     </div>
   );
 }

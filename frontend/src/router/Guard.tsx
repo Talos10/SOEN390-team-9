@@ -12,12 +12,20 @@ export default class Guard extends React.Component<GuardProps> {
     const { component, redirect, allowIf, children, ...routeProps } = this.props;
     const Component: any = component;
 
-    return <Route {...routeProps}>
-      {allowIf
-        ? (Component ? <Component /> : children)
-        : (allowIf !== undefined) // If undefined, give the state some time to load before redirecting.
-          ? <Redirect to={redirect ?? '/'} />
-          : <></>}
-    </Route>;
+    return (
+      <Route {...routeProps}>
+        {allowIf ? (
+          Component ? (
+            <Component />
+          ) : (
+            children
+          )
+        ) : allowIf !== undefined ? ( // If undefined, give the state some time to load before redirecting.
+          <Redirect to={redirect ?? '/'} />
+        ) : (
+          <></>
+        )}
+      </Route>
+    );
   }
 }

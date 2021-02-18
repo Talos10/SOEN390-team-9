@@ -8,12 +8,12 @@ export default function Router() {
   const [loggedIn, setLoggedIn] = useState<boolean>();
 
   const checkIfLoggedIn = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     setLoggedIn(token !== null);
-  }
+  };
 
   useEffect(checkIfLoggedIn, []);
-  useEffect(checkIfLoggedIn, [location])
+  useEffect(checkIfLoggedIn, [location]);
 
   return (
     <Switch>
@@ -24,6 +24,6 @@ export default function Router() {
       <Guard path="/inventory" component={Inventory} allowIf={loggedIn} exact />
       <Guard path="/inventory/add-item" component={AddItem} allowIf={loggedIn} exact />
       <Route component={NotFound} />
-    </Switch >
-  )
+    </Switch>
+  );
 }
