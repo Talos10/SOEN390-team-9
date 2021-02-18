@@ -55,16 +55,16 @@ class Controller {
             }
         );
 
-    // Retrieve a single user with userID.
-    this.router.get(
-        '/:userID',
-        passport.authenticate('jwt', { session: false }),
-        async (req: Request, res: Response) => {
-            const id = Number(req.params.userID);
-            const result = await this.userService.findUserById(id);
-            res.json(result);
-        }
-    );
+        // Retrieve a single user with userID.
+        this.router.get(
+            '/:userID',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const id = Number(req.params.userID);
+                const result = await this.userService.findUserById(id);
+                res.json(result);
+            }
+        );
 
         // Update a user with userID.
         this.router.put(
