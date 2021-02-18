@@ -1,18 +1,21 @@
+import { Dispatch } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, Portal } from '@material-ui/core';
 
 import ProfileIcon from '../../../../assets/profile-icon.jpg';
 import './ProfileOptions.scss';
 
 interface Props {
-  setProfileOption: React.Dispatch<React.SetStateAction<boolean>>;
+  setProfileOption: Dispatch<boolean>;
 }
 
 export default function ProfileOptions({ setProfileOption }: Props) {
   const name = localStorage.getItem("name");
+  const history = useHistory();
 
   const logout = () => {
     localStorage.clear();
-    window.location.href = "/"; // Kind of hacky since we're not using React Router
+    history.push("/");
   }
 
   const closeModal = () => {

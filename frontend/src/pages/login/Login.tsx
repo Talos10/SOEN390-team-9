@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { TextField, Button } from '@material-ui/core';
 import './Login.scss';
 
 interface Props {
-  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
+  setLoggedIn: Dispatch<boolean | undefined>
 }
 
 interface ErrorResponse {

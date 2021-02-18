@@ -1,12 +1,12 @@
-import React from 'react';
+import { Dispatch } from 'react';
 import { Link } from 'react-router-dom';
-import { Home } from '@material-ui/icons';
+import { Home, Widgets } from '@material-ui/icons';
 
 import styles from './Sidenav.module.css';
 
 interface Props {
   showSidenav: boolean,
-  toggleSidenav: React.Dispatch<React.SetStateAction<boolean>>
+  toggleSidenav: Dispatch<boolean>
 }
 
 export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
@@ -19,6 +19,11 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
         <Link to="/home" className={styles.SidenavItem}>
           <Home style={{ paddingRight: 16 }} />
           Home
+        </Link>
+
+        <Link to="/inventory" className={styles.SidenavItem}>
+          <Widgets style={{ paddingRight: 16 }} />
+          Inventory
         </Link>
       </nav>
       {showSidenav && <button onClick={() => toggleSidenav(!showSidenav)} className={styles.SidenavShadow} />}

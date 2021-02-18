@@ -1,0 +1,35 @@
+.AddItem {
+  max-width: 900px;
+  margin: 0 auto;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+
+    &__buttons {
+      a {
+        display: inline-block;
+        margin-right: var(--padding);
+      }
+    }
+  }
+
+  label {
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-weight: 500;
+  }
+
+  .MuiFormControl-root:not(:last-child) {
+    margin-bottom: 16px;
+  }
+
+  .bottom {
+    border-top: 1px solid var(--border);
+    padding-top: var(--padding);
+    display: flex;
+    justify-content: flex-end;
+  }
+}

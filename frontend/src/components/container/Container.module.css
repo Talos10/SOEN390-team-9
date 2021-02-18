@@ -4,7 +4,7 @@
   min-height: 100vh;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .Container>* {
     grid-area: stack;
   }

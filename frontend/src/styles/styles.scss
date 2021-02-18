@@ -17,8 +17,14 @@
   --sidenav-shadow: #00000066;
 
   /* Effects */
-  --shadow-soft: 0 3px 1px 0 #3c40434d,
-    0 3px 1px 1px #3c404326;
+  --shadow-soft: 0px 1px 3px #3c40434d, 0px 1px 3px 1px #3c404326;
+
+  /* Positioning */
+  --padding: 16px;
+
+  @media (min-width: 768px) {
+    --padding: 24px;
+  }
 }
 
 body {
@@ -103,10 +109,37 @@ h4,
   line-height: 24px;
 }
 
+.title {
+  color: var(--text-title);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  line-height: 28px;
+  margin-bottom: 28px;
+}
+
 p,
 .p {
   display: block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0.5px;
   margin-top: 0;
+}
+
+.body2 {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.25px;
+  line-height: 20px;
+}
+
+label,
+.label {
+  @extend p;
+  color: var(--text-faded);
 }
 
 a {

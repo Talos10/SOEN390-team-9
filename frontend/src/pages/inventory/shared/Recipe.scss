@@ -1,0 +1,24 @@
+.Recipe {
+  .recipe-input {
+    // Box styling
+    border: 1px solid #C4C4C4;
+    border-radius: 4px;
+    padding: 12px 16px;
+    width: 100%;
+    min-height: 56px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    outline-color: var(--primary);
+    margin-bottom: 16px;
+
+    // Flex
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    &:hover {
+      border: 1px solid black;
+    }
+  }
+}

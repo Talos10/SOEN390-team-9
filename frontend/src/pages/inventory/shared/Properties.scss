@@ -1,0 +1,30 @@
+.Properties {
+  padding: 0;
+
+  .properties-top {
+    padding: var(--padding);
+
+    label {
+      color: var(--text);
+    }
+  }
+
+  .properties-list {
+    border-top: 1px solid var(--border);
+    padding: var(--padding);
+  }
+
+  .property {
+    &-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &-form-group {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 8px
+    }
+  }
+}
