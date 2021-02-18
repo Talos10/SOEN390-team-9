@@ -15,7 +15,7 @@ class App {
     public port: number;
     public server: any;
 
-    constructor(appInit: { port: number; middleWares: any; controllers: any; }) {
+    constructor(appInit: { port: number; middleWares: any; controllers: any }) {
         this.app = express();
         this.port = appInit.port;
 
@@ -26,19 +26,19 @@ class App {
         require('./shared/passportHandler');
     }
 
-    private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void; }) {
+    private middlewares(middleWares: { forEach: (arg0: (middleWare: any) => void) => void }) {
         middleWares.forEach(middleWare => {
-            this.app.use(middleWare)
+            this.app.use(middleWare);
         });
     }
 
-    private routes(controllers: { forEach: (arg0: (controller: any) => void) => void; }) {
+    private routes(controllers: { forEach: (arg0: (controller: any) => void) => void }) {
         this.app.get('/', (req, res) => {
-            res.send('Backend is running')
+            res.send('Backend is running');
         });
 
         controllers.forEach(controller => {
-            this.app.use(controller.path, controller.router)
+            this.app.use(controller.path, controller.router);
         });
     }
 
@@ -59,18 +59,18 @@ class App {
     }
 
     private error() {
-        const { INTERNAL_SERVER_ERROR  } = StatusCodes;
+        const { INTERNAL_SERVER_ERROR } = StatusCodes;
         this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
             logger.accessError(req, err.stack, err.message);
             return res.status(INTERNAL_SERVER_ERROR).json({
-                error: err.message,
+                error: err.message
             });
         });
     }
 
     public listen() {
         this.server = this.app.listen(this.port, () => {
-            logger.info(`App listening on the http://localhost:${this.port}`)
+            logger.info(`App listening on the http://localhost:${this.port}`);
         });
     }
 
@@ -79,4 +79,4 @@ class App {
     }
 }
 
-export default App
+export default App;

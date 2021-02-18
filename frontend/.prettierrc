@@ -6,5 +6,5 @@
   "jsxBracketSameLine": true,
   "arrowParens": "avoid",
   "printWidth": 100,
-  "endOfLine": "crlf"
+  "endOfLine": "lf"
 }
