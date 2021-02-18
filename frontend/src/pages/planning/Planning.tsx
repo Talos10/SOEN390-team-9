@@ -30,11 +30,14 @@ export default function Planning() {
             <div className="Planning">
                 <div className="planning_top">
                     <h1 className="title table_title">Events</h1>
-                </div>
-                <div className="planning_top_buttons">
-                    {/* <Button color="primary" variant="contained" component={Link} to="/inventory/add-item">
-                        Add Item
-                    </Button> */}
+                    <div className="planning_top_buttons">
+                    <Button color="primary" variant="contained" component={Link} to="/planning/add-event">
+                        Add Event
+                    </Button>
+                    <Button color="primary" variant="contained" component={Link} to="/planning/add-goal">
+                        Add Goal
+                    </Button>
+                    </div>
                 </div>
                 <Card className="table_title">
                     <table>
