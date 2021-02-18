@@ -10,7 +10,7 @@ const config = {
     },
     jwt_public_key: process.env.JWT_PUBLIC_KEY || 'NL5U0AbuR5RE7mDRWFWMUh5ArPa0WGww',
     logger: {
-        level: process.env.LOG_LEVEL || 'debug',
+        level: process.env.LOG_LEVEL || 'debug'
     }
 };
 

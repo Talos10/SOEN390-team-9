@@ -23,7 +23,6 @@ class Controller {
     }
 
     private initRoutes() {
-
         // Login user
         this.router.post('/login', async (req: Request, res: Response) => {
             const user = auth(req);
@@ -33,49 +32,72 @@ class Controller {
             const result = await this.userService.loginUser(name, pass);
 
             res.json(result);
-        })
+        });
 
         // Retrieve all users.
-        this.router.get('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
-            const result = await this.userService.getAllUsers();
-            res.json(result);
-        });
+        this.router.get(
+            '/',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const result = await this.userService.getAllUsers();
+                res.json(result);
+            }
+        );
 
         // Create new user.
-        this.router.post('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
-            const { name, email, role, password } = req.body;
-            const result = await this.userService.createNewUser(name, role, email, password);
-            res.json(result);
-        });
+        this.router.post(
+            '/',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const { name, email, role, password } = req.body;
+                const result = await this.userService.createNewUser(name, role, email, password);
+                res.json(result);
+            }
+        );
 
-        // Retrieve a single user with userID.
-        this.router.get('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
+    // Retrieve a single user with userID.
+    this.router.get(
+        '/:userID',
+        passport.authenticate('jwt', { session: false }),
+        async (req: Request, res: Response) => {
             const id = Number(req.params.userID);
             const result = await this.userService.findUserById(id);
             res.json(result);
-        });
+        }
+    );
 
         // Update a user with userID.
-        this.router.put('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
-            const id = Number(req.params.userID);
-            const { name, email, role, password } = req.body;
-            const result = await this.userService.updateUser(id, name, role, email, password);
-            res.json(result);
-        });
+        this.router.put(
+            '/:userID',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const id = Number(req.params.userID);
+                const { name, email, role, password } = req.body;
+                const result = await this.userService.updateUser(id, name, role, email, password);
+                res.json(result);
+            }
+        );
 
         // Delete a user with userID.
-        this.router.delete('/:userID', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
-            const id = Number(req.params.userID);
-            const result = await this.userService.deleteUser(id);
-            res.json(result);
-        });
-
+        this.router.delete(
+            '/:userID',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const id = Number(req.params.userID);
+                const result = await this.userService.deleteUser(id);
+                res.json(result);
+            }
+        );
 
         // Delete all users.
-        this.router.delete('/', passport.authenticate('jwt', { session: false }), async (req: Request, res: Response) => {
-            const result = await this.userService.deleteAll();
-            res.json(result);
-        });
+        this.router.delete(
+            '/',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const result = await this.userService.deleteAll();
+                res.json(result);
+            }
+        );
     }
 }
 

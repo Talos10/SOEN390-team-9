@@ -4,9 +4,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 class Service {
-
     public async loginUser(email?: string, password?: string) {
-        if ( !email || !password) {
+        if (!email || !password) {
             return { status: false, error: 'Invalid authorization header' };
         }
 
@@ -24,7 +23,7 @@ class Service {
             const payload = {
                 id: user.userId,
                 role: user.role
-            }
+            };
             const token = jwt.sign(payload, config.jwt_public_key, { expiresIn: '1d' });
             return {
                 status: true,
@@ -43,7 +42,12 @@ class Service {
         return allUsers;
     }
 
-    public async createNewUser(name: string, role: string, email: string, password: string): Promise<number> {
+    public async createNewUser(
+        name: string,
+        role: string,
+        email: string,
+        password: string
+    ): Promise<number> {
         const newUser = new UserModel({
             name: name,
             role: role,
@@ -59,7 +63,13 @@ class Service {
         return user;
     }
 
-    public async updateUser(id: number, name: string, role: string, email: string, password: string): Promise<number> {
+    public async updateUser(
+        id: number,
+        name: string,
+        role: string,
+        email: string,
+        password: string
+    ): Promise<number> {
         const newUser = new UserModel({
             name: name,
             role: role,
