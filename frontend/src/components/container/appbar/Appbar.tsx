@@ -16,6 +16,7 @@ export default function Appbar({ showSidenav, toggleSidenav }: Props) {
   const [isProfileOptionOpened, setProfileOption] = useState<boolean>(false);
   const onMenuClick = (): void => toggleSidenav(!showSidenav);
   const onProfileClick = (): void => setProfileOption(!isProfileOptionOpened);
+  const date = new Date();
 
   return (
     <div className={styles.Appbar}>
@@ -25,7 +26,7 @@ export default function Appbar({ showSidenav, toggleSidenav }: Props) {
         </IconButton>
 
         <span className="subtitle2">
-          Inventory
+          {date.toDateString()}
         </span>
       </div>
 

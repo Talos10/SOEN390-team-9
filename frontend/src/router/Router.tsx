@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { Login, Home, NotFound, Inventory, AddItem } from '../pages';
+import Planning from '../pages/planning/Planning';
 import Guard from './Guard';
 
 export default function Router() {
@@ -23,6 +24,7 @@ export default function Router() {
       <Guard path="/home" component={Home} allowIf={loggedIn} exact />
       <Guard path="/inventory" component={Inventory} allowIf={loggedIn} exact />
       <Guard path="/inventory/add-item" component={AddItem} allowIf={loggedIn} exact />
+      <Guard path="/planning" component={Planning} allowIf={loggedIn} exact />
       <Route component={NotFound} />
     </Switch >
   )
