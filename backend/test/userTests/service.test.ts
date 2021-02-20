@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import { config } from '../../config';
 import UserService from '../../src/User/user.service';
 import UserModel from '../../src/User/user.models';
-import sendEmail from '../../src/shared/sendEmail';
+import emailService from '../../src/Email/email.service';
 
 sinonStubPromise(sinon);
 
@@ -111,15 +111,13 @@ describe('User Service Test', () => {
         const userService = new UserService();
         sandbox.stub(UserModel, 'findByEmailAuth').resolves(mockUserFromDb);
         sandbox.stub(UserModel, 'updateById');
-        sandbox.stub(sendEmail, 'sendPasswordRecoveryEmail').returns(false);
+        sandbox.stub(emailService, 'sendPasswordRecoveryEmail').returns(false);
         const res = await userService.sendForgotPassword('email');
         expect(JSON.stringify(res)).to.equal(
             JSON.stringify(
                 createErrorReturn(
                     false,
-                    'Error in sending email to ' +
-                        mockUserFromDb.email +
-                        '. Please contact your administrator'
+                    `Error in sending email to ${mockUserFromDb.email}. Please contact your administrator`
                 )
             )
         );
@@ -129,15 +127,13 @@ describe('User Service Test', () => {
         const userService = new UserService();
         sandbox.stub(UserModel, 'findByEmailAuth').resolves(mockUserFromDb);
         sandbox.stub(UserModel, 'updateById');
-        sandbox.stub(sendEmail, 'sendPasswordRecoveryEmail').returns(true);
+        sandbox.stub(emailService, 'sendPasswordRecoveryEmail').returns(true);
         const res = await userService.sendForgotPassword('email');
         expect(JSON.stringify(res)).to.equal(
             JSON.stringify(
                 createSuccessReturn(
                     true,
-                    'An email has been sent to ' +
-                        mockUserFromDb.email +
-                        ' with further instructions.'
+                    `An email has been sent to ${mockUserFromDb.email} with further instructions.`
                 )
             )
         );

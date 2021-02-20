@@ -62,7 +62,6 @@ class Controller {
             '/',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
-                console.log(req);
                 const result = await this.userService.getAllUsers();
                 res.json(result);
             }

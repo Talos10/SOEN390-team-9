@@ -3,7 +3,7 @@ import { config } from '../../config';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import sendEmail from '../shared/sendEmail';
+import emailService from '../Email/email.service';
 
 class Service {
     public async loginUser(email?: string, password?: string) {
@@ -52,19 +52,16 @@ class Service {
 
         UserModel.updateById(user.userId, user);
 
-        const success = sendEmail.sendPasswordRecoveryEmail(user.email, token);
+        const success = emailService.sendPasswordRecoveryEmail(user.email, token);
         if (!success) {
             return {
                 status: false,
-                error:
-                    'Error in sending email to ' +
-                    user.email +
-                    '. Please contact your administrator'
+                error: `Error in sending email to ${user.email}. Please contact your administrator`
             };
         }
         return {
             status: true,
-            message: 'An email has been sent to ' + user.email + ' with further instructions.'
+            message: `An email has been sent to ${user.email} with further instructions.`
         };
     }
 
@@ -73,7 +70,7 @@ class Service {
             return { status: false, error: 'Invalid authorization header' };
         }
         const user = await UserModel.findByResetPasswordToken(token);
-
+        console.log(user);
         if (!user) {
             return {
                 status: false,

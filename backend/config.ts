@@ -24,7 +24,8 @@ const config = {
     },
     good: {
         types: ['raw', 'semi-finished', 'finished']
-    }
+    },
+    hostname: process.env.HOSTNAME || 'http://127.0.0.1:3000'
 };
 
 export { config };
