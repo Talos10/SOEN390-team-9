@@ -24,7 +24,7 @@ const mockUserFromDb = {
     name: 'john',
     email: 'doe',
     role: 'admin',
-    password: bcrypt.hashSync('password', 10),
+    password: bcrypt.hashSync('password', config.bcrypt_salt),
     resetPasswordToken: null,
     resetPasswordExpires: null
 };

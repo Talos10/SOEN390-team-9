@@ -77,7 +77,7 @@ class Service {
                 error: 'Reset password token is invalid or has expired.'
             };
         }
-        user.password = bcrypt.hashSync(password, 10);
+        user.password = bcrypt.hashSync(password, config.bcrypt_salt);
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
         UserModel.updateById(user.userId, user);
@@ -104,7 +104,7 @@ class Service {
             name: name,
             role: role,
             email: email,
-            password: bcrypt.hashSync(password, 10)
+            password: bcrypt.hashSync(password, config.bcrypt_salt)
         });
         const res = await UserModel.addUser(newUser);
         return res;
