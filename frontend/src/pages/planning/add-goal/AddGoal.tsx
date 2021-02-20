@@ -4,12 +4,33 @@ import { Link } from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Goal from '../shared/Goal';
 
-//************ TODO: REFACTOR INLINE CSS **************
+interface newGoal {
+    title?: string,
+    date?: string,
+}
+
 export default function AddGoal() {
+    const addGoal = (e: React.FormEvent) => {
+        e.preventDefault();
+        const data = parseGoal(e.target as HTMLFormElement);
+        
+        console.log(data);
+    }
+
+    const parseGoal = (form: HTMLFormElement): newGoal => {
+        const data = new FormData(form);
+         return{
+             title: data.get("goal-title") as string | undefined,
+             date: data.get("goal-date") as string | undefined,
+         }
+    }
+
+
     return (
         <Container>
-            <form className="AddItem">
+            <form className="AddItem" onSubmit={addGoal}>
                 <div className="top">
                     <h1 className="title">Add Goal</h1>
                     <div className="top__buttons">
@@ -21,16 +42,7 @@ export default function AddGoal() {
                         </Button>
                     </div>
                 </div>
-                <div style={{backgroundColor: "white", width: "840px", height: "200px", padding: "30px"}}>
-                    <FormControl variant="outlined" style={{width: "800px", margin: "20px"}}>
-                        <InputLabel htmlFor="component-outlined">Target Date</InputLabel>
-                        <OutlinedInput id="component-outlined" label="Date" />
-                    </FormControl>
-                    <FormControl variant="outlined" style={{width: "800px", margin: "20px"}}>
-                        <InputLabel htmlFor="component-outlined">Title</InputLabel>
-                        <OutlinedInput id="component-outlined" label="Title" />
-                    </FormControl>
-                </div>
+                <Goal />
                 <div className="bottom">
                     <Button type="submit" color="primary" variant="contained">
                         Save
