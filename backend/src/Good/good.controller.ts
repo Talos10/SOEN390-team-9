@@ -91,7 +91,9 @@ class Controller {
             }
         );
 
-        // Add new goods
+        /**
+         * Add new goods in bulk
+         */
         this.router.post(
             '/',
             passport.authenticate('jwt', { session: false }),
