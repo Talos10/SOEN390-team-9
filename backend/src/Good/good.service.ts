@@ -4,7 +4,7 @@ import {
     SemiFinishedGood as SemiModel,
     FinishedGood as FinishModel
 } from './good.models';
-import { Property, Component } from './good.interfaces';
+import { Property, Component, ReturnMessage } from './good.interfaces';
 import { config } from '../../config';
 import logger from '../shared/Logger';
 
@@ -12,7 +12,7 @@ class Service {
     /**
      * Get all the goods in the database
      */
-    public async getAllGoods() {
+    public async getAllGoods(): Promise<ReturnMessage> {
         try {
             const goods = await GoodModel.getAllGoods();
             return { status: true, message: this.cleanUpMultipleOfGoods(goods) };
@@ -26,7 +26,7 @@ class Service {
      * Gets a good by id
      * @param id The id of the good
      */
-    public async getSingleGood(id: number) {
+    public async getSingleGood(id: number): Promise<ReturnMessage> {
         try {
             const good = await GoodModel.findById(id);
             return good
@@ -46,7 +46,7 @@ class Service {
      * Get all goods of a specific type
      * @param type The type of goods
      */
-    public async getAllGoodsOfType(type: string) {
+    public async getAllGoodsOfType(type: string): Promise<ReturnMessage> {
         try {
             const goods = await GoodModel.getByType(type);
             return { status: true, message: this.cleanUpMultipleOfGoods(goods) };
@@ -64,7 +64,7 @@ class Service {
      * Get all goods of a specific type
      * @param type The type of goods
      */
-    public async getAllArchivedGoodsOfType(type: string) {
+    public async getAllArchivedGoodsOfType(type: string): Promise<ReturnMessage> {
         try {
             const goods = await GoodModel.getByType(type, true);
             return { status: true, message: this.cleanUpMultipleOfGoods(goods) };
@@ -85,7 +85,7 @@ class Service {
      * Clean up the good by removing uncessary fields
      * @param good a good
      */
-    public cleanUpGood(good: any) {
+    public cleanUpGood(good: any): any {
         switch (good.type) {
             case 'raw':
                 delete good['price'];
@@ -105,7 +105,7 @@ class Service {
      * Clean up the goods by removing uncessary fields
      * @param goods an array of goods
      */
-    public cleanUpMultipleOfGoods(goods: any[]) {
+    public cleanUpMultipleOfGoods(goods: any[]): any[] {
         return goods.map(good => {
             return this.cleanUpGood(good);
         });
@@ -115,7 +115,7 @@ class Service {
      * Archive multiple goods
      * @param goods an array of ids
      */
-    public async archiveMultipleGoods(goods: any[]) {
+    public async archiveMultipleGoods(goods: any[]): Promise<ReturnMessage[]> {
         return await Promise.all(
             goods.map(async good => {
                 return await this.archiveGood(good.id, good.archive);
@@ -128,7 +128,7 @@ class Service {
      * @param id the id of the good
      * @param archive a boolean if we want to archive or not
      */
-    public async archiveGood(id: number, archive: boolean) {
+    public async archiveGood(id: number, archive: boolean): Promise<ReturnMessage> {
         try {
             if (await GoodModel.archive(id, archive)) {
                 logger.info(
@@ -165,7 +165,7 @@ class Service {
      * Add many new goods
      * @param goods goods to save
      */
-    public async addBulkGoods(goods: any[]) {
+    public async addBulkGoods(goods: any[]): Promise<ReturnMessage[]> {
         return await Promise.all(
             goods.map(async good => {
                 return await this.addSingleGood(good);
@@ -177,7 +177,7 @@ class Service {
      * Add a single good to the database
      * @param good The good we want to add
      */
-    public async addSingleGood(good: any) {
+    public async addSingleGood(good: any): Promise<ReturnMessage> {
         if (!this.validateGoodFormat(good))
             return { status: false, message: 'Failed while validating good', good: good };
 
@@ -219,7 +219,7 @@ class Service {
      * Validates the format of a good
      * @param good The good we want to validate
      */
-    public validateGoodFormat(good: any) {
+    public validateGoodFormat(good: any): boolean {
         // Check if the name, type, cost and processTime is valid
         if (
             typeof good.name !== 'string' ||
@@ -267,7 +267,7 @@ class Service {
      * Check the format of a property
      * @param property the property to check
      */
-    public validateProperties(property: Property) {
+    public validateProperties(property: Property): boolean {
         return typeof property.name === 'string' && typeof property.value === 'string';
     }
 
@@ -275,7 +275,7 @@ class Service {
      * Check the format of a component
      * @param component the component to check
      */
-    public validateComponent(component: Component) {
+    public validateComponent(component: Component): boolean {
         return (
             typeof component.id === 'number' &&
             component.id > 0 &&
@@ -288,7 +288,7 @@ class Service {
      * Returns a list of non existing components
      * @param components the components we want to check
      */
-    public async checkIfComponentExists(components: Component[]) {
+    public async checkIfComponentExists(components: Component[]): Promise<number[]> {
         const onlyId = components.map(c => c.id);
         let invalidComponents: number[];
         invalidComponents = [];

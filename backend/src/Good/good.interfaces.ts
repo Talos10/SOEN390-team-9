@@ -28,7 +28,17 @@ interface FinishedGoodInterface extends GoodInterface {
     price: number;
 }
 
+interface ReturnMessage {
+    status: boolean;
+    message: any | any[];
+    good?: any;
+}
+
+type AnyGood = RawGoodInterface | GoodInterface | SemiGoodInterface | FinishedGoodInterface;
+
 export {
+    AnyGood,
+    ReturnMessage,
     Property,
     Component,
     GoodInterface,

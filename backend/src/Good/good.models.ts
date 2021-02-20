@@ -1,5 +1,6 @@
 import logger from '../shared/Logger';
 import {
+    AnyGood,
     Property,
     Component,
     GoodInterface,
@@ -34,7 +35,7 @@ class Good {
      * Retrieve a good from an id
      * @param id the id of the good
      */
-    public static async findById(id: number) {
+    public static async findById(id: number): Promise<AnyGood> {
         const existing = await db
             .select('inventory_good.*', 'raw_good.vendor', 'finished_good.price')
             .from('inventory_good')
@@ -59,7 +60,7 @@ class Good {
      * @param type the type of the goods
      * @param archive if we want archive goods or non archived
      */
-    public static async getByType(type: string, archive?: boolean) {
+    public static async getByType(type: string, archive?: boolean): Promise<AnyGood[]> {
         const dbName = `${type}_good`;
         const existing = await db
             .select('*')
@@ -73,7 +74,7 @@ class Good {
     /**
      * Get all the goods
      */
-    public static async getAllGoods() {
+    public static async getAllGoods(): Promise<AnyGood[]> {
         const existing = await db
             .select('inventory_good.*', 'raw_good.vendor', 'finished_good.price')
             .from('inventory_good')
@@ -89,7 +90,9 @@ class Good {
      * Get all properties and components of a good
      * @param id the id of the good
      */
-    public static async getPropertiesAndComponents(id: number) {
+    public static async getPropertiesAndComponents(
+        id: number
+    ): Promise<{ properties: Property[]; components: Component[] }> {
         const properties = await this.getProperties(id);
         const components = await this.getComponents(id);
         return {
@@ -101,7 +104,7 @@ class Good {
     /**
      * Get a list of goods with components and properties
      */
-    public static async getGoodsWithPropertiesAndComponents(goods: any[]) {
+    public static async getGoodsWithPropertiesAndComponents(goods: any[]): Promise<AnyGood[]> {
         const inventory = await Promise.all(
             goods.map(async (good: any) => {
                 return {
@@ -118,7 +121,7 @@ class Good {
      * @param id the id of the good
      * @param archive a boolean representing if we want to archive or not
      */
-    public static async archive(id: number, archive: boolean) {
+    public static async archive(id: number, archive: boolean): Promise<number> {
         return await db('inventory_good')
             .update({
                 archived: archive ? 1 : 0
@@ -129,7 +132,7 @@ class Good {
     /**
      * Save the good in the table inventory_good
      */
-    public async save(): Promise<any> {
+    public async save(): Promise<number> {
         try {
             const newGood = await db('inventory_good').insert({
                 name: this.name,
@@ -191,7 +194,7 @@ class Good {
      * Returns a list of the composite properties
      * @param id The id of the composite
      */
-    public static async getProperties(id: number) {
+    public static async getProperties(id: number): Promise<Property[]> {
         return await db('property_of_good').select('name', 'value').where('compositeId', id);
     }
 
@@ -199,7 +202,7 @@ class Good {
      * Returns a list of the composite components
      * @param id The id of the composite
      */
-    public static async getComponents(id: number) {
+    public static async getComponents(id: number): Promise<Component[]> {
         return await db('composition_of_good')
             .select('componentId as id', 'quantity')
             .where('compositeId', id);
@@ -219,13 +222,14 @@ class RawGood extends Good {
     /**
      * Save good to database
      */
-    public async save() {
+    public async save(): Promise<number> {
         let id = await super.save();
         try {
             const temp = await db('raw_good').insert({
                 vendor: this.vendor,
                 id: id
             });
+            return id;
         } catch (e) {
             logger.error('error while save new good', ['good', 'raw', 'save'], e.message);
             throw e;
@@ -244,12 +248,13 @@ class SemiFinishedGood extends Good {
     /**
      * Save good to database
      */
-    public async save() {
+    public async save(): Promise<number> {
         let id = await super.save();
         try {
             await db('semi-finished_good').insert({
                 id: id
             });
+            return id;
         } catch (e) {
             logger.error('error while save new good', ['good', 'semi-finished', 'save'], e.message);
             throw e;
@@ -270,13 +275,14 @@ class FinishedGood extends Good {
     /**
      * Save good to database
      */
-    public async save() {
+    public async save(): Promise<number> {
         const id = await super.save();
         try {
             await db('finished_good').insert({
                 price: this.price,
                 id: id
             });
+            return id;
         } catch (e) {
             logger.error('error while save new good', ['good', 'finished', 'save'], e.message);
             throw e;
