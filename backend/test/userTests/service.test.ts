@@ -1,11 +1,10 @@
 import * as sinon from 'sinon';
 import sinonStubPromise from 'sinon-stub-promise';
 import { expect } from 'chai';
-import request from 'supertest';
 import 'mocha';
 
 import UserService from '../../src/User/user.service';
-import UserModel from '../../src/User/user.model';
+import UserModel from '../../src/User/user.models';
 
 sinonStubPromise(sinon);
 
