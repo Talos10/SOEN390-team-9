@@ -8,10 +8,9 @@
         "dbConnection.ts",
         "**/src/index.ts",
         "**/src/app.ts",
-        "**/src/shared/middleware/**",
-        "**/src/shared/Logger.ts",
-        "**/src/shared/Helper.ts",
-        "**/src/shared/dbConnection.ts",
-        "**/coverage/**"
+        "**/src/shared/**",
+        "**/coverage/**",
+        "**/*.models.ts",
+        "**/*.interfaces.ts"
     ]
 }

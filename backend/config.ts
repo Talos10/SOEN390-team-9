@@ -15,6 +15,15 @@ const config = {
     mail: {
         user: process.env.MAIL_USER || 'supreme.erp@gmail.com',
         pass: process.env.MAIL_PASS || 'U2q8m$h?Eh!vkm'
+    },
+    user: {
+        role: {
+            admin: 'Admin',
+            user: 'User'
+        }
+    },
+    good: {
+        types: ['raw', 'semi-finished', 'finished']
     }
 };
 
