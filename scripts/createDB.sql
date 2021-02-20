@@ -18,6 +18,8 @@ CREATE TABLE `soen_390_db`.`user` (
   `role` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `password` CHAR(60) NOT NULL,
+  `resetPasswordToken` VARCHAR(60),
+  `resetPasswordExpires` BIGINT,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   PRIMARY KEY (`userID`))
 
