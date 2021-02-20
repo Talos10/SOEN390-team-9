@@ -305,13 +305,17 @@ class Service {
      * Verify if we have the necessary components to make a good
      * @param goods aa list of goods with quantities
      */
-    public async validateComponentsQuantities(requiredComponents: Component[]): Promise<Component[]> {
-        let missingComponents: Component[]
-        missingComponents = []
-        await Promise.all(requiredComponents.map(async component => {
-            const res = await this.validateSingleGoodQuantity(component.id, component.quantity);
-            if(res.quantity !== 0) missingComponents.push(res);
-        }));
+    public async validateComponentsQuantities(
+        requiredComponents: Component[]
+    ): Promise<Component[]> {
+        let missingComponents: Component[];
+        missingComponents = [];
+        await Promise.all(
+            requiredComponents.map(async component => {
+                const res = await this.validateSingleGoodQuantity(component.id, component.quantity);
+                if (res.quantity !== 0) missingComponents.push(res);
+            })
+        );
         return missingComponents;
     }
 
@@ -320,10 +324,14 @@ class Service {
      * @param id the id of the good
      * @param requiredQuantity the amount we need
      */
-    public async validateSingleGoodQuantity(id: number, requiredQuantity: number): Promise<Component> {
+    public async validateSingleGoodQuantity(
+        id: number,
+        requiredQuantity: number
+    ): Promise<Component> {
         const currentQuantity = await GoodModel.getCurrentQuantity(id);
-        if (currentQuantity < requiredQuantity) return {id: id, quantity: (requiredQuantity - currentQuantity)}
-        return {id: id, quantity: 0}
+        if (currentQuantity < requiredQuantity)
+            return { id: id, quantity: requiredQuantity - currentQuantity };
+        return { id: id, quantity: 0 };
     }
 
     /**
@@ -335,30 +343,34 @@ class Service {
         let quantities: number[];
         quantities = [];
         await Promise.all(
-            goods.map(async (good) => {
+            goods.map(async good => {
                 const components = await this.getRequiredComponents(good.id, good.quantity);
-                components.forEach((c) => {
-                    quantities[c.id] = (quantities[c.id]) ? quantities[c.id] + c.quantity : c.quantity;
+                components.forEach(c => {
+                    quantities[c.id] = quantities[c.id]
+                        ? quantities[c.id] + c.quantity
+                        : c.quantity;
                 });
             })
         );
 
-        return quantities.map((quantity, id) => {
-            return {
-                id: id,
-                quantity: quantity
-            }
-        }).filter(c => c !== null);
+        return quantities
+            .map((quantity, id) => {
+                return {
+                    id: id,
+                    quantity: quantity
+                };
+            })
+            .filter(c => c !== null);
     }
 
     /**
      * Get component required for a good
      * @param id
-     * @param quantity 
+     * @param quantity
      */
     public async getRequiredComponents(id: number, quantity: number): Promise<Component[]> {
         const requiredComponents = await GoodModel.getComponents(id);
-        return requiredComponents.map((c) => ({
+        return requiredComponents.map(c => ({
             id: c.id,
             quantity: c.quantity * quantity
         }));
@@ -372,19 +384,27 @@ class Service {
         const requiredComponents = await this.compileRequiredComponents(goods);
 
         const missing = await this.validateComponentsQuantities(requiredComponents);
-        if(missing.length !== 0) return {status: false, message: missing}
+        if (missing.length !== 0) return { status: false, message: missing };
 
-        try{
-            await Promise.all(requiredComponents.map(async component => {
-                const res = await GoodModel.decrementGoodQuantity(component.id,  component.quantity);
-                if(!res) throw new Error('Failed to decrement quantity')
-            }));
-            return {status: true, message: 'successfully decremented quantites'}
+        try {
+            await Promise.all(
+                requiredComponents.map(async component => {
+                    const res = await GoodModel.decrementGoodQuantity(
+                        component.id,
+                        component.quantity
+                    );
+                    if (!res) throw new Error('Failed to decrement quantity');
+                })
+            );
+            return { status: true, message: 'successfully decremented quantites' };
+        } catch (e) {
+            logger.error(
+                'Failed while decrementing quantity of good',
+                ['good', 'decrement'],
+                e.message
+            );
         }
-        catch(e) {
-            logger.error('Failed while decrementing quantity of good', ['good', 'decrement'], e.message);
-        }
-        return  {status: false, message: 'Failed to decremented quantites'};
+        return { status: false, message: 'Failed to decremented quantites' };
     }
 
     /**
@@ -396,10 +416,7 @@ class Service {
         try {
             await Promise.all(
                 goods.map(async good => {
-                    const res = await this.incrementSingleGoodQuantity(
-                        good.id,
-                        good.quantity
-                    );
+                    const res = await this.incrementSingleGoodQuantity(good.id, good.quantity);
                     if (!res) success = false;
                 })
             );

@@ -212,17 +212,13 @@ class Good {
      * Get the current quantity of good
      * @param id The id of the composite
      */
-    public static async getCurrentQuantity(
-        id: number
-    ): Promise<number> {
-        const existing =  await db
-            .select(
-                'quantity'
-            )
+    public static async getCurrentQuantity(id: number): Promise<number> {
+        const existing = await db
+            .select('quantity')
             .from('inventory_good')
             .where('inventory_good.id', '=', id)
             .first();
-        return existing.quantity
+        return existing.quantity;
     }
 
     /**

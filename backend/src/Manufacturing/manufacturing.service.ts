@@ -73,14 +73,20 @@ class Service {
         if (!this.validateOrderedGoods(orderedGoods))
             return { status: false, message: 'Failed to validate ordered goods' };
 
-        const allocationRes = await this.goodService.allocateMaterialsForGoods(orderedGoods.map((o) => ({id: o.compositeId, quantity: o.quantity})));
-        if(!allocationRes.status) {
-            return typeof(allocationRes.message) === 'string' ? allocationRes :
-                {
-                    status: false,
-                    message: 'Missing following components',
-                    missing: allocationRes.message.map((m: {id: number, quantity: number}) => ({compositeId: m.id, quantity: m.quantity}))
-                }
+        const allocationRes = await this.goodService.allocateMaterialsForGoods(
+            orderedGoods.map(o => ({ id: o.compositeId, quantity: o.quantity }))
+        );
+        if (!allocationRes.status) {
+            return typeof allocationRes.message === 'string'
+                ? allocationRes
+                : {
+                      status: false,
+                      message: 'Missing following components',
+                      missing: allocationRes.message.map((m: { id: number; quantity: number }) => ({
+                          compositeId: m.id,
+                          quantity: m.quantity
+                      }))
+                  };
         }
 
         try {
@@ -134,7 +140,6 @@ class Service {
     public async getTotalCostAndEstimatedEndTimeOfOrder(
         orderedGoods: OrderedGood[]
     ): Promise<{ totalCost: number; estimatedEndDate: Date; orderedGoods: OrderedGood[] }> {
-        
         let orderedGoodWithCost: OrderedGood[];
         orderedGoodWithCost = [];
 
@@ -193,9 +198,12 @@ class Service {
         if (order.status === status.complete)
             return { status: false, message: `Order ${id} is already ${status.complete}` };
 
-        const listOfGoods = order.orderedGoods.map((g: OrderedGood) => ({id: g.compositeId, quantity: g.quantity}));
+        const listOfGoods = order.orderedGoods.map((g: OrderedGood) => ({
+            id: g.compositeId,
+            quantity: g.quantity
+        }));
         const successIncrement = await this.goodService.incrementQuantitiesOfGoods(listOfGoods);
-        
+
         if (!successIncrement)
             return {
                 status: false,

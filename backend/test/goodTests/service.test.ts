@@ -602,14 +602,16 @@ describe('Good Service Test', () => {
     });
 
     it('Test compiled required components', async () => {
-        const mock = [{
-            id: 123,
-            quantity: 12
-        },
-        {
-            id: 12,
-            quantity: 6
-        }];
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            },
+            {
+                id: 12,
+                quantity: 6
+            }
+        ];
 
         const expected = [
             {
@@ -620,7 +622,7 @@ describe('Good Service Test', () => {
                 id: 123,
                 quantity: 24
             }
-        ]
+        ];
         const goodService = new GoodService();
         sandbox.stub(goodService, 'getRequiredComponents').resolves(mock);
         const res = await goodService.compileRequiredComponents(mock);
@@ -640,10 +642,12 @@ describe('Good Service Test', () => {
     });
 
     it('Test allocate materials for goods missing goods', async () => {
-        const mock = [{
-            id: 123,
-            quantity: 12
-        }];
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
         const goodService = new GoodService();
         sandbox.stub(goodService, 'compileRequiredComponents').resolves(mock);
         sandbox.stub(goodService, 'validateComponentsQuantities').resolves(mock);
@@ -652,10 +656,12 @@ describe('Good Service Test', () => {
     });
 
     it('Test allocate materials for goods fails', async () => {
-        const mock = [{
-            id: 123,
-            quantity: 12
-        }];
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
         const goodService = new GoodService();
         sandbox.stub(goodService, 'compileRequiredComponents').resolves(mock);
         sandbox.stub(goodService, 'validateComponentsQuantities').resolves(mock);
@@ -665,10 +671,12 @@ describe('Good Service Test', () => {
     });
 
     it('Test allocate materials for goods success', async () => {
-        const mock = [{
-            id: 123,
-            quantity: 12
-        }];
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
         const goodService = new GoodService();
         sandbox.stub(goodService, 'compileRequiredComponents').resolves(mock);
         sandbox.stub(goodService, 'validateComponentsQuantities').resolves([]);
@@ -678,23 +686,27 @@ describe('Good Service Test', () => {
     });
 
     it('Test allocate materials for goods crash', async () => {
-        const mock = [{
-            id: 123,
-            quantity: 12
-        }];
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
         const goodService = new GoodService();
         sandbox.stub(goodService, 'compileRequiredComponents').resolves(mock);
         sandbox.stub(goodService, 'validateComponentsQuantities').resolves([]);
-        sandbox.stub(Good, 'decrementGoodQuantity').throws(new Error);
+        sandbox.stub(Good, 'decrementGoodQuantity').throws(new Error());
         const res = await goodService.allocateMaterialsForGoods(mock);
         expect(res.status).to.equal(false);
     });
 
     it('Test increment goods quantities fails', async () => {
-        const mock = [{
-            id: 123,
-            quantity: 12
-        }];
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
         const goodService = new GoodService();
         sandbox.stub(goodService, 'incrementSingleGoodQuantity').resolves(false);
         const res = await goodService.incrementQuantitiesOfGoods(mock);
@@ -702,10 +714,12 @@ describe('Good Service Test', () => {
     });
 
     it('Test increment goods quantities success', async () => {
-        const mock = [{
-            id: 123,
-            quantity: 12
-        }];
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
         const goodService = new GoodService();
         sandbox.stub(goodService, 'incrementSingleGoodQuantity').resolves(true);
         const res = await goodService.incrementQuantitiesOfGoods(mock);
@@ -740,7 +754,7 @@ describe('Good Service Test', () => {
             quantity: 12
         };
         const goodService = new GoodService();
-        sandbox.stub(Good, 'incrementGoodQuantity').throws(new Error);
+        sandbox.stub(Good, 'incrementGoodQuantity').throws(new Error());
         const res = await goodService.incrementSingleGoodQuantity(mock.id, mock.quantity);
         expect(res).to.equal(false);
     });
