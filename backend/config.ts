@@ -20,6 +20,12 @@ const config = {
     },
     good: {
         types: ['raw', 'semi-finished', 'finished']
+    },
+    manufacturing: {
+        status: {
+            complete: 'completed',
+            process: 'processing'
+        }
     }
 };
 

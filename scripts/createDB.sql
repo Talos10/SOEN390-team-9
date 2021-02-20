@@ -117,9 +117,9 @@ CREATE TABLE `soen_390_db`.`composition_of_good` (
 CREATE TABLE `soen_390_db`.`manufacturing_order` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
   `status` VARCHAR(45) NOT NULL,
-  `totalCost` DECIMAL(10,2) DEFAULT 0,
+  `totalCost` DECIMAL(10,2) NOT NULL,
   `startDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `endDate` DATETIME,
+  `estimatedEndDate` DATETIME NOT NULL,
   PRIMARY KEY (`orderId`))
   
   collate = utf8mb4_unicode_ci;
@@ -129,7 +129,7 @@ CREATE TABLE `soen_390_db`.`manufacturing_order` (
 CREATE TABLE `soen_390_db`.`ordered_good` (
   `orderId` INT NOT NULL,
   `compositeId` INT NOT NULL,
-  `totalItemCost` DECIMAL(10,2) DEFAULT 0,
+  `totalCost` DECIMAL(10,2) NOT NULL,
   `quantity` INT NOT NULL,
   PRIMARY KEY (`orderId`, `compositeId`),
   CONSTRAINT `manufacturingOrderIDForeignKey`
@@ -195,15 +195,11 @@ VALUES
 (16, 1245.99)
 ;
 
-INSERT `manufacturing_order` (`status`) 
+INSERT `manufacturing_order` (`status`, `startDate`, `estimatedEndDate`, `totalCost`) 
 VALUES
-("shipping"),
-("cancelled")
-;
-
-INSERT `manufacturing_order` (`status`, `startDate`, `endDate`) 
-VALUES
-("completed", '2015-05-10 13:17:17', '2015-05-30 23:21:02')
+("processing", '2015-05-10 13:17:17', '2015-05-30 23:21:02', 55.55),
+("processing", '2015-05-10 13:17:17', '2015-05-30 23:21:02', 55.60),
+("completed", '2015-05-10 13:17:17', '2015-05-30 23:21:02', 55.76)
 ;
 
 INSERT `composition_of_good` (`compositeId`, `componentId`, `quantity`)
@@ -229,13 +225,13 @@ VALUES
 (16, 15, 2)
 ;
 
-INSERT `ordered_good` (`orderId`, `compositeId`, `quantity`)
+INSERT `ordered_good` (`orderId`, `compositeId`, `quantity`, `totalCost`)
 VALUES
-(1, 16, 1),
-(2, 1, 1),
-(2, 2, 1),
-(2, 3, 1),
-(3, 11, 1)
+(1, 16, 1, 20.55),
+(2, 1, 1, 25.10),
+(2, 2, 1, 21.23),
+(2, 3, 1, 22.14),
+(3, 11, 1, 25.66)
 ;
 
 INSERT `property_of_good` (`compositeId`, `name`, `value`)
