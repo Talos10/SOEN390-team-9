@@ -157,7 +157,14 @@ class Good {
             ...p,
             compositeId: id
         }));
-        await db('property_of_good').insert(properties);
+        let unique: string[];
+        unique = [];
+        const uniqueProperties = properties.filter(p => {
+            if (unique.includes(p.name)) return false;
+            unique.push(p.name);
+            return true;
+        });
+        await db('property_of_good').insert(uniqueProperties);
     }
 
     /**
@@ -170,7 +177,14 @@ class Good {
             componentId: c.id,
             compositeId: id
         }));
-        await db('composition_of_good').insert(components);
+        let unique: number[];
+        unique = [];
+        const uniqueComponents = components.filter(c => {
+            if (unique.includes(c.componentId)) return false;
+            unique.push(c.componentId);
+            return true;
+        });
+        await db('composition_of_good').insert(uniqueComponents);
     }
 
     /**
