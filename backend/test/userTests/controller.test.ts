@@ -26,6 +26,17 @@ const mockUser = {
     role: 'admin',
     password: '123'
 };
+
+const mockEmail = {
+    email: 'email@email.com'
+};
+
+const badMockUser = {
+    name: 'john',
+    email: 'doe',
+    role: '',
+    password: undefined
+};
 const token = jwt.sign(payload, config.jwt_public_key, { expiresIn: '1d' });
 
 describe('User Controller Test', () => {
@@ -67,6 +78,78 @@ describe('User Controller Test', () => {
             .set('Authorization', 'test@email password');
         expect(res.body).to.equal('foo');
         expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test forgot passsword user route', async () => {
+        const mockUserService = sandbox.createStubInstance(UserService);
+        mockUserService.sendForgotPassword.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new UserController(mockUserService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+
+        app.listen();
+        const res = await request(app.app).post('/user/forgot/').send(mockEmail);
+
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test reset passsword user route', async () => {
+        const mockUserService = sandbox.createStubInstance(UserService);
+        mockUserService.resetPassword.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new UserController(mockUserService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+
+        app.listen();
+        const res = await request(app.app)
+            .post('/user/reset/')
+            .set('Authorization', 'test@email password');
+
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test requireParams on create new user', async () => {
+        const mockUserService = sandbox.createStubInstance(UserService);
+        mockUserService.createNewUser.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new UserController(mockUserService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .post('/user/')
+            .set('Accept', 'application/json')
+            .send(mockEmail)
+            .set('Authorization', 'bearer ' + token);
+        expect(res.status).to.equal(400);
+        app.shutdown();
+    });
+
+    it('Test params are not null, empty, undefined on create new user', async () => {
+        const mockUserService = sandbox.createStubInstance(UserService);
+        mockUserService.createNewUser.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new UserController(mockUserService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .post('/user/')
+            .set('Accept', 'application/json')
+            .send(mockEmail)
+            .set('Authorization', 'bearer ' + token);
+        expect(res.status).to.equal(400);
         app.shutdown();
     });
 
