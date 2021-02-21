@@ -8,13 +8,13 @@ const config = {
         name: process.env.MYSQL_DATABASE || 'soen_390_db',
         port: Number(process.env.MYSQL_PORT || 3306)
     },
-    jwt_public_key: process.env.JWT_PUBLIC_KEY || 'NL5U0AbuR5RE7mDRWFWMUh5ArPa0WGww',
+    jwt_public_key: process.env.JWT_PUBLIC_KEY || 'SuperSecretKey',
     logger: {
         level: process.env.LOG_LEVEL || 'debug'
     },
     mail: {
-        user: process.env.MAIL_USER || 'supreme.erp@gmail.com',
-        pass: process.env.MAIL_PASS || 'U2q8m$h?Eh!vkm'
+        user: process.env.MAIL_USER || 'fake@email.com',
+        pass: process.env.MAIL_PASS || 'fakePassword'
     },
     user: {
         role: {
