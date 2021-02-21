@@ -9,12 +9,15 @@ import reportWebVitals from './reportWebVitals';
 import Theme from './Theme';
 import './styles/normalize.css';
 import './styles/styles.scss';
+import { AuthProvider } from './contexts/Auth';
 
 ReactDOM.render(
   <ThemeProvider theme={Theme}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthProvider>
   </ThemeProvider>,
   document.getElementById('root')
 );

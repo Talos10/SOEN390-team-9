@@ -1,28 +1,19 @@
-import { useEffect, useState } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Login, Home, NotFound, Inventory, AddItem } from '../pages';
 import Guard from './Guard';
+import { useAuth } from '../contexts/Auth';
 
 export default function Router() {
-  const location = useLocation();
-  const [loggedIn, setLoggedIn] = useState<boolean>();
-
-  const checkIfLoggedIn = () => {
-    const token = localStorage.getItem('token');
-    setLoggedIn(token !== null);
-  };
-
-  useEffect(checkIfLoggedIn, []);
-  useEffect(checkIfLoggedIn, [location]);
+  const auth = useAuth();
 
   return (
     <Switch>
-      <Guard path="/" allowIf={!loggedIn} redirect="/home" exact>
-        <Login {...{ setLoggedIn }} />
+      <Guard path="/" allowIf={!auth.isLoggedIn} redirect="/home" exact>
+        <Login />
       </Guard>
-      <Guard path="/home" component={Home} allowIf={loggedIn} exact />
-      <Guard path="/inventory" component={Inventory} allowIf={loggedIn} exact />
-      <Guard path="/inventory/add-item" component={AddItem} allowIf={loggedIn} exact />
+      <Guard path="/home" component={Home} allowIf={auth.isLoggedIn} exact />
+      <Guard path="/inventory" component={Inventory} allowIf={auth.isLoggedIn} exact />
+      <Guard path="/inventory/add-item" component={AddItem} allowIf={auth.isLoggedIn} exact />
       <Route component={NotFound} />
     </Switch>
   );

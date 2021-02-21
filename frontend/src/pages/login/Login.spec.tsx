@@ -4,14 +4,11 @@ import { createMemoryHistory } from 'history';
 
 import Login from './Login';
 
-let loggedIn: boolean;
-const setLoggedIn: any = (value: boolean) => (loggedIn = value);
-
 const setup = () => {
   const history = createMemoryHistory();
   render(
     <Router history={history}>
-      <Login {...{ setLoggedIn }} />
+      <Login />
     </Router>
   );
   const form = document.querySelector('form') as HTMLFormElement;
