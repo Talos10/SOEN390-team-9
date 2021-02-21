@@ -1,15 +1,34 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+
 import { Container, Card } from '../../components';
 import './Inventory.scss';
 
+interface Item {
+  cost: number;
+  id: number;
+  name: string;
+  quantity: number;
+  type: 'raw' | 'semi-finished' | 'finished';
+  vendor: string;
+}
+
 export default function Inventory() {
-  // Replace with backend logic
-  const items = [
-    { name: 'Bike', quantity: 19, type: 'Finished-Good', vendor: '' },
-    { name: 'Steel', quantity: 10, type: 'Raw Material', vendor: "Mike's Steel Factory" },
-    { name: 'Wheel', quantity: 28, type: 'Semi-Finished Good', vendor: '' }
-  ];
+  const [items, setItems] = useState<Item[]>([]);
+
+  const getItems = async () => {
+    const response = await fetch('http://localhost:5000/good', {
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    const data = await response.json();
+    const items = data.message as Item[];
+    setItems(items);
+  };
+
+  useEffect(() => {
+    getItems();
+  }, []);
 
   return (
     <Container>

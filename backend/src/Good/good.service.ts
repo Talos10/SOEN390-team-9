@@ -226,8 +226,8 @@ class Service {
             typeof good.type !== 'string' ||
             typeof good.processTime !== 'number' ||
             typeof good.cost !== 'number' ||
-            good.cost <= 0 ||
-            good.processTime <= 0 ||
+            good.cost < 0 ||
+            good.processTime < 0 ||
             !config.good.types.includes(good.type)
         )
             return false;
@@ -240,7 +240,7 @@ class Service {
             case 'semi-finished':
                 break;
             case 'finished':
-                if (typeof good.price !== 'number' || good.price <= 0) return false;
+                if (typeof good.price !== 'number' || good.price < 0) return false;
                 break;
         }
 
