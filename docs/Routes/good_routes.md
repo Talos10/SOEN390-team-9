@@ -3,22 +3,27 @@
 ### Get all goods (from any types)
 - Method: **GET**
 - Endpoint: `/good/`
+- Authorization: Bearer token given from login
 
 ### Get a single good by id
 - Method: **GET**
 - Enpoint: `/good/id/:id`
+- Authorization: Bearer token given from login
 
 ### Get all goods of a specific type (raw, semi-finished, finished)
 - Method: **GET**
 - Endpoint: `/good/type/:type`
+- Authorization: Bearer token given from login
 
 ### Get all archived goods of a specific type (raw, semi-finished, finished)
 - Method: **GET**
 - Endpoint: `/good/archive/type/:type`
+- Authorization: Bearer token given from login
 
 ### Archive multiple goods
 - Method: **POST**
 - Endpoint: `/good/archive/`
+- Authorization: Bearer token given from login
 - Payload:
     ```JSON
     [
@@ -36,6 +41,7 @@
 ### Add a single new good
 - Method: **POST**
 - Endpoint: `/good/single`
+- Authorization: Bearer token given from login
 - Payload for raw goods:
     ```JSON
     {
@@ -105,6 +111,7 @@
 ### Add new goods in bulk
 - Method: **POST**
 - Endpoint: `/good/`
+- Authorization: Bearer token given from login
 - Payload:
     ```JSON
     [
