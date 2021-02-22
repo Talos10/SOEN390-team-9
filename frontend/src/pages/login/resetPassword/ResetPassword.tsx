@@ -61,8 +61,8 @@ export default function ResetPassword() {
     return { password, confirm };
   };
 
-  const getBasicAuth = (password: string, confirm: string): string => {
-    const hash = btoa(`${password}:${confirm}`);
+  const getBasicAuth = (token: string, password: string): string => {
+    const hash = btoa(`${token}:${password}`);
     const authorization = `Basic ${hash}`;
     return authorization;
   };
