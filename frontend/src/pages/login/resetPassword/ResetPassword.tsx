@@ -62,8 +62,8 @@ export default function ResetPassword() {
 
   const getBasicAuth = (password: string, confirm: string): string => {
     const hash = btoa(`${password}:${confirm}`);
-    const token = `Basic ${hash}`;
-    return token;
+    const authorization = `Basic ${hash}`;
+    return authorization;
   };
 
   const handleResetPasswordError = ({ error }: ErrorResponse) => {
@@ -132,7 +132,7 @@ export default function ResetPassword() {
           </div>
           <div>
             <div className="login-card__form__bottom">
-              <Button variant="contained" color="primary" component={Link} to="/">
+              <Button variant="outlined" color="primary" component={Link} to="/">
                 Back to Log In
               </Button>
               <div className="login-card__form__submit">

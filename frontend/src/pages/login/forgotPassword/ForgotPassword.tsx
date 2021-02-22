@@ -100,7 +100,7 @@ export default function ForgotPassword() {
           </div>
           <div>
             <div className="login-card__form__bottom">
-              <Button variant="contained" color="primary" component={Link} to="/">
+              <Button variant="outlined" color="primary" component={Link} to="/">
                 Back to Log In
               </Button>
               <div className="login-card__form__submit">

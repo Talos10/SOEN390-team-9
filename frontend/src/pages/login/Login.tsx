@@ -1,6 +1,6 @@
 import React, { Dispatch, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { TextField, Button, Link } from '@material-ui/core';
+import { useHistory, Link } from 'react-router-dom';
+import { TextField, Button } from '@material-ui/core';
 import './Login.scss';
 
 interface Props {
@@ -106,7 +106,7 @@ export default function LoginV2({ setLoggedIn }: Props) {
 
           <div>
             <div className="login-card__form__bottom">
-              <Link href="/forgot">Forgot password?</Link>
+              <Link to="/forgot">Forgot password?</Link>
               <div className="login-card__form__submit">
                 <Button type="submit" variant="contained" color="primary">
                   Log In

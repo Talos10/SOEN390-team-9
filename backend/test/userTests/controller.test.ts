@@ -81,7 +81,7 @@ describe('User Controller Test', () => {
         app.shutdown();
     });
 
-    it('Test forgot passsword user route', async () => {
+    it('Test forgot password user route', async () => {
         const mockUserService = sandbox.createStubInstance(UserService);
         mockUserService.sendForgotPassword.resolves('foo');
         const app = new App({

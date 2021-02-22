@@ -20,8 +20,8 @@ export default function Router() {
       <Guard path="/" allowIf={!loggedIn} redirect="/home" exact>
         <Login {...{ setLoggedIn }} />
       </Guard>
-      <Guard path="/forgot" component={ForgotPassword} allowIf={true} exact />
-      <Guard path="/reset/:token" component={ResetPassword} allowIf={true} exact />
+      <Route path="/forgot" component={ForgotPassword} exact />
+      <Route path="/reset/:token" component={ResetPassword} exact />
       <Guard path="/home" component={Home} allowIf={loggedIn} exact />
       <Guard path="/inventory" component={Inventory} allowIf={loggedIn} exact />
       <Guard path="/inventory/add-item" component={AddItem} allowIf={loggedIn} exact />
