@@ -4,6 +4,7 @@ import { TextField, Button, Snackbar } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 import '../Login.scss';
+import { API_USER_RESET } from '../../../Api';
 
 interface Token {
   token: string;
@@ -42,7 +43,7 @@ export default function ResetPassword() {
 
     const basicAuthToken = getBasicAuth(token, password);
 
-    const request = await fetch('http://localhost:5000/user/reset/', {
+    const request = await fetch(API_USER_RESET, {
       method: 'POST',
       headers: { Authorization: basicAuthToken }
     });

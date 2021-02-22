@@ -5,7 +5,7 @@ import { TextField, Button } from '@material-ui/core';
 import { useAuth } from '../../contexts/Auth';
 import './Login.scss';
 
-export default function LoginV2() {
+export default function Login() {
   const history = useHistory();
   const auth = useAuth();
   const [error, setError] = useState<boolean>(false);

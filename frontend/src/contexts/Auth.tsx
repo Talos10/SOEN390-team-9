@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { API_USER_LOGIN } from '../Api';
 
 interface Auth {
   isLoggedIn?: boolean;
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }: Props) => {
   const logIn = async (email: string, password: string) => {
     const basicAuthToken = getBasicAuth(email, password);
 
-    const request = await fetch('http://localhost:5000/user/login/', {
+    const request = await fetch(API_USER_LOGIN, {
       method: 'POST',
       headers: { Authorization: basicAuthToken }
     });

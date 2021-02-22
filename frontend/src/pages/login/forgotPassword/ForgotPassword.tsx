@@ -4,6 +4,7 @@ import { TextField, Button, Snackbar } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 import '../Login.scss';
+import { API_USER_FORGOT } from '../../../Api';
 
 interface ErrorResponse {
   status: false;
@@ -31,7 +32,7 @@ export default function ForgotPassword() {
     const formData = new FormData(form);
     const email = formData.get('email') as string;
 
-    const request = await fetch('http://localhost:5000/user/forgot/', {
+    const request = await fetch(API_USER_FORGOT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email })
