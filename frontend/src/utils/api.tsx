@@ -1,4 +1,4 @@
-const api = process.env.REACT_APP_API;
+const api = process.env.REACT_APP_API ?? 'http://localhost:5000';
 
 export const API_USER_LOGIN = `${api}/user/login`;
 export const API_USER_FORGOT = `${api}/user/forgot`;

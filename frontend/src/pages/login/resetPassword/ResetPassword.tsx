@@ -4,7 +4,7 @@ import { TextField, Button, Snackbar } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 import '../Login.scss';
-import { API_USER_RESET } from '../../../Api';
+import { API_USER_RESET } from '../../../utils/api';
 
 interface Token {
   token: string;

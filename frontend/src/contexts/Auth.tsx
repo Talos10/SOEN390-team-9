@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { API_USER_LOGIN } from '../Api';
+import { API_USER_LOGIN } from '../utils/api';
 
 interface Auth {
   isLoggedIn?: boolean;
