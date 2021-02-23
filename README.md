@@ -16,6 +16,10 @@ The frontend has been created in React (TypeScript) with Axios, the backend in N
 - Huy Phong	Le
 - Tommy	Josépovic
 
+## Cloning the project:
+When cloning the project, run the following command: `git clone https://github.com/Talos10/SOEN390-team-9.git --recursive`\
+The `--recursive` argument is important since it will allow the `env` folder to also be cloned.
+
 ## How to run the project in docker:
 
 The project consists of three docker containers: frontend, backend, database.
