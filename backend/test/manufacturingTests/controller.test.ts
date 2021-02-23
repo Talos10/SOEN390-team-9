@@ -104,7 +104,7 @@ describe('Manufacturing Controller Test', () => {
 
     it('Test complete single order', async () => {
         const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
-        mockManufacturingService.markOrdersAsComplete.resolves('foo');
+        mockManufacturingService.updateStatusOfOrdersInBulk.resolves('foo');
         const app = new App({
             port: testPort,
             controllers: [new ManufacturingController(mockManufacturingService)],

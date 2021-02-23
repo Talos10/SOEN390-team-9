@@ -24,7 +24,9 @@ const config = {
     manufacturing: {
         status: {
             complete: 'completed',
-            process: 'processing'
+            process: 'processing',
+            confirm: 'confirmed',
+            cancel: 'cancelled'
         }
     }
 };

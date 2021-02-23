@@ -7,7 +7,7 @@
         "start:prod": "node -r module-alias/register ./dist --env=production",
         "start": "nodemon --legacy-watch",
         "test": "NODE_ENV=test mocha --exit -r ts-node/register test/**/*.test.ts",
-        "coverage": "nyc --check-coverage --lines 90 --reporter=text npm run test",
+        "coverage": "nyc --check-coverage --lines 80 --reporter=text npm run test",
         "format": "npx prettier --write ."
     },
     "nodemonConfig": {

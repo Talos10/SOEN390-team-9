@@ -118,9 +118,13 @@ CREATE TABLE `soen_390_db`.`manufacturing_order` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
   `status` VARCHAR(45) NOT NULL,
   `totalCost` DECIMAL(10,2) NOT NULL,
-  `startDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `estimatedEndDate` DATETIME NOT NULL,
-  PRIMARY KEY (`orderId`))
+  `creationDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `startDate` DATETIME,
+  `estimatedEndDate` DATETIME,
+  `completionDate` DATETIME,
+  PRIMARY KEY (`orderId`),
+  CONSTRAINT `validItemStatus`
+  CHECK (`status` IN ("confirmed", "cancelled", "processing", "completed")))
   
   collate = utf8mb4_unicode_ci;
 
@@ -195,11 +199,11 @@ VALUES
 (16, 1245.99)
 ;
 
-INSERT `manufacturing_order` (`status`, `startDate`, `estimatedEndDate`, `totalCost`) 
+INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`) 
 VALUES
-("processing", '2015-05-10 13:17:17', '2015-05-30 23:21:02', 55.55),
-("processing", '2015-05-10 13:17:17', '2015-05-30 23:21:02', 55.60),
-("completed", '2015-05-10 13:17:17', '2015-05-30 23:21:02', 55.76)
+("processing", '2015-05-10 13:17:17', 55.55),
+("processing", '2015-05-10 13:17:17', 55.60),
+("completed", '2015-05-10 13:17:17', 55.76)
 ;
 
 INSERT `composition_of_good` (`compositeId`, `componentId`, `quantity`)

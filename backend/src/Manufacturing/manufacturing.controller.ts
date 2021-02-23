@@ -69,11 +69,12 @@ class Controller {
          * Complete orders
          */
         this.router.put(
-            '/order/complete/',
+            '/order/:newStatus',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const orders = req.body;
-                const results = await this.manufacturingService.markOrdersAsComplete(orders);
+                const status = req.params.newStatus;
+                const results = await this.manufacturingService.updateStatusOfOrdersInBulk(orders, status);
                 res.json(results);
             }
         );

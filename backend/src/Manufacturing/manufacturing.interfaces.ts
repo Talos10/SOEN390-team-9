@@ -22,7 +22,6 @@ interface ReturnMessage {
 interface ManufacturingConstructor {
     totalCost: number;
     orderedGoods: OrderedGood[];
-    estimatedEndDate: Date;
 }
 
 export { ReturnMessage, OrderedGood, ManufacturingOrderInterface, ManufacturingConstructor };

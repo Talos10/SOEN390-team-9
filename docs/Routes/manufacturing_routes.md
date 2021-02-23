@@ -59,9 +59,10 @@
     }
     ```
 
-### Mark orders as complete
+### Update order status
 - Method: **put**
-- Enpoint: `/manufacturing/order/complete`
+- Enpoint: `/manufacturing/order/:newStatus`
+- newStatus: confirmed, cancelled, processing, completed
 - Payload:
     ```JSON
     [

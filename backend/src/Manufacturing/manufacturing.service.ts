@@ -4,6 +4,7 @@ import { addMinute } from '../shared/Helpers';
 import logger from '../shared/Logger';
 import GoodService from '../Good/good.service';
 import { config } from '../../config';
+import { defaultMaxListeners } from 'events';
 
 const status = config.manufacturing.status;
 
@@ -67,31 +68,17 @@ class Service {
 
     /**
      * Creates a new order
-     * @param order the order to be created
+     * @param orderedGoods the goods to order
      */
     public async createNewOrder(orderedGoods: OrderedGood[]): Promise<ReturnMessage> {
         if (!this.validateOrderedGoods(orderedGoods))
             return { status: false, message: 'Failed to validate ordered goods' };
-
-        const allocationRes = await this.goodService.allocateMaterialsForGoods(
-            orderedGoods.map(o => ({ id: o.compositeId, quantity: o.quantity }))
-        );
-        if (!allocationRes.status) {
-            return typeof allocationRes.message === 'string'
-                ? allocationRes
-                : {
-                      status: false,
-                      message: 'Missing following components',
-                      missing: allocationRes.message.map((m: { id: number; quantity: number }) => ({
-                          compositeId: m.id,
-                          quantity: m.quantity
-                      }))
-                  };
-        }
-
         try {
             const res = await this.getTotalCostAndEstimatedEndTimeOfOrder(orderedGoods);
-            await new OrderModel(res).save();
+            await new OrderModel({
+                orderedGoods: res.orderedGoods,
+                totalCost: res.totalCost,
+            }).save();
             logger.info(
                 'New order successfully created',
                 ['manufacturing', 'order', 'create'],
@@ -105,6 +92,155 @@ class Service {
                 e.message
             );
             return { status: false, message: `Failed to create new order`, order: orderedGoods };
+        }    
+    }
+
+    /**
+     * Validate if the new status is correct
+     * @param currentStatus the current status of the order
+     * @param newStatus the new status that we want
+     */
+    public validateNewStatus(currentStatus: string, newStatus: string): ReturnMessage {
+        switch(newStatus) {
+            case status.confirm:
+                return {status: currentStatus === status.cancel, message: `Can only confirm orders that have been ${status.cancel}`}
+            case status.cancel:
+                return {status: currentStatus === status.confirm, message: `Can only cancel orders that have been ${status.confirm}`}
+            case status.process:
+                return {status: currentStatus === status.confirm, message: `Can only process orders that have been ${status.confirm}`}
+            case status.complete:
+                return {status: currentStatus === status.process, message: `Can only complete orders that have been ${status.process}`}
+            default:
+                return {status: false, message: `The new status isn't valid`} 
+        }
+    }
+
+    /**
+     * Get the new fields in the order once status updated
+     * @param newStatus new status
+     * @param orderedGoods the list of goods ordered
+     */
+    public async getUpdatedOrderFields(newStatus: string, orderedGoods: OrderedGood[]): Promise<any> {
+        const fields = {status: newStatus}
+        switch(newStatus) {
+            case status.process:
+                const temp = await this.getTotalCostAndEstimatedEndTimeOfOrder(orderedGoods);
+                return {
+                    ...fields,
+                    startDate: new Date(),
+                    estimatedEndDate: temp.estimatedEndDate
+                }
+            case status.complete:
+                return {
+                    ...fields,
+                    completionDate: new Date()
+                }
+        }
+        return fields;
+    }
+
+    /**
+     * Get the necessary component to start the order
+     * @param orderedGoods the goods ordered
+     */
+    public async allocateComponentsForOrder(orderedGoods: OrderedGood[]): Promise<ReturnMessage> {
+        const allocationRes = await this.goodService.allocateMaterialsForGoods(
+            orderedGoods.map(o => ({ id: o.compositeId, quantity: o.quantity }))
+        );
+        if (!allocationRes.status) {
+            return typeof allocationRes.message === 'string'
+                ? allocationRes
+                : {
+                      status: allocationRes.status,
+                      message: 'Missing following components',
+                      missing: allocationRes.message.map((m: { id: number; quantity: number }) => ({
+                          compositeId: m.id,
+                          quantity: m.quantity
+                      }))
+                  };
+        }
+        return {status: true, message: 'Allocation successful'}
+    }
+
+    /**
+     * Increase the quantity of goods once completed
+     * @param orderedGoods the goods ordered
+     */
+    public async increaseQuantityOfManufacturedGoods(orderedGoods: OrderedGood[]): Promise<ReturnMessage> {
+        const listOfGoods = orderedGoods.map((g: OrderedGood) => ({
+            id: g.compositeId,
+            quantity: g.quantity
+        }));
+        const successIncrement = await this.goodService.incrementQuantitiesOfGoods(listOfGoods);
+
+        if (!successIncrement)
+            return {
+                status: false,
+                message: `Failed while updating good quantity for order`
+            };
+        return {
+            status: true,
+            message: `Ordered good increment quantity successfull`
+        };
+    }
+
+    /**
+     * Update the status of orders in bulk
+     * @param ids a list of ids
+     * @param newStatus the new status
+     */
+    public async updateStatusOfOrdersInBulk(ids: number[], newStatus: string): Promise<ReturnMessage[]> {
+        return Promise.all(
+            ids.map(async id => {
+                return await this.updateSingleOrderStatus(id, newStatus);
+            })
+        );
+    }
+
+    /**
+     * Update the status of a single order
+     * @param id the id of the order
+     * @param newStatus the new status
+     */
+    public async updateSingleOrderStatus(id: number, newStatus: string): Promise<ReturnMessage> {
+        const order = await  this.getOrderFromId(id);
+        if(!order.status) return {status: false, message: `Unable to find order of id ${id}`}
+        
+        const currentStatus = order.message.status;
+        const validateNewStatusRes = this.validateNewStatus(currentStatus, newStatus);
+        if(!validateNewStatusRes.status) return validateNewStatusRes;
+
+        const orderedGoods = order.message.orderedGoods
+
+        const newField = await this.getUpdatedOrderFields(newStatus, orderedGoods);
+        
+        if(newStatus === status.process) {
+            const res = await this.allocateComponentsForOrder(orderedGoods);
+            if(!res.status) return res;
+        }
+
+        if(newStatus === status.complete) {
+            const res = await this.increaseQuantityOfManufacturedGoods(orderedGoods);
+            if(!res.status) return res;
+        }
+
+        try {
+            await OrderModel.updateOrder(id, newField);
+            logger.info(`Successfully updated the status of order ${id} to ${newStatus}`);
+            return {
+                status: true,
+                message: `Successfully updated the status of order ${id} to ${newStatus}`
+            };
+        } catch (e) {
+            logger.error(
+                `Failed while updating order status for order: ${id}`,
+                ['manufacturing', newStatus, 'status'],
+                e.message
+            );
+            return {
+                status: false,
+                message: `Failed while updating order status for order: ${id}`
+            };
         }
     }
 
@@ -174,70 +310,13 @@ class Service {
     }
 
     /**
-     * Mark multiple orders as completed
-     * @param ids the ids of the orders
-     */
-    public async markOrdersAsComplete(ids: number[]): Promise<ReturnMessage[]> {
-        return await Promise.all(
-            ids.map(async id => {
-                return await this.markSingleOrderAsComplete(id);
-            })
-        );
-    }
-
-    /**
-     * Mark an order as completed
-     * @param id the id of an order
-     */
-    public async markSingleOrderAsComplete(id: number): Promise<ReturnMessage> {
-        const res = await this.getOrderFromId(id);
-
-        if (!res.status) return { status: false, message: `Failed to get order from id: ${id}` };
-
-        const order = res.message;
-        if (order.status === status.complete)
-            return { status: false, message: `Order ${id} is already ${status.complete}` };
-
-        const listOfGoods = order.orderedGoods.map((g: OrderedGood) => ({
-            id: g.compositeId,
-            quantity: g.quantity
-        }));
-        const successIncrement = await this.goodService.incrementQuantitiesOfGoods(listOfGoods);
-
-        if (!successIncrement)
-            return {
-                status: false,
-                message: `Failed while updating good quantity for order ${id}`
-            };
-
-        try {
-            await OrderModel.updateOrderStatus(id, status.complete);
-            logger.info(`Successfully updated the status of order ${id} to ${status.complete}`);
-            return {
-                status: true,
-                message: `Successfully updated the status of order ${id} to ${status.complete}`
-            };
-        } catch (e) {
-            logger.error(
-                `Failed while updating order status for order: ${id}`,
-                ['manufacturing', status.complete, 'status'],
-                e.message
-            );
-            return {
-                status: false,
-                message: `Failed while updating order status for order: ${id}`
-            };
-        }
-    }
-
-    /**
      * Get orders that should be completed
      */
     public async autoCompleteOrders(): Promise<ReturnMessage[]> {
         try {
             const orders = await OrderModel.getOrdersThatShouldBeCompleted();
             const ids = orders.map(o => o.orderId);
-            return this.markOrdersAsComplete(ids);
+            return this.updateStatusOfOrdersInBulk(ids, status.complete);
         } catch (e) {
             logger.error('Failed while attempting to fetch all goods that should be done');
             return [];

@@ -10,12 +10,10 @@ const status = config.manufacturing.status;
 
 class ManufacturingOrder {
     public totalCost: number;
-    public estimatedEndDate: Date;
     public orderedGoods: OrderedGood[];
 
     constructor(manufacturingOrder: ManufacturingConstructor) {
         this.totalCost = manufacturingOrder.totalCost;
-        this.estimatedEndDate = manufacturingOrder.estimatedEndDate;
         this.orderedGoods = manufacturingOrder.orderedGoods;
     }
 
@@ -94,8 +92,7 @@ class ManufacturingOrder {
     public async save(): Promise<number> {
         const newOrder = await db('manufacturing_order').insert({
             totalCost: this.totalCost,
-            estimatedEndDate: this.estimatedEndDate,
-            status: status.process
+            status: status.confirm
         });
         const id = newOrder[0];
         await this.saveOrderedGoods(id);
@@ -126,11 +123,9 @@ class ManufacturingOrder {
      * @param id the id of the order
      * @param status the new status
      */
-    public static async updateOrderStatus(id: number, status: string) {
+    public static async updateOrder(id: number, fields: any) {
         return await db('manufacturing_order')
-            .update({
-                status: status
-            })
+            .update(fields)
             .where('orderId', '=', id);
     }
 
@@ -143,7 +138,7 @@ class ManufacturingOrder {
             .select('orderId')
             .from('manufacturing_order')
             .where('estimatedEndDate', '<=', currentDate)
-            .where('status', '!=', status.complete);
+            .where('status', '=', status.process);
         return orders;
     }
 }

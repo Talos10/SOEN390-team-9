@@ -269,143 +269,6 @@ describe('Manufacturing Service Test', () => {
         expect(res.totalCost).to.equal(1000);
     });
 
-    it('Test mark orders as complete', async () => {
-        const mock = [1, 2, 3, 4, 5];
-        const mockGoodService = sandbox.createStubInstance(GoodService);
-        const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox.stub(manufacturingService, 'markSingleOrderAsComplete').resolves(true);
-
-        const res = await manufacturingService.markOrdersAsComplete(mock);
-
-        expect(res[0]).to.equal(true);
-    });
-
-    it('Test mark single order as complete invalid id', async () => {
-        const mock = 1;
-        const mockOrder = {
-            status: 'completed'
-        };
-        const mockGoodService = sandbox.createStubInstance(GoodService);
-        const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox
-            .stub(manufacturingService, 'getOrderFromId')
-            .resolves({ status: false, message: mockOrder });
-
-        const res = await manufacturingService.markSingleOrderAsComplete(mock);
-
-        expect(res.status).to.equal(false);
-    });
-
-    it('Test mark single order as complete invalid status', async () => {
-        const mock = 1;
-        const mockOrder = {
-            status: 'completed'
-        };
-        const mockGoodService = sandbox.createStubInstance(GoodService);
-        const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox
-            .stub(manufacturingService, 'getOrderFromId')
-            .resolves({ status: true, message: mockOrder });
-
-        const res = await manufacturingService.markSingleOrderAsComplete(mock);
-
-        expect(res.status).to.equal(false);
-    });
-
-    it('Test mark single order as complete increment fails', async () => {
-        const mock = 1;
-        const mockOrder = {
-            status: 'processing',
-            orderedGoods: [
-                {
-                    compositeId: 1,
-                    quantity: 10
-                }
-            ]
-        };
-        const mockGoodService = sandbox.createStubInstance(GoodService);
-        const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox
-            .stub(manufacturingService, 'getOrderFromId')
-            .resolves({ status: true, message: mockOrder });
-        mockGoodService.incrementQuantitiesOfGoods.resolves(false);
-
-        const res = await manufacturingService.markSingleOrderAsComplete(mock);
-
-        expect(res.status).to.equal(false);
-    });
-
-    it('Test mark single order as complete success', async () => {
-        const mock = 1;
-        const mockOrder = {
-            status: 'processing',
-            orderedGoods: [
-                {
-                    compositeId: 1,
-                    quantity: 10
-                }
-            ]
-        };
-        const mockGoodService = sandbox.createStubInstance(GoodService);
-        const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox
-            .stub(manufacturingService, 'getOrderFromId')
-            .resolves({ status: true, message: mockOrder });
-        sandbox.stub(ManufacturingOrder, 'updateOrderStatus').resolves(true);
-        mockGoodService.incrementQuantitiesOfGoods.resolves(true);
-
-        const res = await manufacturingService.markSingleOrderAsComplete(mock);
-
-        expect(res.status).to.equal(true);
-    });
-
-    it('Test mark single order as complete crashes', async () => {
-        const mock = 1;
-        const mockOrder = {
-            status: 'processing',
-            orderedGoods: [
-                {
-                    compositeId: 1,
-                    quantity: 10
-                }
-            ]
-        };
-        const mockGoodService = sandbox.createStubInstance(GoodService);
-        const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox
-            .stub(manufacturingService, 'getOrderFromId')
-            .resolves({ status: true, message: mockOrder });
-        sandbox.stub(ManufacturingOrder, 'updateOrderStatus').throws(new Error());
-        mockGoodService.incrementQuantitiesOfGoods.resolves(true);
-
-        const res = await manufacturingService.markSingleOrderAsComplete(mock);
-
-        expect(res.status).to.equal(false);
-    });
-
-    it('Test mark order as complete automatic', async () => {
-        const mockOrders = [
-            {
-                orderId: 1,
-                status: 'processing',
-                orderedGoods: [
-                    {
-                        compositeId: 1,
-                        quantity: 10
-                    }
-                ]
-            }
-        ];
-        const mockGoodService = sandbox.createStubInstance(GoodService);
-        const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox.stub(manufacturingService, 'markOrdersAsComplete').resolves(true);
-        sandbox.stub(ManufacturingOrder, 'getOrdersThatShouldBeCompleted').resolves(mockOrders);
-
-        const res = await manufacturingService.autoCompleteOrders();
-
-        expect(res).to.equal(true);
-    });
-
     it('Test mark order as complete automatic crash', async () => {
         const mockOrders = [
             {
@@ -421,11 +284,55 @@ describe('Manufacturing Service Test', () => {
         ];
         const mockGoodService = sandbox.createStubInstance(GoodService);
         const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox.stub(manufacturingService, 'markOrdersAsComplete').resolves(true);
+        sandbox.stub(manufacturingService, 'updateStatusOfOrdersInBulk').resolves(true);
         sandbox.stub(ManufacturingOrder, 'getOrdersThatShouldBeCompleted').throws(new Error());
 
         const res = await manufacturingService.autoCompleteOrders();
 
         expect(res.length).to.equal(0);
+    });
+
+    it('Test validate new status', async () => {
+        const mockGoodService = sandbox.createStubInstance(GoodService);
+        const manufacturingService = new ManufacturingService(mockGoodService);
+    
+        let res = await manufacturingService.validateNewStatus('completed', 'completed');
+        expect(res.status).to.equal(false);
+
+        res = await manufacturingService.validateNewStatus('processing', 'completed');
+        expect(res.status).to.equal(true);
+        
+        res = await manufacturingService.validateNewStatus('processing', 'processing');
+        expect(res.status).to.equal(false);
+
+        res = await manufacturingService.validateNewStatus('confirmed', 'processing');
+        expect(res.status).to.equal(true);
+        
+        res = await manufacturingService.validateNewStatus('cancelled', 'cancelled');
+        expect(res.status).to.equal(false);
+
+        res = await manufacturingService.validateNewStatus('cancelled', 'confirmed');
+        expect(res.status).to.equal(true);
+                
+        res = await manufacturingService.validateNewStatus('confirmed', 'confirmed');
+        expect(res.status).to.equal(false);
+
+        res = await manufacturingService.validateNewStatus('confirmed', 'cancelled');
+        expect(res.status).to.equal(true);
+    });
+
+    it('Test get updated fields', async () => {
+        const mockGoodService = sandbox.createStubInstance(GoodService);
+        const manufacturingService = new ManufacturingService(mockGoodService);
+        sandbox.stub(manufacturingService, 'getTotalCostAndEstimatedEndTimeOfOrder').resolves({totalCost: 10, estimatedEndDate: new Date(), orderedGoods: []});
+        
+        let res = await manufacturingService.getUpdatedOrderFields('processing', []);
+        expect(res.status).to.equal('processing');
+
+        res = await manufacturingService.getUpdatedOrderFields('completed', []);
+        expect(res.status).to.equal('completed');
+
+        res = await manufacturingService.getUpdatedOrderFields('confirmed', []);
+        expect(res.status).to.equal('confirmed');
     });
 });
