@@ -25,9 +25,7 @@ export default function Appbar({ showSidenav, toggleSidenav }: Props) {
           <Menu />
         </IconButton>
 
-        <span className="subtitle2">
-          {date.toDateString()}
-        </span>
+        <span className="subtitle2">{date.toDateString()}</span>
       </div>
 
       <button onClick={onProfileClick} type="button" className={styles.Appbar__profileButton}>

@@ -10,4 +10,16 @@ import Planning from './planning/Planning';
 import AddEvent from './planning/add-event/AddEvent';
 import AddGoal from './planning/add-goal/AddGoal';
 
-export { Home, Inventory, AddItem, Login, NotFound, Welcome, ForgotPassword, ResetPassword, Planning, AddEvent, AddGoal };
+export {
+  Home,
+  Inventory,
+  AddItem,
+  Login,
+  NotFound,
+  Welcome,
+  ForgotPassword,
+  ResetPassword,
+  Planning,
+  AddEvent,
+  AddGoal
+};

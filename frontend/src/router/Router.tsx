@@ -1,5 +1,16 @@
 import { Route, Switch } from 'react-router-dom';
-import { Login, Home, NotFound, Inventory, AddItem, ForgotPassword, ResetPassword, Planning, AddEvent, AddGoal} from '../pages';
+import {
+  Login,
+  Home,
+  NotFound,
+  Inventory,
+  AddItem,
+  ForgotPassword,
+  ResetPassword,
+  Planning,
+  AddEvent,
+  AddGoal
+} from '../pages';
 import Guard from './Guard';
 import { useAuth } from '../contexts/Auth';
 
