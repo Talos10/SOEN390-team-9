@@ -2,6 +2,8 @@ import UserModel from './user.models';
 import { config } from '../../config';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import emailService from '../Email/email.service';
 
 class Service {
     public async loginUser(email?: string, password?: string) {
@@ -37,6 +39,56 @@ class Service {
         };
     }
 
+    public async sendForgotPassword(email: string) {
+        const user = await UserModel.findByEmailAuth(email);
+        if (!user) {
+            return { status: false, error: 'Email does not match any account.' };
+        }
+
+        // Create token that expires in 1 hour
+        const token = crypto.randomBytes(20).toString('hex');
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000;
+
+        UserModel.updateById(user.userId, user);
+
+        const success = emailService.sendPasswordRecoveryEmail(user.email, token);
+        if (!success) {
+            return {
+                status: false,
+                error: `Error in sending email to ${user.email}. Please contact your administrator`
+            };
+        }
+        return {
+            status: true,
+            message: `An email has been sent to ${user.email} with further instructions.`
+        };
+    }
+
+    public async resetPassword(token?: string, password?: string) {
+        if (!token || !password) {
+            return { status: false, error: 'Invalid authorization header' };
+        }
+        const user = await UserModel.findByResetPasswordToken(token);
+        console.log(user);
+        if (!user) {
+            return {
+                status: false,
+                error: 'Reset password token is invalid or has expired.'
+            };
+        }
+        user.password = bcrypt.hashSync(password, config.bcrypt_salt);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        UserModel.updateById(user.userId, user);
+
+        return {
+            status: true,
+            message:
+                'Password has been changed successfully. You can log in again with that password.'
+        };
+    }
+
     public async getAllUsers(): Promise<UserModel[]> {
         const allUsers = await UserModel.getAll();
         return allUsers;
@@ -52,7 +104,7 @@ class Service {
             name: name,
             role: role,
             email: email,
-            password: bcrypt.hashSync(password, 10)
+            password: bcrypt.hashSync(password, config.bcrypt_salt)
         });
         const res = await UserModel.addUser(newUser);
         return res;

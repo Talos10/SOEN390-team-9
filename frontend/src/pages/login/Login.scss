@@ -42,6 +42,18 @@
       }
     }
 
+    &__header_forgot {
+      border-bottom: 1px solid var(--border);
+    }
+
+    &__info {
+      margin-bottom: 32px;
+
+      @media (min-width: 768px) {
+        margin-bottom: 64px;
+      }
+    }
+
     &__form {
       &__email {
         margin-bottom: 32px;
@@ -55,9 +67,12 @@
         }
       }
 
-      &__submit {
+      &__bottom {
         display: flex;
-        justify-content: flex-end;
+      }
+
+      &__submit {
+        margin-left: auto;
       }
     }
   }

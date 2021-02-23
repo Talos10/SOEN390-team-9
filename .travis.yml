@@ -30,3 +30,5 @@ matrix:
         - echo "success"
       after_failure:
         - echo "failure"
+git:
+  submodules: false
