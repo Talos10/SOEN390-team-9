@@ -7,13 +7,15 @@ import { useState } from "react";
 
 export default function Planning() {
 
-    const [events, setEvents] = useState([
-        { id: 1, date: "03/17/2021", time: "10:00 AM", title: "Bruno's birthday celebration"},
-        { id: 2, date: "03/25/2021", time: "12:30 PM", title: "Lunch and Learn"},
+    //Dummy data (TODO Sprint 3: replace with backend logic)
+    const events = [
+        { id: 1, date: "03/18/2021", time: "10:00 AM", title: "Bruno's birthday celebration"},
+        { id: 2, date: "03/24/2021", time: "12:30 PM", title: "Lunch and Learn"},
         { id: 3, date: "04/14/2021", time: "11:00 AM", title: "CEO company wide meeting"},
         { id: 4, date: "05/20/2021", time: "2:00 PM", title: "Meeting with vendor for new raw materials"},
-      ]);
+      ];
 
+    //Dummy data (TODO Sprint 3: replace with backend logic)
     const [goals, setGoals] = useState([
         { id: 1, completed: true, date: "04/10/2021", title: "Build 2000 bikes"},
         { id: 2, completed: false, date: "05/25/2021", title: "Make $200 000 of profit"},
@@ -22,7 +24,6 @@ export default function Planning() {
 
       const handleCheckboxTick = (event: React.ChangeEvent<HTMLInputElement>) => {
           setGoals(goals.map(goal => goal.id === Number(event.target.value) ? {...goal, completed: !goal.completed} : goal));
-          console.log(goals);
       };
 
     return (
@@ -31,7 +32,7 @@ export default function Planning() {
                 <div className="planning_top">
                     <h1 className="title table_title">Events</h1>
                     <div className="planning_top_buttons">
-                    <Button color="primary" variant="contained" component={Link} to="/planning/add-event">
+                    <Button className="add_event_button" color="primary" variant="contained" component={Link} to="/planning/add-event">
                         Add Event
                     </Button>
                     <Button color="primary" variant="contained" component={Link} to="/planning/add-goal">
@@ -73,9 +74,7 @@ export default function Planning() {
                         </thead>
                         <tbody>
                         {/*Display incomplete goals first*/}
-                        {goals.map(goal => {
-                        if (goal.completed === false)
-                        return (
+                        {goals.filter(goal => goal.completed === false).map(goal => 
                             <tr key={goal.id}>
                                 <td className="name">
                                     <Checkbox
@@ -90,11 +89,8 @@ export default function Planning() {
                                 <td>{goal.title}</td>
                             </tr>
                         )}
-                        )}
                         {/* Display completed goals at end */}
-                        {goals.map(goal => {
-                        if (goal.completed === true)
-                        return (
+                        {goals.filter(goal => goal.completed === true).map(goal => 
                             <tr key={goal.id} className="goal_completed">
                                 <td className="name">
                                     <Checkbox
@@ -108,7 +104,6 @@ export default function Planning() {
                                 <td>{goal.date}</td>
                                 <td>{goal.title}</td>
                             </tr>
-                        )}
                         )}
                         </tbody>
                     </table>

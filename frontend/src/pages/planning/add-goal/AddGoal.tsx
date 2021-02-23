@@ -1,10 +1,8 @@
 import { Container } from "../../../components";
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import Goal from '../shared/Goal';
+import '../shared/AddForm.scss';
 
 interface newGoal {
     title?: string,
@@ -16,6 +14,7 @@ export default function AddGoal() {
         e.preventDefault();
         const data = parseGoal(e.target as HTMLFormElement);
         
+        //TODO Sprint 3: Replace with backend logic
         console.log(data);
     }
 
@@ -30,7 +29,7 @@ export default function AddGoal() {
 
     return (
         <Container>
-            <form className="AddItem" onSubmit={addGoal}>
+            <form className="AddForm" onSubmit={addGoal}>
                 <div className="top">
                     <h1 className="title">Add Goal</h1>
                     <div className="top__buttons">
