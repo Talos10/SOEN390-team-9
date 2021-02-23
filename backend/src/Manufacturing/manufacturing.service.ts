@@ -77,7 +77,7 @@ class Service {
             const res = await this.getTotalCostAndEstimatedEndTimeOfOrder(orderedGoods);
             await new OrderModel({
                 orderedGoods: res.orderedGoods,
-                totalCost: res.totalCost,
+                totalCost: res.totalCost
             }).save();
             logger.info(
                 'New order successfully created',
@@ -92,7 +92,7 @@ class Service {
                 e.message
             );
             return { status: false, message: `Failed to create new order`, order: orderedGoods };
-        }    
+        }
     }
 
     /**
@@ -101,17 +101,29 @@ class Service {
      * @param newStatus the new status that we want
      */
     public validateNewStatus(currentStatus: string, newStatus: string): ReturnMessage {
-        switch(newStatus) {
+        switch (newStatus) {
             case status.confirm:
-                return {status: currentStatus === status.cancel, message: `Can only confirm orders that have been ${status.cancel}`}
+                return {
+                    status: currentStatus === status.cancel,
+                    message: `Can only confirm orders that have been ${status.cancel}`
+                };
             case status.cancel:
-                return {status: currentStatus === status.confirm, message: `Can only cancel orders that have been ${status.confirm}`}
+                return {
+                    status: currentStatus === status.confirm,
+                    message: `Can only cancel orders that have been ${status.confirm}`
+                };
             case status.process:
-                return {status: currentStatus === status.confirm, message: `Can only process orders that have been ${status.confirm}`}
+                return {
+                    status: currentStatus === status.confirm,
+                    message: `Can only process orders that have been ${status.confirm}`
+                };
             case status.complete:
-                return {status: currentStatus === status.process, message: `Can only complete orders that have been ${status.process}`}
+                return {
+                    status: currentStatus === status.process,
+                    message: `Can only complete orders that have been ${status.process}`
+                };
             default:
-                return {status: false, message: `The new status isn't valid`} 
+                return { status: false, message: `The new status isn't valid` };
         }
     }
 
@@ -120,21 +132,24 @@ class Service {
      * @param newStatus new status
      * @param orderedGoods the list of goods ordered
      */
-    public async getUpdatedOrderFields(newStatus: string, orderedGoods: OrderedGood[]): Promise<any> {
-        const fields = {status: newStatus}
-        switch(newStatus) {
+    public async getUpdatedOrderFields(
+        newStatus: string,
+        orderedGoods: OrderedGood[]
+    ): Promise<any> {
+        const fields = { status: newStatus };
+        switch (newStatus) {
             case status.process:
                 const temp = await this.getTotalCostAndEstimatedEndTimeOfOrder(orderedGoods);
                 return {
                     ...fields,
                     startDate: new Date(),
                     estimatedEndDate: temp.estimatedEndDate
-                }
+                };
             case status.complete:
                 return {
                     ...fields,
                     completionDate: new Date()
-                }
+                };
         }
         return fields;
     }
@@ -159,14 +174,16 @@ class Service {
                       }))
                   };
         }
-        return {status: true, message: 'Allocation successful'}
+        return { status: true, message: 'Allocation successful' };
     }
 
     /**
      * Increase the quantity of goods once completed
      * @param orderedGoods the goods ordered
      */
-    public async increaseQuantityOfManufacturedGoods(orderedGoods: OrderedGood[]): Promise<ReturnMessage> {
+    public async increaseQuantityOfManufacturedGoods(
+        orderedGoods: OrderedGood[]
+    ): Promise<ReturnMessage> {
         const listOfGoods = orderedGoods.map((g: OrderedGood) => ({
             id: g.compositeId,
             quantity: g.quantity
@@ -189,7 +206,10 @@ class Service {
      * @param ids a list of ids
      * @param newStatus the new status
      */
-    public async updateStatusOfOrdersInBulk(ids: number[], newStatus: string): Promise<ReturnMessage[]> {
+    public async updateStatusOfOrdersInBulk(
+        ids: number[],
+        newStatus: string
+    ): Promise<ReturnMessage[]> {
         return Promise.all(
             ids.map(async id => {
                 return await this.updateSingleOrderStatus(id, newStatus);
@@ -203,25 +223,25 @@ class Service {
      * @param newStatus the new status
      */
     public async updateSingleOrderStatus(id: number, newStatus: string): Promise<ReturnMessage> {
-        const order = await  this.getOrderFromId(id);
-        if(!order.status) return {status: false, message: `Unable to find order of id ${id}`}
-        
+        const order = await this.getOrderFromId(id);
+        if (!order.status) return { status: false, message: `Unable to find order of id ${id}` };
+
         const currentStatus = order.message.status;
         const validateNewStatusRes = this.validateNewStatus(currentStatus, newStatus);
-        if(!validateNewStatusRes.status) return validateNewStatusRes;
+        if (!validateNewStatusRes.status) return validateNewStatusRes;
 
-        const orderedGoods = order.message.orderedGoods
+        const orderedGoods = order.message.orderedGoods;
 
         const newField = await this.getUpdatedOrderFields(newStatus, orderedGoods);
-        
-        if(newStatus === status.process) {
+
+        if (newStatus === status.process) {
             const res = await this.allocateComponentsForOrder(orderedGoods);
-            if(!res.status) return res;
+            if (!res.status) return res;
         }
 
-        if(newStatus === status.complete) {
+        if (newStatus === status.complete) {
             const res = await this.increaseQuantityOfManufacturedGoods(orderedGoods);
-            if(!res.status) return res;
+            if (!res.status) return res;
         }
 
         try {

@@ -74,7 +74,10 @@ class Controller {
             async (req: Request, res: Response) => {
                 const orders = req.body;
                 const status = req.params.newStatus;
-                const results = await this.manufacturingService.updateStatusOfOrdersInBulk(orders, status);
+                const results = await this.manufacturingService.updateStatusOfOrdersInBulk(
+                    orders,
+                    status
+                );
                 res.json(results);
             }
         );

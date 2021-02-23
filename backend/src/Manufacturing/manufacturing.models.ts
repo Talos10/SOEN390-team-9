@@ -124,9 +124,7 @@ class ManufacturingOrder {
      * @param status the new status
      */
     public static async updateOrder(id: number, fields: any) {
-        return await db('manufacturing_order')
-            .update(fields)
-            .where('orderId', '=', id);
+        return await db('manufacturing_order').update(fields).where('orderId', '=', id);
     }
 
     /**

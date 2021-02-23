@@ -295,25 +295,25 @@ describe('Manufacturing Service Test', () => {
     it('Test validate new status', async () => {
         const mockGoodService = sandbox.createStubInstance(GoodService);
         const manufacturingService = new ManufacturingService(mockGoodService);
-    
+
         let res = await manufacturingService.validateNewStatus('completed', 'completed');
         expect(res.status).to.equal(false);
 
         res = await manufacturingService.validateNewStatus('processing', 'completed');
         expect(res.status).to.equal(true);
-        
+
         res = await manufacturingService.validateNewStatus('processing', 'processing');
         expect(res.status).to.equal(false);
 
         res = await manufacturingService.validateNewStatus('confirmed', 'processing');
         expect(res.status).to.equal(true);
-        
+
         res = await manufacturingService.validateNewStatus('cancelled', 'cancelled');
         expect(res.status).to.equal(false);
 
         res = await manufacturingService.validateNewStatus('cancelled', 'confirmed');
         expect(res.status).to.equal(true);
-                
+
         res = await manufacturingService.validateNewStatus('confirmed', 'confirmed');
         expect(res.status).to.equal(false);
 
@@ -324,8 +324,10 @@ describe('Manufacturing Service Test', () => {
     it('Test get updated fields', async () => {
         const mockGoodService = sandbox.createStubInstance(GoodService);
         const manufacturingService = new ManufacturingService(mockGoodService);
-        sandbox.stub(manufacturingService, 'getTotalCostAndEstimatedEndTimeOfOrder').resolves({totalCost: 10, estimatedEndDate: new Date(), orderedGoods: []});
-        
+        sandbox
+            .stub(manufacturingService, 'getTotalCostAndEstimatedEndTimeOfOrder')
+            .resolves({ totalCost: 10, estimatedEndDate: new Date(), orderedGoods: [] });
+
         let res = await manufacturingService.getUpdatedOrderFields('processing', []);
         expect(res.status).to.equal('processing');
 
