@@ -1,25 +1,13 @@
-import React, { Dispatch, useState } from 'react';
+import { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { TextField, Button } from '@material-ui/core';
+
+import { useAuth } from '../../contexts/Auth';
 import './Login.scss';
 
-interface Props {
-  setLoggedIn: Dispatch<boolean | undefined>;
-}
-
-interface ErrorResponse {
-  status: false;
-  error: string;
-}
-
-interface SuccessResponse {
-  status: true;
-  name: string;
-  token: string;
-}
-
-export default function LoginV2({ setLoggedIn }: Props) {
+export default function Login() {
   const history = useHistory();
+  const auth = useAuth();
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -28,17 +16,10 @@ export default function LoginV2({ setLoggedIn }: Props) {
     const form = e.target as HTMLFormElement;
 
     const { email, password } = getCredentials(form);
-    const basicAuthToken = getBasicAuth(email, password);
+    const response = await auth.logIn(email, password);
 
-    const request = await fetch('http://localhost:5000/user/login/', {
-      method: 'POST',
-      headers: { Authorization: basicAuthToken }
-    });
-
-    const response = (await request.json()) as ErrorResponse | SuccessResponse;
-
-    if (!response.status) handleLoginError(response);
-    else handleLoginSuccess(response);
+    if (!response.status) handleLoginError(response.error);
+    else handleLoginSuccess();
   };
 
   const getCredentials = (form: HTMLFormElement) => {
@@ -48,21 +29,12 @@ export default function LoginV2({ setLoggedIn }: Props) {
     return { email, password };
   };
 
-  const getBasicAuth = (email: string, password: string): string => {
-    const hash = btoa(`${email}:${password}`);
-    const token = `Basic ${hash}`;
-    return token;
-  };
-
-  const handleLoginError = ({ error }: ErrorResponse) => {
+  const handleLoginError = (error: string) => {
     setError(true);
     setErrorMessage(error);
   };
 
-  const handleLoginSuccess = ({ name, token }: SuccessResponse) => {
-    localStorage.setItem('name', name);
-    localStorage.setItem('token', token);
-    setLoggedIn(true);
+  const handleLoginSuccess = () => {
     history.push('/home');
   };
 
