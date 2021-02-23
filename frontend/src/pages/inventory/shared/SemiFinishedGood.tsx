@@ -3,7 +3,6 @@ import { Card } from '../../../components';
 import Recipe from './Recipe';
 
 export default function SemiFinishedGood() {
-
   return (
     <Card>
       <p>Semi-Finished Good</p>
@@ -14,15 +13,15 @@ export default function SemiFinishedGood() {
       <TextField
         required
         type="number"
-        inputProps={{ min: "0" }}
+        inputProps={{ min: '0' }}
         id="manufacturing-time"
         name="manufacturing-time"
         variant="outlined"
         fullWidth
         InputProps={{
-          endAdornment: <InputAdornment position="end">minutes</InputAdornment>,
-        }} />
+          endAdornment: <InputAdornment position="end">minutes</InputAdornment>
+        }}
+      />
     </Card>
   );
 }
-

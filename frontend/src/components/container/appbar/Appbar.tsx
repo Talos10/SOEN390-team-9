@@ -8,8 +8,8 @@ import styles from './Appbar.module.css';
 import { Portal } from '@material-ui/core';
 
 interface Props {
-  showSidenav: boolean,
-  toggleSidenav: React.Dispatch<React.SetStateAction<boolean>>
+  showSidenav: boolean;
+  toggleSidenav: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Appbar({ showSidenav, toggleSidenav }: Props) {
@@ -34,11 +34,11 @@ export default function Appbar({ showSidenav, toggleSidenav }: Props) {
         <img className={styles.Appbar__profileIcon} src={ProfileIcon} alt="Profile" />
       </button>
 
-      {isProfileOptionOpened &&
+      {isProfileOptionOpened && (
         <Portal>
           <ProfileOptions setProfileOption={setProfileOption} />
         </Portal>
-      }
+      )}
     </div>
   );
 }

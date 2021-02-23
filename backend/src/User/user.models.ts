@@ -6,8 +6,10 @@ class User {
     public role: string;
     public email: string;
     public password: string;
+    public resetPasswordToken?: string;
+    public resetPasswordExpires?: number;
 
-    constructor(user: { name: string; role: string; email: string; password: string; }) {
+    constructor(user: { name: string; role: string; email: string; password: string }) {
         this.name = user.name;
         this.role = user.role;
         this.email = user.email;
@@ -23,15 +25,38 @@ class User {
     }
 
     public static async findById(userID: number): Promise<User> {
-        return await db('user').select('userId', 'name', 'role', 'email').where('userID', userID).first();
+        return await db('user')
+            .select('userId', 'name', 'role', 'email')
+            .where('userID', userID)
+            .first();
     }
 
     public static async findByEmailAuth(email: string): Promise<User> {
-        return await db('user').select('userId', 'name', 'role', 'email', 'password').where('email', email).first();
+        return await db('user')
+            .select('userId', 'name', 'role', 'email', 'password')
+            .where('email', email)
+            .first();
+    }
+
+    public static async findByResetPasswordToken(token: string): Promise<User> {
+        return await db('user')
+            .select('userId', 'name', 'role', 'email', 'password')
+            .where('resetPasswordToken', token)
+            .andWhere('resetPasswordExpires', '>=', Date.now())
+            .first();
     }
 
     public static async updateById(userID: number, user: User): Promise<number> {
-        return await db('user').update({ 'name': user.name, 'role': user.role, 'email': user.email, 'password': user.password }).where('userID', userID);
+        return await db('user')
+            .update({
+                name: user.name,
+                role: user.role,
+                email: user.email,
+                password: user.password,
+                resetPasswordToken: user.resetPasswordToken,
+                resetPasswordExpires: user.resetPasswordExpires
+            })
+            .where('userID', userID);
     }
 
     public static async deleteUser(userId: number): Promise<number> {

@@ -2,9 +2,7 @@ import log4js from 'log4js';
 import { config } from '../../config';
 import { Request } from 'express';
 
-
 class Logger {
-
     public logger: log4js.Logger;
 
     constructor() {
@@ -15,16 +13,16 @@ class Logger {
     private configureLogger() {
         log4js.configure({
             appenders: {
-              file: { type: 'file', filename: 'out.log', layout: { type: 'messagePassThrough' } },
-              console: { type: 'stdout' }
+                file: { type: 'file', filename: 'out.log', layout: { type: 'messagePassThrough' } },
+                console: { type: 'stdout' }
             },
             categories: {
-              default: { appenders: [ 'file', 'console' ], level: config.logger.level }
+                default: { appenders: ['file', 'console'], level: config.logger.level }
             }
         });
     }
 
-    private log(message: string, level:string, tags?:any[], description?:any) {
+    private log(message: string, level: string, tags?: any[], description?: any) {
         const d = new Date();
         const msg = {
             message: message,
@@ -32,13 +30,12 @@ class Logger {
             tags: tags,
             description: description,
             time: d
-        }
+        };
         const strMsg = JSON.stringify(msg);
 
-        if(config.env !== 'development' && config.env !== 'production')
-            return;
+        if (config.env !== 'development' && config.env !== 'production') return;
 
-        switch(level) {
+        switch (level) {
             case 'trace':
                 this.logger.trace(strMsg);
                 break;
@@ -58,30 +55,29 @@ class Logger {
                 this.logger.fatal(strMsg);
                 break;
         }
-
     }
 
-    public trace(message: string, tags?:any[], description?:any[]) {
+    public trace(message: string, tags?: any[], description?: any[]) {
         this.log(message, 'trace', tags, description);
     }
 
-    public debug(message: string, tags?:any[], description?:any[]) {
+    public debug(message: string, tags?: any[], description?: any[]) {
         this.log(message, 'debug', tags, description);
     }
 
-    public info(message: string, tags?:any[], description?:any[]) {
+    public info(message: string, tags?: any[], description?: any[]) {
         this.log(message, 'info', tags, description);
     }
 
-    public warn(message: string, tags?:any[], description?:any) {
+    public warn(message: string, tags?: any[], description?: any) {
         this.log(message, 'warn', tags, description);
     }
 
-    public error(message: string, tags?:any[], description?:any) {
+    public error(message: string, tags?: any[], description?: any) {
         this.log(message, 'error', tags, description);
     }
 
-    public fatal(message: string, tags?:any[], description?:any) {
+    public fatal(message: string, tags?: any[], description?: any) {
         this.log(message, 'fatal', tags, description);
     }
 
@@ -94,14 +90,13 @@ class Logger {
             ip: req.ip,
             params: req.params,
             time: d
-        }
+        };
         const strMsg = JSON.stringify(msg);
-        if(config.env !== 'development' && config.env !== 'production')
-            return;
+        if (config.env !== 'development' && config.env !== 'production') return;
         this.logger.info(strMsg);
     }
 
-    public accessError(req: Request, description?:any, message?:any) {
+    public accessError(req: Request, description?: any, message?: any) {
         const d = new Date();
         const msg = {
             method: req.method,
@@ -112,10 +107,9 @@ class Logger {
             time: d,
             message: message,
             description: description
-        }
+        };
         const strMsg = JSON.stringify(msg);
-        if(config.env !== 'development' && config.env !== 'production')
-            return;
+        if (config.env !== 'development' && config.env !== 'production') return;
         this.logger.error(strMsg);
     }
 }

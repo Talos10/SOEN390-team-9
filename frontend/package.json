@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.2",
     "@types/jest": "^26.0.20",
@@ -18,7 +19,10 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "husky": "^5.0.9",
+    "lint-staged": "^10.5.4",
     "node-sass": "^4.14.1",
+    "prettier": "^2.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -27,11 +31,18 @@
     "typescript": "^4.1.3",
     "web-vitals": "^0.2.4"
   },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test a --watchAll=false q",
-    "eject": "react-scripts eject"
+    "lint": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
+    "eject": "react-scripts eject",
+    "format": "npx prettier --write ."
   },
   "eslintConfig": {
     "extends": [
@@ -55,5 +66,10 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@types/cors": "^2.8.9",
     "@types/mocha": "^8.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

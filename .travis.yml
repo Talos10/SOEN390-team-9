@@ -10,6 +10,7 @@ matrix:
         - cd frontend
       script:
         - npm test
+        - npx prettier --check .
       after_success:
         - echo "success"
       after_failure:
@@ -24,7 +25,10 @@ matrix:
         - cd backend
       script:
         - npm run coverage
+        - npx prettier --check .
       after_success:
         - echo "success"
       after_failure:
         - echo "failure"
+git:
+  submodules: false

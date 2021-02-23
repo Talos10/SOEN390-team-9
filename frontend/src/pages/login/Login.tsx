@@ -1,70 +1,42 @@
-import { Dispatch, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import { TextField, Button } from '@material-ui/core';
+
+import { useAuth } from '../../contexts/Auth';
 import './Login.scss';
 
-interface Props {
-  setLoggedIn: Dispatch<boolean | undefined>
-}
-
-interface ErrorResponse {
-  status: false,
-  error: string
-}
-
-interface SuccessResponse {
-  status: true,
-  name: string,
-  token: string
-}
-
-export default function LoginV2({ setLoggedIn }: Props) {
+export default function Login() {
   const history = useHistory();
+  const auth = useAuth();
   const [error, setError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const tryLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
 
     const { email, password } = getCredentials(form);
-    const basicAuthToken = getBasicAuth(email, password);
+    const response = await auth.logIn(email, password);
 
-    const request = await fetch("http://localhost:5000/user/login/", {
-      method: 'POST',
-      headers: { "Authorization": basicAuthToken },
-    });
-
-    const response = await request.json() as ErrorResponse | SuccessResponse;
-
-    if (!response.status) handleLoginError(response);
-    else handleLoginSuccess(response);
-  }
+    if (!response.status) handleLoginError(response.error);
+    else handleLoginSuccess();
+  };
 
   const getCredentials = (form: HTMLFormElement) => {
     const formData = new FormData(form);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
     return { email, password };
-  }
+  };
 
-  const getBasicAuth = (email: string, password: string): string => {
-    const hash = btoa(`${email}:${password}`);
-    const token = `Basic ${hash}`;
-    return token;
-  }
-
-  const handleLoginError = ({ error }: ErrorResponse) => {
+  const handleLoginError = (error: string) => {
     setError(true);
     setErrorMessage(error);
-  }
+  };
 
-  const handleLoginSuccess = ({ name, token }: SuccessResponse) => {
-    localStorage.setItem("name", name);
-    localStorage.setItem("token", token);
-    setLoggedIn(true);
-    history.push("/home");
-  }
+  const handleLoginSuccess = () => {
+    history.push('/home');
+  };
 
   return (
     <div className="Login">
@@ -83,8 +55,9 @@ export default function LoginV2({ setLoggedIn }: Props) {
               required
               error={error}
               InputLabelProps={{
-                shrink: true,
-              }} />
+                shrink: true
+              }}
+            />
           </div>
 
           <div className="login-card__form__password">
@@ -98,14 +71,20 @@ export default function LoginV2({ setLoggedIn }: Props) {
               required
               helperText={error ? errorMessage : ''}
               InputLabelProps={{
-                shrink: true,
-              }} />
+                shrink: true
+              }}
+            />
           </div>
 
-          <div className="login-card__form__submit">
-            <Button type="submit" variant="contained" color="primary">
-              Log In
-            </Button>
+          <div>
+            <div className="login-card__form__bottom">
+              <Link to="/forgot">Forgot password?</Link>
+              <div className="login-card__form__submit">
+                <Button type="submit" variant="contained" color="primary">
+                  Log In
+                </Button>
+              </div>
+            </div>
           </div>
         </form>
       </div>

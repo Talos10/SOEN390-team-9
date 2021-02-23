@@ -16,9 +16,9 @@ if (config.env === 'development' || config.env === 'production') {
             port: config.database.port
         }
     });
-    logger.info('Database Connection Started')
+    logger.info('Database Connection Started');
 } else {
     connection = new MockConnection();
 }
 
-export default connection
+export default connection;
