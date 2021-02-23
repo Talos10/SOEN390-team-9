@@ -207,6 +207,37 @@ class Good {
             .select('componentId as id', 'quantity')
             .where('compositeId', id);
     }
+
+    /**
+     * Get the current quantity of good
+     * @param id The id of the composite
+     */
+    public static async getCurrentQuantity(id: number): Promise<number> {
+        const existing = await db
+            .select('quantity')
+            .from('inventory_good')
+            .where('inventory_good.id', '=', id)
+            .first();
+        return existing.quantity;
+    }
+
+    /**
+     * Decrement the quantity of the good
+     * @param id The id of the good
+     * @param dec The amount to decrement
+     */
+    public static async decrementGoodQuantity(id: number, dec: number): Promise<number> {
+        return await db('inventory_good').decrement('quantity', dec).where('id', '=', id);
+    }
+
+    /**
+     * Increment the quantity of the good
+     * @param id The id of the good
+     * @param inc The amount to increment
+     */
+    public static async incrementGoodQuantity(id: number, inc: number): Promise<number> {
+        return await db('inventory_good').increment('quantity', inc).where('id', '=', id);
+    }
 }
 
 class RawGood extends Good {
