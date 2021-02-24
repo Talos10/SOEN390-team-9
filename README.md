@@ -7,7 +7,7 @@
   <h3 align="center">Supreme Erp</h3>
 
   <p align="center">
-    Fun project designed by Team 9 for Soen390
+    Fun project built and designed by Team 9 for Soen390
     <br />
   </p>
 </p>
