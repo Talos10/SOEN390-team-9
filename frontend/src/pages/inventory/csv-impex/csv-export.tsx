@@ -2,14 +2,14 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import { saveAs } from 'file-saver';
 import { jsonToCSV } from 'react-papaparse';
+import { API_GOOD } from '../../../utils/api';
 
 export default function ExportButton() {
-  const toCSV = async () => {
-    const request = await fetch('http://localhost:5000/good/', {
-      method: 'GET',
-      headers: { Authorization: `bearer ${localStorage.token}` }
-    });
-
+  const toCSV = async () => {    
+        const request = await fetch(API_GOOD, {
+            method: 'GET',
+            headers: {Authorization: `bearer ${localStorage.token}`}
+        });
     const response = await request.json();
     for (var key in response.message) {
       // Get object

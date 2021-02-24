@@ -1,6 +1,7 @@
 import React from 'react';
 import { readString } from 'react-papaparse';
 import { Button } from '@material-ui/core';
+import { API_GOOD } from '../../../utils/api';
 
 interface Property {
   name: string;
@@ -74,15 +75,29 @@ export default function ImportButton() {
       goodsList.push(element);
     });
 
-    // Sending data to backend
-    const request = await fetch('http://localhost:5000/good', {
-      method: 'POST',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(goodsList)
-    });
+            if(element.type === "raw"){
+                element = element as RawGoodInterface;
+            }
+            else if(element.type === "semi-finished"){
+                element = element as SemiGoodInterface;
+            }
+            else if(element.type === "finished"){
+                element = element as FinishedGoodInterface;
+                element.price = Number(element.price);
+            }
+            element.cost = Number(element.cost);
+            element.processTime = Number(element.processTime);
+            element.components = (JSON.parse(element.components) as Component[]);
+            element.properties = (JSON.parse(element.properties) as Property[]);
+            goodsList.push(element);
+        });
+        
+        // Sending data to backend
+        const request = await fetch(API_GOOD ,{
+            method: 'POST',
+            headers: {Authorization: `bearer ${localStorage.token}`, 'Content-type': 'application/json' },
+            body: JSON.stringify(goodsList),
+        });
 
     const response = (await request.json()) as ErrorResponse | SuccessResponse;
   };
