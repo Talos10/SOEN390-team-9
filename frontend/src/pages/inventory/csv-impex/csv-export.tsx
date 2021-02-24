@@ -5,11 +5,11 @@ import { jsonToCSV } from 'react-papaparse';
 import { API_GOOD } from '../../../utils/api';
 
 export default function ExportButton() {
-  const toCSV = async () => {    
-        const request = await fetch(API_GOOD, {
-            method: 'GET',
-            headers: {Authorization: `bearer ${localStorage.token}`}
-        });
+  const toCSV = async () => {
+    const request = await fetch(API_GOOD, {
+      method: 'GET',
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
     const response = await request.json();
     for (var key in response.message) {
       // Get object

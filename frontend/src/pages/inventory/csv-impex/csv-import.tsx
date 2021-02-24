@@ -49,7 +49,6 @@ export default function ImportButton() {
     if (selectorFiles === null) return;
     if (selectorFiles.length === 0) return;
     const csvfile = selectorFiles[selectorFiles.length - 1];
-    // const blob = (await csvfile.text()).split("\n");
     const blob = await csvfile.text();
     const options = {
       header: true
@@ -75,29 +74,15 @@ export default function ImportButton() {
       goodsList.push(element);
     });
 
-            if(element.type === "raw"){
-                element = element as RawGoodInterface;
-            }
-            else if(element.type === "semi-finished"){
-                element = element as SemiGoodInterface;
-            }
-            else if(element.type === "finished"){
-                element = element as FinishedGoodInterface;
-                element.price = Number(element.price);
-            }
-            element.cost = Number(element.cost);
-            element.processTime = Number(element.processTime);
-            element.components = (JSON.parse(element.components) as Component[]);
-            element.properties = (JSON.parse(element.properties) as Property[]);
-            goodsList.push(element);
-        });
-        
-        // Sending data to backend
-        const request = await fetch(API_GOOD ,{
-            method: 'POST',
-            headers: {Authorization: `bearer ${localStorage.token}`, 'Content-type': 'application/json' },
-            body: JSON.stringify(goodsList),
-        });
+    // Sending data to backend
+    const request = await fetch(API_GOOD, {
+      method: 'POST',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(goodsList)
+    });
 
     const response = (await request.json()) as ErrorResponse | SuccessResponse;
   };
