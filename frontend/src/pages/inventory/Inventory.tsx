@@ -19,8 +19,8 @@ export default function Inventory() {
         <div className="inventory__top">
           <h1 className="title">Summary</h1>
           <div className="inventory__top__buttons">
-            <ImportButton/>
-            <ExportButton/>
+            <ImportButton />
+            <ExportButton />
             <Button color="primary" variant="contained" component={Link} to="/inventory/add-item">
               Add Item
             </Button>
