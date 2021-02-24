@@ -1,54 +1,94 @@
-# ERP Web Application - SOEN390 - Team 9
+<br />
+<p align="center">
+  <a href="https://github.com/Talos10/SOEN390-team-9">
+    <img src="docs/Images/logo.png" alt="Logo" width="200">
+  </a>
 
-## Project description:
-This project is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes.
+  <h3 align="center">Supreme Erp</h3>
 
-## Tech stack:
-The frontend has been created in React (TypeScript) with Axios, the backend in Node.js (TypeScript) using the Express.js framework, and the database was implemented using MySQL.
+  <p align="center">
+    Fun project designed by Team 9 for Soen390
+    <br />
+  </p>
+</p>
+<br />
 
-## Team members:
-- Sébastien	Blain-Nadeau
-- Razvan Ivan
-- Jason	Kim
-- David	Rossi
-- Cosmin	Sustac
-- Patrick	Youssef
-- Huy Phong	Le
-- Tommy	Josépovic
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#running-using-docker">Running using docker<a></li>
+      </ul>
+    </li>
+    <li><a href="#more-info">More Information</a></li>
+    <li><a href="#contributors">Contributors</a></li>
+  </ol>
+</details>
 
-## Cloning the project:
-When cloning the project for the first time, make sure to add the `--recursive` argument to your `git clone` command since it will allow the `env` folder to also be cloned. In other words, you should run the following command in order to clone the project: `git clone https://github.com/Talos10/SOEN390-team-9.git --recursive`
+## About The Project
 
-## How to run the project in docker:
+Supreme ERP is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes.
 
-The project consists of three docker containers: frontend, backend, database.
+### Built With
+* Frontend Framework [React](https://reactjs.org/)
+* Backend Framework [Express](https://expressjs.com/)
+* RDMS [MySql](https://expressjs.com/)
+* Language [TypeScript](https://www.typescriptlang.org/)
+* Continuous integration service [Travis CI](https://nodejs.org/en/)
 
-After installing docker on your machine, follow these steps in order to run the project:
-1. **Start docker (on windows, you may simply launch docker desktop).**
+## Getting Started
 
-2. **In order to test if docker is currently running on your machine, run the following command:** `docker ps`\
-This command will show you all the docker containers that are currently running on your machine. Since no docker containers are currently running, you will simply see the following output in the command line:\
-**CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES**
+### Prerequisites
 
-3. **In order to run all three docker containers, run the following command:** `docker-compose up`\
-If you wish to run a specific container only, you may run the following command: `docker-compose up CONTAINER`\
-where CONTAINER is the name of the specific container which can either be frontend, backend, or database.
-Note that when you choose to run the backend container only, the database container will also be started since it is required in order for the backend to function properly.
+* Install [Docker](https://www.docker.com/)
 
-4. **In order to open the website, enter the following link in your browser:** `http://localhost:3000/`
+### Installation
 
-5. **In order to shut down all running docker containers, run the following command:** `docker-compose stop`\
-If you wish to stop a specific container, you may run the following command: `docker-compose stop CONTAINER`\
-where CONTAINER is the name of the specific container which can either be frontend, backend, or database.
+1. Request access to the [environment repository](https://github.com/SOEN-390-TEAM09/env/tree/c1a1a039ba015fd87d5b70c1c31ca5a1069f37bc)
+2. Clone the repo with the submodules included
+    ```
+    git clone https://github.com/Talos10/SOEN390-team-9.git --recursive
+    ```
 
-#### Important additional information:
+### Running using docker
 
-When running a docker container for the first time, the required dependencies are automatically downloaded and cached such that subsequent runs of the containers will be faster. In the case that there are changes in the dependencies (i.e. the case where you would run the command npm install), the docker containers will need to be rebuilt. In order to do that, simply run the following command: `docker-compose up --build`\
-This command will rebuild all docker containers (and thereby update their dependencies). If you wish to rebuild a specific container only, you may run the following command: `docker-compose up --build CONTAINER`\
-where CONTAINER is the name of the specific container which can either be frontend, backend, or database.
+* Start Supreme ERP
+    ```
+    docker-compose up
+    ```
+* OR start a single service
+    ```
+    docker-compose up (backend or frontend or database)
+    ```
+* Default credentials: `admin@email.com` for the email and `admin` for the password.
+* Frontend is hosted on `http://localhost:3000`
+* Backend is hosted on `http://localhost:5000`
+* Database is hosted on `http://localhost:3306`
 
-Finally, if nothing is working and you want to start over, run the following command: `docker system prune -a`\
-You may then run `docker-compose up` in order to run all the containers (their dependencies will also be rebuilt) and it will be as if you ran that command for the first time with these containers.
+## More Info
 
-## Login information:
-The default login information is `admin@email.com` for the email and `admin` for the password.
+* [Docker](docs/docker_tutorial.md)
+* [Backend](docs/Backend/README.md)
+* [Frontend](docs/Frontend/README.md)
+
+## Contributors
+| Name                   | Github                                                |
+|------------------------|-------------------------------------------------------|
+| Razvan Ivan            | [Talos10](https://github.com/Talos10)                 |
+| Jason Kim              | [Gahyki](https://github.com/Gahyki)                   |
+| David Rossi            | [d-rossi](https://github.com/d-rossi)                 |
+| Cosmin Sustac          | [N0ot-No0t](https://github.com/N0ot-No0t)             |
+| Tommy Josépovic        | [tommy-josepovic](https://github.com/tommy-josepovic) |
+| Patrick Youssef        | [PatrickYoussef](https://github.com/PatrickYoussef)   |
+| Phong Le               | [phong1233](https://github.com/phong1233)             |
+| Sébastien Blain-Nadeau | [sebastien-blain](https://github.com/sebastien-blain) |
