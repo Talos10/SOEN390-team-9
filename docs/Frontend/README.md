@@ -3,16 +3,16 @@
 ## Running Locally
 
 ### Requirements
-Make sure to have [NodeJs](https://nodejs.org/en/) installed
+- Make sure to have [NodeJs](https://nodejs.org/en/) installed
 
 ### Dependencies
-Run the following command in the Frontend directory to install the dependencies
+- Install dependencies
 ```
 npm install
 ```
 
-### Start the Frontend
-Run the following command in the Frontend directory to start the frontend
+### Start the backend
+- Start the frontend on `http://localhost:3000`
 ```
 npm start
 ```
@@ -21,14 +21,14 @@ npm start
 - [React testing library](https://testing-library.com/docs/react-testing-library/intro/) is used as our testing framework
 
 ### Running tests
-To run the tests use the following command:
-```
-npm test
-```
+- Run test
+    ```
+    npm test
+    ```
 
 ## Formatting
 - [Prettier](https://prettier.io/) is used to format our code
-To format the code use the following command:
-```
-npm run format
-```
+- Run formatting
+    ```
+    npm run format
+    ```

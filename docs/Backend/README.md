@@ -3,19 +3,19 @@
 ## Running Locally
 
 ### Requirements
-Make sure to have [NodeJs](https://nodejs.org/en/) installed
+- Make sure to have [NodeJs](https://nodejs.org/en/) installed
 
 ### Dependencies
-Run the following command in the Backend directory to install the dependencies
-```
-npm install
-```
+- Install dependencies
+    ```
+    npm install
+    ```
 
 ### Start the backend
-Run the following command in the Backend directory to start the backend
-```
-npm start
-```
+- Start the backend on `http://localhost:5000`
+    ```
+    npm start
+    ```
 
 ## Routes
 Documentation regarding the routes can be found here:
@@ -24,7 +24,7 @@ Documentation regarding the routes can be found here:
 - [User routes documentation](Routes/user_routes.md)
 
 ## Postman
-Click here to download the Postman Collection:
+Click here to download the Postman Collection
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/join-team?invite_code=86ed225b3ea10b882ff08d2c6d47d410)
 
 ## Testing
@@ -33,22 +33,22 @@ Click here to download the Postman Collection:
 - [SinonJs](https://sinonjs.org/) is used as our Stubs and mock library
 
 ### Running tests
-To run the tests use the following command:
-```
-npm test
-```
+- Run test
+    ```
+    npm test
+    ```
 
 ### Running Coverage
 - [Nyc](https://www.npmjs.com/package/nyc) is used to calculate the test coverage
 - For test to pass we need a coverage of atleast 80% must be reached
-To run the coverage test use the following command:
-```
-npm run coverage
-```
+- Run coverage
+    ```
+    npm run coverage
+    ```
 
 ## Formatting
 - [Prettier](https://prettier.io/) is used to format our code
-To format the code use the following command:
-```
-npm run format
-```
+- Run formatting
+    ```
+    npm run format
+    ```
