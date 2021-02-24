@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { Container, Card } from '../../components';
+import ImportButton from './csv-impex/csv-import';
+import ExportButton from './csv-impex/csv-export';
 import './Inventory.scss';
 
 export default function Inventory() {
@@ -17,6 +19,8 @@ export default function Inventory() {
         <div className="inventory__top">
           <h1 className="title">Summary</h1>
           <div className="inventory__top__buttons">
+            <ImportButton/>
+            <ExportButton/>
             <Button color="primary" variant="contained" component={Link} to="/inventory/add-item">
               Add Item
             </Button>
