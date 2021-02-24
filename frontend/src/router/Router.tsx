@@ -13,7 +13,6 @@ export default function Router() {
       </Guard>
       <Route path="/forgot" component={ForgotPassword} exact />
       <Route path="/reset/:token" component={ResetPassword} exact />
-
       <Guard path="/home" component={Home} allowIf={auth.isLoggedIn} exact />
       <Guard path="/inventory" component={Inventory} allowIf={auth.isLoggedIn} exact />
       <Guard path="/inventory/add-item" component={AddItem} allowIf={auth.isLoggedIn} exact />

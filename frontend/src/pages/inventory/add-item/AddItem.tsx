@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 
 import { Container } from '../../../components';
+import { API_GOOD_SINGLE } from '../../../utils/api';
 import { GeneralInfo, FinishedGood, Properties, SemiFinishedGood, RawMaterial } from '../shared';
 import { useSnackbar } from '../../../contexts';
 import './AddItem.scss';
@@ -55,7 +56,7 @@ export default function AddItem() {
     const form = e.target as HTMLFormElement;
     const data = parseForm(form);
 
-    const response = await fetch('http://localhost:5000/good/single', {
+    const request = await fetch(API_GOOD_SINGLE, {
       method: 'POST',
       headers: {
         Authorization: `bearer ${localStorage.token}`,
@@ -64,10 +65,10 @@ export default function AddItem() {
       body: JSON.stringify(data)
     });
 
-    const result = await response.json();
-    if (result.status) {
+    const response = await request.json();
+    if (response.status) {
       history.push('/inventory');
-      snackbar.push(`Item ${data?.name} has been saved.`);
+      snackbar.push(`${data?.name} has been saved.`);
     }
   };
 

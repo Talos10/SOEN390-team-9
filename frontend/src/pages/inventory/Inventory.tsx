@@ -3,26 +3,19 @@ import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 
 import { Container, Card } from '../../components';
+import { API_GOOD } from '../../utils/api';
 import './Inventory.scss';
-
-interface Item {
-  cost: number;
-  id: number;
-  name: string;
-  quantity: number;
-  type: 'raw' | 'semi-finished' | 'finished';
-  vendor: string;
-}
+import { Item } from '../../interfaces/Items';
 
 export default function Inventory() {
   const [items, setItems] = useState<Item[]>([]);
 
   const getItems = async () => {
-    const response = await fetch('http://localhost:5000/good', {
+    const request = await fetch(API_GOOD, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
-    const data = await response.json();
-    const items = data.message as Item[];
+    const response = await request.json();
+    const items = response.message as Item[];
     setItems(items);
   };
 
