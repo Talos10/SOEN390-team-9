@@ -71,9 +71,9 @@ Supreme ERP is an ERP (enterprise resource planning) web app which is targeted t
     docker-compose up (backend or frontend or database)
     ```
 * Default credentials: `admin@email.com` for the email and `admin` for the password.
-* Frontend is hosted on `http://localhost:3000`
-* Backend is hosted on `http://localhost:5000`
-* Database is hosted on `http://localhost:3306`
+* Frontend is hosted on http://localhost:3000
+* Backend is hosted on http://localhost:5000
+* Database is hosted on http://localhost:3306
 
 ## More Info
 

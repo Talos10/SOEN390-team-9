@@ -12,7 +12,7 @@
     ```
 
 ### Start the backend
-- Start the backend on `http://localhost:5000`
+- Start the backend on http://localhost:5000
     ```
     npm start
     ```

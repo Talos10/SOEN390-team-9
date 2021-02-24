@@ -12,7 +12,7 @@ npm install
 ```
 
 ### Start the backend
-- Start the frontend on `http://localhost:3000`
+- Start the frontend on http://localhost:3000
 ```
 npm start
 ```
