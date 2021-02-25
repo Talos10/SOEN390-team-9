@@ -11,8 +11,8 @@ interface Props {
 }
 let userTokenDecoded: any = null;
 
-if(localStorage.getItem("token") != null || localStorage.getItem("token") != undefined){
-  userTokenDecoded = jwtDecode((localStorage.getItem("token") as string));
+if (localStorage.getItem('token') != null || localStorage.getItem('token') != undefined) {
+  userTokenDecoded = jwtDecode(localStorage.getItem('token') as string);
 }
 
 export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
@@ -25,17 +25,17 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
           Home
         </Link>
 
-        {userTokenDecoded?.role == 'admin' && 
-          <Link to="/admin" className={styles.SidenavItem} >
+        {userTokenDecoded?.role == 'admin' && (
+          <Link to="/admin" className={styles.SidenavItem}>
             <SupervisorAccount style={{ paddingRight: 16 }} />
-              Admin
+            Admin
           </Link>
-        }
+        )}
 
         <Link to="/inventory" className={styles.SidenavItem}>
           <Widgets style={{ paddingRight: 16 }} />
           Inventory
-          </Link>
+        </Link>
 
         <Link to="/planning" className={styles.SidenavItem}>
           <CalendarToday style={{ paddingRight: 16 }} />

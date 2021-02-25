@@ -27,7 +27,7 @@ export default function Router() {
       <Route path="/reset/:token" component={ResetPassword} exact />
       <Guard path="/home" component={Home} allowIf={auth.isLoggedIn} exact />
       <Guard path="/inventory" component={Inventory} allowIf={auth.isLoggedIn} exact />
-      <Guard path="/admin" component={Admin} allowIf={auth.isLoggedIn} exact/>
+      <Guard path="/admin" component={Admin} allowIf={auth.isLoggedIn} exact />
       <Guard path="/inventory/add-item" component={AddItem} allowIf={auth.isLoggedIn} exact />
       <Guard path="/planning" component={Planning} allowIf={auth.isLoggedIn} exact />
       <Guard path="/planning/add-event" component={AddEvent} allowIf={auth.isLoggedIn} exact />

@@ -20,9 +20,9 @@ export default function Login() {
 
     if (!response.status) handleLoginError(response.error);
     else {
-      handleLoginSuccess()
+      handleLoginSuccess();
       window.location.reload(false);
-    };
+    }
   };
 
   const getCredentials = (form: HTMLFormElement) => {
