@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 
 import { Container } from '../../../components';
+import { API_GOOD_SINGLE } from '../../../utils/api';
 import { GeneralInfo, FinishedGood, Properties, SemiFinishedGood, RawMaterial } from '../shared';
+import { useSnackbar } from '../../../contexts';
 import './AddItem.scss';
 
 interface Property {
@@ -11,42 +13,63 @@ interface Property {
   value: string;
 }
 
+interface Ingredient {
+  id: number;
+  quantity: number;
+}
+
 interface FinishedGoodData {
   name?: string;
   type?: 'finished';
+  cost?: number;
   price?: number;
-  recipe?: string[];
-  mtime?: number;
+  components?: Ingredient[];
+  processTime?: number;
   properties?: Property[];
 }
 
 interface SemiFinishedGoodData {
   name?: string;
-  type?: 'semi';
-  recipe?: string[];
-  mtime?: number;
+  type?: 'semi-finished';
+  components?: Ingredient[];
+  processTime?: number;
   properties?: Property[];
+  cost?: number;
 }
 
 interface RawMaterialData {
   name?: string;
   type?: 'raw';
-  price?: number;
+  cost?: number;
   vendor?: string;
-  edt?: number;
+  processTime?: number;
   properties?: Property[];
 }
 
 export default function AddItem() {
   const [productType, setProductType] = useState<string>('');
+  const history = useHistory();
+  const snackbar = useSnackbar();
 
-  const tryAddItem = (e: React.FormEvent) => {
+  const tryAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const data = parseForm(form);
 
-    // TODO: Replace with backend logic
-    console.log(data);
+    const request = await fetch(API_GOOD_SINGLE, {
+      method: 'POST',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    const response = await request.json();
+    if (response.status) {
+      history.push('/inventory');
+      snackbar.push(`${data?.name} has been saved.`);
+    }
   };
 
   const parseForm = (form: HTMLFormElement) => {
@@ -69,9 +92,10 @@ export default function AddItem() {
     return {
       name: formData.get('product-name') as string | undefined,
       type: 'finished',
-      price: Number(formData.get('selling-price') as string | undefined),
-      recipe: getRecipe(formData),
-      mtime: Number(formData.get('manufacturing-time') as string | undefined),
+      cost: Number(formData.get('selling-price') as string | undefined),
+      price: 0,
+      components: getComponents(formData),
+      processTime: Number(formData.get('manufacturing-time') as string | undefined),
       properties: getProperties(formData)
     };
   };
@@ -79,10 +103,11 @@ export default function AddItem() {
   const parseSemi = (formData: FormData): SemiFinishedGoodData => {
     return {
       name: formData.get('product-name') as string | undefined,
-      type: 'semi',
-      recipe: getRecipe(formData),
-      mtime: Number(formData.get('manufacturing-time') as string | undefined),
-      properties: getProperties(formData)
+      type: 'semi-finished',
+      components: getComponents(formData),
+      processTime: Number(formData.get('manufacturing-time') as string | undefined),
+      properties: getProperties(formData),
+      cost: 0
     };
   };
 
@@ -90,16 +115,23 @@ export default function AddItem() {
     return {
       name: formData.get('product-name') as string | undefined,
       type: 'raw',
-      price: Number(formData.get('buying-price') as string | undefined),
+      cost: Number(formData.get('buying-price') as string | undefined),
       vendor: formData.get('vendor') as string | undefined,
-      edt: Number(formData.get('edt') as string | undefined),
+      processTime: Number(formData.get('edt') as string | undefined),
       properties: getProperties(formData)
     };
   };
 
-  const getRecipe = (formData: FormData) => {
-    const recipes = formData.getAll('ingredient');
-    return recipes.map(ingredient => ingredient as string);
+  const getComponents = (formData: FormData) => {
+    const ingredientIds = formData.getAll('ingredient') as string[];
+    const frequencyMap: { [id: string]: number } = {};
+    ingredientIds.forEach(id => {
+      if (id in frequencyMap) frequencyMap[id] += 1;
+      else frequencyMap[id] = 1;
+    });
+    return Object.entries(frequencyMap).map(
+      ([id, frequency]) => ({ id: Number(id), quantity: frequency } as Ingredient)
+    );
   };
 
   const getProperties = (formData: FormData) => {

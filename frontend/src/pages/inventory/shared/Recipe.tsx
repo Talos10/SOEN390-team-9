@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, MenuItem, Chip } from '@material-ui/core';
 import { v4 as uuid } from 'uuid';
 
@@ -10,27 +10,32 @@ interface Ingredient {
   name: string;
 }
 
+interface Materials {
+  name: string;
+  id: number;
+  type: string;
+}
+
 export default function Recipe() {
-  // Replace with backend logic
-  const materials = [
-    { name: 'Odyssey 1999 Brake', id: 1 },
-    { name: 'Izumi ECO Chain 1/8" Black', id: 2 },
-    { name: 'EAI Deluxe Steel Cog 1/8"', id: 3 },
-    { name: '2019 SL 1.1 Carbon Road Frame', id: 4 },
-    { name: 'All-City Gonzo Perforated Leather Saddle', id: 5 }
-  ];
+  // Fetching materials from backend stuff
+  const [materials, setMaterials] = useState<Materials[]>([]);
 
+  const getMaterials = async () => {
+    const response = await fetch('http://localhost:5000/good', {
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    const data = await response.json();
+    const items = data.message as Materials[];
+    const materials = items.filter(item => item.type === 'raw' || item.type === 'semi-finished');
+    setMaterials(materials);
+  };
+
+  useEffect(() => {
+    getMaterials();
+  }, []);
+
+  // Form stuff
   const [recipe, setRecipe] = useState<Ingredient[]>([]);
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLDivElement | HTMLLabelElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const addIngredient = (material: any) => {
     const { name, id } = material;
@@ -40,6 +45,17 @@ export default function Recipe() {
 
   const removeIngredient = (uuid: string) => {
     setRecipe(recipe.filter(ingredient => ingredient.uuid !== uuid));
+  };
+
+  // Material Menu Stuff
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement | HTMLLabelElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
