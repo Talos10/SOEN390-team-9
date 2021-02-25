@@ -19,7 +19,10 @@ export default function Login() {
     const response = await auth.logIn(email, password);
 
     if (!response.status) handleLoginError(response.error);
-    else handleLoginSuccess();
+    else {
+      handleLoginSuccess();
+      window.location.reload(false);
+    }
   };
 
   const getCredentials = (form: HTMLFormElement) => {

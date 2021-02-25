@@ -9,6 +9,7 @@ import ResetPassword from './login/resetPassword/ResetPassword';
 import Planning from './planning/Planning';
 import AddEvent from './planning/add-event/AddEvent';
 import AddGoal from './planning/add-goal/AddGoal';
+import Admin from './admin/Admin';
 
 export {
   Home,
@@ -21,5 +22,6 @@ export {
   ResetPassword,
   Planning,
   AddEvent,
-  AddGoal
+  AddGoal,
+  Admin
 };
