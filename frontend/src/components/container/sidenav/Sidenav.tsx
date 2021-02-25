@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Widgets } from '@material-ui/icons';
+import { Home, Widgets, CalendarToday } from '@material-ui/icons';
 
 import styles from './Sidenav.module.css';
 
@@ -22,6 +22,10 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
         <Link to="/inventory" className={styles.SidenavItem}>
           <Widgets style={{ paddingRight: 16 }} />
           Inventory
+        </Link>
+        <Link to="/planning" className={styles.SidenavItem}>
+          <CalendarToday style={{ paddingRight: 16 }} />
+          Planning
         </Link>
       </nav>
       {showSidenav && (
