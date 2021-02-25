@@ -25,8 +25,16 @@ const config = {
     good: {
         types: ['raw', 'semi-finished', 'finished']
     },
+    manufacturing: {
+        status: {
+            complete: 'completed',
+            process: 'processing',
+            confirm: 'confirmed',
+            cancel: 'cancelled'
+        }
+    },
     hostname: process.env.HOSTNAME || 'http://127.0.0.1:3000',
-    bcrypt_salt: process.env.BCRYPT_SALT || 10
+    bcrypt_salt: Number(process.env.BCRYPT_SALT) || 10
 };
 
 export { config };

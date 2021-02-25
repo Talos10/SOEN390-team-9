@@ -11,6 +11,7 @@
         "**/src/shared/**",
         "**/coverage/**",
         "**/*.models.ts",
-        "**/*.interfaces.ts"
+        "**/*.interfaces.ts",
+        "**/dist/"
     ]
 }

@@ -1,12 +1,14 @@
-.Inventory {
-  .inventory__top {
+.Planning {
+  .planning_top {
     display: flex;
     justify-content: space-between;
   }
-  .inventory__top__buttons > :not(:last-child) {
-    margin-right: 10px;
+  .planning_top_buttons {
+    justify-content: space-between;
+    margin-left: 100;
   }
-  .summary {
+
+  .table_title {
     padding: 0;
 
     @media (min-width: 768px) {
@@ -86,5 +88,12 @@
         }
       }
     }
+  }
+  .goal_completed {
+    opacity: 35%;
+    text-decoration: line-through;
+  }
+  .add_event_button {
+    margin-right: 15px;
   }
 }

@@ -541,4 +541,221 @@ describe('Good Service Test', () => {
         const res = await goodService.checkIfComponentExists(mock);
         expect(res[0]).to.equal(123);
     });
+
+    it('Test validate Component Quantities', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'validateSingleGoodQuantity').resolves({ id: 123, quantity: 0 });
+        const res = await goodService.validateComponentsQuantities(mock);
+        expect(res.length).to.equal(0);
+    });
+
+    it('Test validate Component Quantities missing elements', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'validateSingleGoodQuantity').resolves({ id: 123, quantity: 1 });
+        const res = await goodService.validateComponentsQuantities(mock);
+        expect(res.length).to.equal(1);
+    });
+
+    it('Test validate single Component Quantities', async () => {
+        const mock = {
+            id: 123,
+            quantity: 12
+        };
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'getCurrentQuantity').resolves(12);
+        const res = await goodService.validateSingleGoodQuantity(mock.id, mock.quantity);
+        expect(res.quantity).to.equal(0);
+    });
+
+    it('Test validate single Component Quantities excess element', async () => {
+        const mock = {
+            id: 123,
+            quantity: 12
+        };
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'getCurrentQuantity').resolves(13);
+        const res = await goodService.validateSingleGoodQuantity(mock.id, mock.quantity);
+        expect(res.quantity).to.equal(0);
+    });
+
+    it('Test validate single Component Quantities missing element', async () => {
+        const mock = {
+            id: 123,
+            quantity: 12
+        };
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'getCurrentQuantity').resolves(9);
+        const res = await goodService.validateSingleGoodQuantity(mock.id, mock.quantity);
+        expect(res.quantity).to.equal(3);
+    });
+
+    it('Test compiled required components', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            },
+            {
+                id: 12,
+                quantity: 6
+            }
+        ];
+
+        const expected = [
+            {
+                id: 12,
+                quantity: 12
+            },
+            {
+                id: 123,
+                quantity: 24
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'getRequiredComponents').resolves(mock);
+        const res = await goodService.compileRequiredComponents(mock);
+        expect(res[0].quantity).to.equal(expected[0].quantity);
+        expect(res[1].quantity).to.equal(expected[1].quantity);
+    });
+
+    it('Test get required components', async () => {
+        const mock = {
+            id: 123,
+            quantity: 12
+        };
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'getComponents').resolves([mock]);
+        const res = await goodService.getRequiredComponents(mock.id, mock.quantity);
+        expect(res[0].quantity).to.equal(144);
+    });
+
+    it('Test allocate materials for goods missing goods', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'compileRequiredComponents').resolves(mock);
+        sandbox.stub(goodService, 'validateComponentsQuantities').resolves(mock);
+        const res = await goodService.allocateMaterialsForGoods(mock);
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test allocate materials for goods fails', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'compileRequiredComponents').resolves(mock);
+        sandbox.stub(goodService, 'validateComponentsQuantities').resolves(mock);
+        sandbox.stub(Good, 'decrementGoodQuantity').resolves(false);
+        const res = await goodService.allocateMaterialsForGoods(mock);
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test allocate materials for goods success', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'compileRequiredComponents').resolves(mock);
+        sandbox.stub(goodService, 'validateComponentsQuantities').resolves([]);
+        sandbox.stub(Good, 'decrementGoodQuantity').resolves(true);
+        const res = await goodService.allocateMaterialsForGoods(mock);
+        expect(res.status).to.equal(true);
+    });
+
+    it('Test allocate materials for goods crash', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'compileRequiredComponents').resolves(mock);
+        sandbox.stub(goodService, 'validateComponentsQuantities').resolves([]);
+        sandbox.stub(Good, 'decrementGoodQuantity').throws(new Error());
+        const res = await goodService.allocateMaterialsForGoods(mock);
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test increment goods quantities fails', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'incrementSingleGoodQuantity').resolves(false);
+        const res = await goodService.incrementQuantitiesOfGoods(mock);
+        expect(res).to.equal(false);
+    });
+
+    it('Test increment goods quantities success', async () => {
+        const mock = [
+            {
+                id: 123,
+                quantity: 12
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(goodService, 'incrementSingleGoodQuantity').resolves(true);
+        const res = await goodService.incrementQuantitiesOfGoods(mock);
+        expect(res).to.equal(true);
+    });
+
+    it('Test increment single good quantity success', async () => {
+        const mock = {
+            id: 123,
+            quantity: 12
+        };
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'incrementGoodQuantity').resolves(1);
+        const res = await goodService.incrementSingleGoodQuantity(mock.id, mock.quantity);
+        expect(res).to.equal(true);
+    });
+
+    it('Test increment single good quantity fails', async () => {
+        const mock = {
+            id: 123,
+            quantity: 12
+        };
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'incrementGoodQuantity').resolves(0);
+        const res = await goodService.incrementSingleGoodQuantity(mock.id, mock.quantity);
+        expect(res).to.equal(false);
+    });
+
+    it('Test increment single good quantity crash', async () => {
+        const mock = {
+            id: 123,
+            quantity: 12
+        };
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'incrementGoodQuantity').throws(new Error());
+        const res = await goodService.incrementSingleGoodQuantity(mock.id, mock.quantity);
+        expect(res).to.equal(false);
+    });
 });
