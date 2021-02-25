@@ -38,7 +38,10 @@ export default function LoginV2({ setLoggedIn }: Props) {
     const response = (await request.json()) as ErrorResponse | SuccessResponse;
 
     if (!response.status) handleLoginError(response);
-    else handleLoginSuccess(response);
+    else {
+      handleLoginSuccess(response)
+      window.location.reload(false);
+    };
   };
 
   const getCredentials = (form: HTMLFormElement) => {

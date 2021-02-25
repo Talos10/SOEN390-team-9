@@ -19,7 +19,7 @@ class Controller {
         const users = await this.userService.getAllUsers();
         if (users.length === 0) {
             // Create the initial admin account if there are no users in db
-            this.userService.createNewUser('Admin', 'Admin', 'admin@email.com', 'admin');
+            this.userService.createNewUser('Admin', 'admin', 'admin@email.com', 'admin');
         }
     }
 

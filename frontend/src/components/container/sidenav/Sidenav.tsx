@@ -2,10 +2,16 @@ import { Dispatch } from 'react';
 import { Link } from 'react-router-dom';
 import { Home, Widgets, SupervisorAccount } from '@material-ui/icons';
 import styles from './Sidenav.module.css';
+import jwtDecode from 'jwt-decode';
 
 interface Props {
   showSidenav: boolean;
   toggleSidenav: Dispatch<boolean>;
+}
+let userTokenDecoded: any = null;
+
+if(localStorage.getItem("token") != null || localStorage.getItem("token") != undefined){
+  userTokenDecoded = jwtDecode((localStorage.getItem("token") as string));
 }
 
 export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
@@ -18,15 +24,18 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
           Home
         </Link>
 
+        {userTokenDecoded?.role == 'admin' && 
+          <Link to="/admin" className={styles.SidenavItem} >
+            <SupervisorAccount style={{ paddingRight: 16 }} />
+              Admin
+          </Link>
+        }
+
         <Link to="/inventory" className={styles.SidenavItem}>
           <Widgets style={{ paddingRight: 16 }} />
           Inventory
           </Link>
-          
-        <Link to="/admin" className={styles.SidenavItem}>
-          <SupervisorAccount style={{ paddingRight: 16 }} />
-          Admin
-        </Link>
+
       </nav>
       {showSidenav && (
         <button onClick={() => toggleSidenav(!showSidenav)} className={styles.SidenavShadow} />
