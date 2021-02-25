@@ -1,15 +1,29 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+
 import { Container, Card } from '../../components';
+import { API_GOOD } from '../../utils/api';
+import ImportButton from './csv-impex/csv-import';
+import ExportButton from './csv-impex/csv-export';
 import './Inventory.scss';
+import { Item } from '../../interfaces/Items';
 
 export default function Inventory() {
-  // Replace with backend logic
-  const items = [
-    { name: 'Bike', quantity: 19, type: 'Finished-Good', vendor: '' },
-    { name: 'Steel', quantity: 10, type: 'Raw Material', vendor: "Mike's Steel Factory" },
-    { name: 'Wheel', quantity: 28, type: 'Semi-Finished Good', vendor: '' }
-  ];
+  const [items, setItems] = useState<Item[]>([]);
+
+  const getItems = async () => {
+    const request = await fetch(API_GOOD, {
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    const response = await request.json();
+    const items = response.message as Item[];
+    setItems(items);
+  };
+
+  useEffect(() => {
+    getItems();
+  }, []);
 
   return (
     <Container>
@@ -17,6 +31,8 @@ export default function Inventory() {
         <div className="inventory__top">
           <h1 className="title">Summary</h1>
           <div className="inventory__top__buttons">
+            <ImportButton />
+            <ExportButton />
             <Button color="primary" variant="contained" component={Link} to="/inventory/add-item">
               Add Item
             </Button>

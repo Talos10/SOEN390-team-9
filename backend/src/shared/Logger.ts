@@ -57,27 +57,27 @@ class Logger {
         }
     }
 
-    public trace(message: string, tags?: any[], description?: any[]) {
+    public trace(message: string, tags?: any[], description?: any | any[]) {
         this.log(message, 'trace', tags, description);
     }
 
-    public debug(message: string, tags?: any[], description?: any[]) {
+    public debug(message: string, tags?: any[], description?: any | any[]) {
         this.log(message, 'debug', tags, description);
     }
 
-    public info(message: string, tags?: any[], description?: any[]) {
+    public info(message: string, tags?: any[], description?: any | any[]) {
         this.log(message, 'info', tags, description);
     }
 
-    public warn(message: string, tags?: any[], description?: any) {
+    public warn(message: string, tags?: any[], description?: any | any[]) {
         this.log(message, 'warn', tags, description);
     }
 
-    public error(message: string, tags?: any[], description?: any) {
+    public error(message: string, tags?: any[], description?: any | any[]) {
         this.log(message, 'error', tags, description);
     }
 
-    public fatal(message: string, tags?: any[], description?: any) {
+    public fatal(message: string, tags?: any[], description?: any | any[]) {
         this.log(message, 'fatal', tags, description);
     }
 

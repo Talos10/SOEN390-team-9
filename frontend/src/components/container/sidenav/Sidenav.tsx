@@ -1,6 +1,7 @@
 import { Dispatch } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Widgets, SupervisorAccount } from '@material-ui/icons';
+import { Home, Widgets, SupervisorAccount, CalendarToday } from '@material-ui/icons';
+
 import styles from './Sidenav.module.css';
 import jwtDecode from 'jwt-decode';
 
@@ -36,6 +37,10 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
           Inventory
           </Link>
 
+        <Link to="/planning" className={styles.SidenavItem}>
+          <CalendarToday style={{ paddingRight: 16 }} />
+          Planning
+        </Link>
       </nav>
       {showSidenav && (
         <button onClick={() => toggleSidenav(!showSidenav)} className={styles.SidenavShadow} />

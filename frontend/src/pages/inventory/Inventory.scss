@@ -3,7 +3,9 @@
     display: flex;
     justify-content: space-between;
   }
-
+  .inventory__top__buttons > :not(:last-child) {
+    margin-right: 10px;
+  }
   .summary {
     padding: 0;
 
