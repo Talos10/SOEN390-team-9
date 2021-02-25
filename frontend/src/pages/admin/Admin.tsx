@@ -35,7 +35,6 @@ export default function Admin() {
       },
       body: JSON.stringify({ userID: user.userID, name: user.name, role: type, email: user.email })
     });
-    //const response = await request.json();
     window.location.reload(false);
   };
 
