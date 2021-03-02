@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
 import { Container, Card } from '../../components';
-import { API_GOOD } from '../../utils/api';
+import { API_ARCHIVE_GOOD, API_GOOD } from '../../utils/api';
 import ImportButton from './csv-impex/csv-import';
 import ExportButton from './csv-impex/csv-export';
 import './Inventory.scss';
 import { Item } from '../../interfaces/Items';
+import ItemRow from './item-row/ItemRow';
+import sortItemsByType from './Filters'
+
 
 export default function Inventory() {
   const [items, setItems] = useState<Item[]>([]);
@@ -18,7 +21,21 @@ export default function Inventory() {
     });
     const response = await request.json();
     const items = response.message as Item[];
-    setItems(items);
+    setItems(items.sort(sortItemsByType));
+  };
+
+  const archiveItem = async (id: number) => {
+    const data = [{ id: id, archive: true }];
+
+    fetch(API_ARCHIVE_GOOD, {
+      method: 'POST',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    setItems(items.filter(item => item.id !== id))
   };
 
   useEffect(() => {
@@ -39,26 +56,22 @@ export default function Inventory() {
           </div>
         </div>
         <Card className="summary">
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Type</th>
-                <th>Vendor</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table size="small" className="table">
+            <TableHead>
+              <TableRow>
+                <TableCell width="10%" />
+                <TableCell width="22.5%">Item</TableCell>
+                <TableCell width="22.5%">Quantity</TableCell>
+                <TableCell width="22.5%">Type</TableCell>
+                <TableCell width="22.5%">Vendor</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {items.map(item => (
-                <tr key={item.name}>
-                  <td className="name">{item.name}</td>
-                  <td>{item.quantity} in stock</td>
-                  <td>{item.type}</td>
-                  <td>{item.vendor}</td>
-                </tr>
+                <ItemRow key={item.name} {...{props:item, archiveFunc:archiveItem}} />
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </Card>
       </div>
     </Container>

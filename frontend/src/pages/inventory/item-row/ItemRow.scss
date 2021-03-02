@@ -1,0 +1,16 @@
+.Archive {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .button {
+    max-height: 40px;
+  }
+}
+
+.Info {
+  padding-bottom: 0px;
+  p {
+    margin-bottom: 0px;
+    margin-top: 10px;
+  }
+}

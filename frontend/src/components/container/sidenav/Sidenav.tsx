@@ -11,7 +11,7 @@ interface Props {
 }
 let userTokenDecoded: any = null;
 
-if (localStorage.getItem('token') != null || localStorage.getItem('token') != undefined) {
+if (localStorage.getItem('token') !== null || localStorage.getItem('token') !== undefined) {
   userTokenDecoded = jwtDecode(localStorage.getItem('token') as string);
 }
 
@@ -25,7 +25,7 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
           Home
         </Link>
 
-        {userTokenDecoded?.role == 'admin' && (
+        {userTokenDecoded?.role === 'admin' && (
           <Link to="/admin" className={styles.SidenavItem}>
             <SupervisorAccount style={{ paddingRight: 16 }} />
             Admin

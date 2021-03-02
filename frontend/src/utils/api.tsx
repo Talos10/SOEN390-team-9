@@ -10,3 +10,5 @@ export const API_USER_RESET = `${api}/user/reset`;
 export const API_GOOD = `${api}/good`;
 /** Add a single good */
 export const API_GOOD_SINGLE = `${api}/good/single`;
+/** Archive a good */
+export const API_ARCHIVE_GOOD = `${api}/good/archive`;
