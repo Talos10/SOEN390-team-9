@@ -1,9 +1,0 @@
-body.sidenav-open {
-  overflow-y: hidden;
-}
-
-@media (min-width: 768px) {
-  body.sidenav-open {
-    overflow: default;
-  }
-}

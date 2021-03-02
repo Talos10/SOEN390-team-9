@@ -1,6 +1,7 @@
 .Login {
   // Background
   min-height: 100vh;
+  background-color: var(--primary);
   background-image: url('../../assets/background/login-background.png');
   background-position: center;
   background-size: cover;
@@ -69,6 +70,7 @@
 
       &__bottom {
         display: flex;
+        align-items: center;
       }
 
       &__submit {

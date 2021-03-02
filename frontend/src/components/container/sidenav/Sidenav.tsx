@@ -1,49 +1,74 @@
 import { Dispatch } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 import { Home, Widgets, SupervisorAccount, CalendarToday } from '@material-ui/icons';
 
+import { useAuth } from '../../../contexts';
 import styles from './Sidenav.module.css';
-import jwtDecode from 'jwt-decode';
+import './Sidenav.scss';
 
 interface Props {
   showSidenav: boolean;
   toggleSidenav: Dispatch<boolean>;
 }
-let userTokenDecoded: any = null;
-
-if (localStorage.getItem('token') !== null || localStorage.getItem('token') !== undefined) {
-  userTokenDecoded = jwtDecode(localStorage.getItem('token') as string);
-}
 
 export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
+  const location = useLocation();
+  const auth = useAuth();
+
   return (
-    <aside className={`${styles.Sidenav} ${showSidenav ? styles.sidenavOpen : ''}`}>
+    <aside className={`Sidenav ${styles.Sidenav} ${showSidenav ? styles.sidenavOpen : ''}`}>
       <nav>
         <div className={styles.SidenavLogo}>ERP Software</div>
-        <Link to="/home" className={styles.SidenavItem}>
-          <Home style={{ paddingRight: 16 }} />
-          Home
-        </Link>
 
-        {userTokenDecoded?.role === 'admin' && (
-          <Link to="/admin" className={styles.SidenavItem}>
-            <SupervisorAccount style={{ paddingRight: 16 }} />
-            Admin
-          </Link>
+        <div className="Sidenav__button">
+          <Button
+            color={location.pathname === '/home' ? 'primary' : 'default'}
+            component={Link}
+            to="/home">
+            <Home style={{ paddingRight: 16 }} />
+            Home
+          </Button>
+        </div>
+
+        {auth.getRole() === 'admin' && (
+          <div className="Sidenav__button">
+            <Button
+              color={location.pathname === '/admin' ? 'primary' : 'default'}
+              component={Link}
+              to="/admin">
+              <SupervisorAccount style={{ paddingRight: 16 }} />
+              Admin
+            </Button>
+          </div>
         )}
 
-        <Link to="/inventory" className={styles.SidenavItem}>
-          <Widgets style={{ paddingRight: 16 }} />
-          Inventory
-        </Link>
+        <div className="Sidenav__button">
+          <Button
+            color={location.pathname === '/inventory' ? 'primary' : 'default'}
+            component={Link}
+            to="/inventory">
+            <Widgets style={{ paddingRight: 16 }} />
+            Inventory
+          </Button>
+        </div>
 
-        <Link to="/planning" className={styles.SidenavItem}>
-          <CalendarToday style={{ paddingRight: 16 }} />
-          Planning
-        </Link>
+        <div className="Sidenav__button">
+          <Button
+            color={location.pathname === '/planning' ? 'primary' : 'default'}
+            component={Link}
+            to="/planning">
+            <CalendarToday style={{ paddingRight: 16 }} />
+            Planning
+          </Button>
+        </div>
       </nav>
+
       {showSidenav && (
-        <button onClick={() => toggleSidenav(!showSidenav)} className={styles.SidenavShadow} />
+        <button
+          onClick={() => toggleSidenav(!showSidenav)}
+          className={`SidenavShadow ${styles.SidenavShadow}`}
+        />
       )}
     </aside>
   );

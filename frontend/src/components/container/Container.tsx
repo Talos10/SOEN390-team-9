@@ -4,11 +4,12 @@ import Appbar from './appbar/Appbar';
 
 import style from './Container.module.css';
 
-interface Props {
-  children: React.ReactNode;
+interface Props
+  extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  title?: string;
 }
 
-export default function Container({ children }: Props) {
+export default function Container({ children, className, title, ...props }: Props) {
   const [showSidenav, toggleSidenav] = useState<boolean>(false);
 
   showSidenav
@@ -16,11 +17,11 @@ export default function Container({ children }: Props) {
     : document.body.classList.remove('sidenav-open');
 
   return (
-    <div className={style.Container}>
+    <div {...props} className={style.Container}>
       <Sidenav {...{ showSidenav, toggleSidenav }} />
       <div>
-        <Appbar {...{ showSidenav, toggleSidenav }} />
-        <main className={style.main}>{children}</main>
+        <Appbar {...{ showSidenav, toggleSidenav, title }} />
+        <main className={`${style.main} ${className}`}>{children}</main>
       </div>
     </div>
   );

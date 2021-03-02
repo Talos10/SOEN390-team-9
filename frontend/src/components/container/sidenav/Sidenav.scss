@@ -1,0 +1,43 @@
+body.sidenav-open {
+  overflow-y: hidden;
+}
+
+@media (min-width: 768px) {
+  body.sidenav-open {
+    overflow: default;
+  }
+}
+
+.Sidenav {
+  &__button {
+    margin: 8px 8px;
+    height: 48px;
+
+    .MuiButton-text {
+      height: 100%;
+      width: 100%;
+
+      .MuiButton-label {
+        color: var(--sidenav-text);
+        justify-content: flex-start;
+        text-transform: none;
+      }
+
+      &:hover {
+        background-color: var(--sidenav-bg-dark);
+      }
+
+      &Primary {
+        background-color: var(--primary-transparent);
+
+        &:hover {
+          background-color: var(--primary-transparent);
+        }
+
+        .MuiButton-label {
+          color: inherit;
+        }
+      }
+    }
+  }
+}

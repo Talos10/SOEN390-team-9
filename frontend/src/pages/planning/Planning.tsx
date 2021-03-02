@@ -35,97 +35,95 @@ export default function Planning() {
   };
 
   return (
-    <Container>
-      <div className="Planning">
-        <div className="planning_top">
-          <h1 className="title table_title">Events</h1>
-          <div className="planning_top_buttons">
-            <Button
-              className="add_event_button"
-              color="primary"
-              variant="contained"
-              component={Link}
-              to="/planning/add-event">
-              Add Event
-            </Button>
-            <Button color="primary" variant="contained" component={Link} to="/planning/add-goal">
-              Add Goal
-            </Button>
-          </div>
+    <Container title="Planning" className="Planning">
+      <div className="planning_top">
+        <h1 className="title table_title">Events</h1>
+        <div className="planning_top_buttons">
+          <Button
+            className="add_event_button"
+            color="primary"
+            variant="contained"
+            component={Link}
+            to="/planning/add-event">
+            Add Event
+          </Button>
+          <Button color="primary" variant="contained" component={Link} to="/planning/add-goal">
+            Add Goal
+          </Button>
         </div>
-        <Card className="table_title">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Title</th>
+      </div>
+      <Card className="table_title">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Title</th>
+            </tr>
+          </thead>
+          <tbody>
+            {events.map(event => (
+              <tr key={event.id}>
+                <td className="name">{event.date}</td>
+                <td>{event.time}</td>
+                <td>{event.title}</td>
               </tr>
-            </thead>
-            <tbody>
-              {events.map(event => (
-                <tr key={event.id}>
-                  <td className="name">{event.date}</td>
-                  <td>{event.time}</td>
-                  <td>{event.title}</td>
+            ))}
+          </tbody>
+        </table>
+      </Card>
+      <div className="planning_top">
+        <h1 className="title">Goals</h1>
+      </div>
+      <Card className="table_title">
+        <table>
+          <thead>
+            <tr>
+              <th>Completed</th>
+              <th>Target Date</th>
+              <th>Goal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/*Display incomplete goals first*/}
+            {goals
+              .filter(goal => goal.completed === false)
+              .map(goal => (
+                <tr key={goal.id}>
+                  <td className="name">
+                    <Checkbox
+                      value={goal.id}
+                      checked={goal.completed}
+                      onChange={handleCheckboxTick}
+                      name="checkedB"
+                      color="primary"
+                    />
+                  </td>
+                  <td>{goal.date}</td>
+                  <td>{goal.title}</td>
                 </tr>
               ))}
-            </tbody>
-          </table>
-        </Card>
-        <div className="planning_top">
-          <h1 className="title">Goals</h1>
-        </div>
-        <Card className="table_title">
-          <table>
-            <thead>
-              <tr>
-                <th>Completed</th>
-                <th>Target Date</th>
-                <th>Goal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/*Display incomplete goals first*/}
-              {goals
-                .filter(goal => goal.completed === false)
-                .map(goal => (
-                  <tr key={goal.id}>
-                    <td className="name">
-                      <Checkbox
-                        value={goal.id}
-                        checked={goal.completed}
-                        onChange={handleCheckboxTick}
-                        name="checkedB"
-                        color="primary"
-                      />
-                    </td>
-                    <td>{goal.date}</td>
-                    <td>{goal.title}</td>
-                  </tr>
-                ))}
-              {/* Display completed goals at end */}
-              {goals
-                .filter(goal => goal.completed === true)
-                .map(goal => (
-                  <tr key={goal.id} className="goal_completed">
-                    <td className="name">
-                      <Checkbox
-                        value={goal.id}
-                        checked={goal.completed}
-                        onChange={handleCheckboxTick}
-                        name="checkedB"
-                        color="primary"
-                      />
-                    </td>
-                    <td>{goal.date}</td>
-                    <td>{goal.title}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </Card>
-      </div>
+            {/* Display completed goals at end */}
+            {goals
+              .filter(goal => goal.completed === true)
+              .map(goal => (
+                <tr key={goal.id} className="goal_completed">
+                  <td className="name">
+                    <Checkbox
+                      value={goal.id}
+                      checked={goal.completed}
+                      onChange={handleCheckboxTick}
+                      name="checkedB"
+                      color="primary"
+                    />
+                  </td>
+                  <td>{goal.date}</td>
+                  <td>{goal.title}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </Card>
     </Container>
   );
 }

@@ -1,7 +1,7 @@
 import { Item } from "../../interfaces/Items";
 
 function sortItemsByType(x : Item, y : Item){
-    if ( x.type === 'raw' && y.type === 'semi-finished' || x.type === 'raw' && y.type === 'finished' || x.type === 'semi-finished' && y.type === 'finished'){
+    if ( (x.type === 'raw' && y.type === 'semi-finished') || (x.type === 'raw' && y.type === 'finished') || (x.type === 'semi-finished' && y.type === 'finished')){
         return -1;
       }else{
           return 1;

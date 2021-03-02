@@ -148,7 +148,7 @@ export default function AddItem() {
   };
 
   return (
-    <Container>
+    <Container title="Add Item">
       <form className="AddItem" onSubmit={tryAddItem}>
         <div className="top">
           <h1 className="title">Add Item</h1>

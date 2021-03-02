@@ -9,7 +9,7 @@ import ExportButton from './csv-impex/csv-export';
 import './Inventory.scss';
 import { Item } from '../../interfaces/Items';
 import ItemRow from './item-row/ItemRow';
-import sortItemsByType from './Filters'
+import {sortItemsByType} from './Filters'
 
 
 export default function Inventory() {
@@ -43,19 +43,18 @@ export default function Inventory() {
   }, []);
 
   return (
-    <Container>
-      <div className="Inventory">
-        <div className="inventory__top">
-          <h1 className="title">Summary</h1>
-          <div className="inventory__top__buttons">
-            <ImportButton />
-            <ExportButton />
-            <Button color="primary" variant="contained" component={Link} to="/inventory/add-item">
-              Add Item
-            </Button>
-          </div>
+    <Container title="Inventory" className="Inventory">
+      <div className="inventory__top">
+        <h1 className="title">Summary</h1>
+        <div className="inventory__top__buttons">
+          <ImportButton />
+          <ExportButton />
+          <Button color="primary" variant="contained" component={Link} to="/inventory/add-item">
+            Add Item
+          </Button>
         </div>
-        <Card className="summary">
+      </div>
+      <Card className="summary">
           <Table size="small" className="table">
             <TableHead>
               <TableRow>
@@ -73,7 +72,6 @@ export default function Inventory() {
             </TableBody>
           </Table>
         </Card>
-      </div>
     </Container>
   );
 }

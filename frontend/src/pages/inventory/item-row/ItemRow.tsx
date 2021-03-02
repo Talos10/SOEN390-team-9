@@ -40,9 +40,9 @@ export default function ItemRow({props, archiveFunc}: Props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              {props.type === 'finished' && <FinishedGood key={props.id} {...{props:props, archiveFunc:archiveFunc}} />}
-              {props.type === 'semi-finished' && <SemiFinishedGood key={props.id} {...{props:props, archiveFunc:archiveFunc}} />}
-              {props.type === 'raw' && <RawMaterial key={props.id} {...{props:props, archiveFunc:archiveFunc}} />}
+              {props.type === 'finished' && <FinishedGood {...{props, archiveFunc}} />}
+              {props.type === 'semi-finished' && <SemiFinishedGood {...{props, archiveFunc}} />}
+              {props.type === 'raw' && <RawMaterial  {...{props, archiveFunc}} />}
             </Box>
           </Collapse>
         </TableCell>
@@ -72,7 +72,7 @@ function RawMaterial({props, archiveFunc}: Props) {
         <p>Estimated delivery time: {props.processTime} days</p>
       </Grid>
       <Grid item xs={3} className="Archive">
-      <ArchiveButton {...{props:props, archiveFunc:archiveFunc}} />
+      <ArchiveButton {...{props, archiveFunc}} />
       </Grid>
     </Grid>
   );
@@ -87,13 +87,13 @@ function SemiFinishedGood({props, archiveFunc}: Props) {
         <p>Manufacturing time: {props.processTime} minutes</p>
       </Grid>
       <Grid item xs={3}>
-      <ArchiveButton {...{props:props, archiveFunc:archiveFunc}} />
+      <ArchiveButton {...{props, archiveFunc}} />
       </Grid>
       <Grid item xs={6}>
-        {props.components.length !== 0 && <ComponentsTable key={props.id} {...props} />}
+        {props.components.length !== 0 && <ComponentsTable {...props} />}
       </Grid>
       <Grid item xs={6}>
-        {props.properties.length !== 0 && <PropertiesTable key={props.id} {...props} />}
+        {props.properties.length !== 0 && <PropertiesTable {...props} />}
       </Grid>
     </Grid>
   );
@@ -108,13 +108,13 @@ function FinishedGood({props, archiveFunc}: Props) {
         <p>Manufacturing time: {props.processTime} minutes</p>
       </Grid>
       <Grid item xs={3} className="Archive">
-        <ArchiveButton {...{props:props, archiveFunc:archiveFunc}} />
+        <ArchiveButton {...{props, archiveFunc}} />
       </Grid>
       <Grid item xs={6}>
-        {props.components.length !== 0 && <ComponentsTable key={props.id} {...props} />}
+        {props.components.length !== 0 && <ComponentsTable  {...props} />}
       </Grid>
       <Grid item xs={6}>
-        {props.properties.length !== 0 && <PropertiesTable key={props.id} {...props} />}
+        {props.properties.length !== 0 && <PropertiesTable  {...props} />}
       </Grid>
     </Grid>
   );
