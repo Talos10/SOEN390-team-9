@@ -65,7 +65,10 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
       </nav>
 
       {showSidenav && (
-        <button onClick={() => toggleSidenav(!showSidenav)} className={styles.SidenavShadow} />
+        <button
+          onClick={() => toggleSidenav(!showSidenav)}
+          className={`SidenavShadow ${styles.SidenavShadow}`}
+        />
       )}
     </aside>
   );
