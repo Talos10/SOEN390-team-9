@@ -26,41 +26,39 @@ export default function Inventory() {
   }, []);
 
   return (
-    <Container>
-      <div className="Inventory">
-        <div className="inventory__top">
-          <h1 className="title">Summary</h1>
-          <div className="inventory__top__buttons">
-            <ImportButton />
-            <ExportButton />
-            <Button color="primary" variant="contained" component={Link} to="/inventory/add-item">
-              Add Item
-            </Button>
-          </div>
+    <Container title="Inventory" className="Inventory">
+      <div className="inventory__top">
+        <h1 className="title">Summary</h1>
+        <div className="inventory__top__buttons">
+          <ImportButton />
+          <ExportButton />
+          <Button color="primary" variant="contained" component={Link} to="/inventory/add-item">
+            Add Item
+          </Button>
         </div>
-        <Card className="summary">
-          <table>
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Type</th>
-                <th>Vendor</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map(item => (
-                <tr key={item.name}>
-                  <td className="name">{item.name}</td>
-                  <td>{item.quantity} in stock</td>
-                  <td>{item.type}</td>
-                  <td>{item.vendor}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
       </div>
+      <Card className="summary">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Type</th>
+              <th>Vendor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map(item => (
+              <tr key={item.name}>
+                <td className="name">{item.name}</td>
+                <td>{item.quantity} in stock</td>
+                <td>{item.type}</td>
+                <td>{item.vendor}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Card>
     </Container>
   );
 }

@@ -6,11 +6,9 @@ type HomePage = {};
 export class Home extends Component<{}, HomePage> {
   render() {
     return (
-      <div>
-        <Container>
-          <div>Welcome {localStorage.getItem('name')}.</div>
-        </Container>
-      </div>
+      <Container title="Home">
+        <div>Welcome {localStorage.getItem('name')}.</div>
+      </Container>
     );
   }
 }

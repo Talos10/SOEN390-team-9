@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/icons/Menu';
 
@@ -9,14 +9,14 @@ import { Portal } from '@material-ui/core';
 
 interface Props {
   showSidenav: boolean;
-  toggleSidenav: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleSidenav: Dispatch<boolean>;
+  title?: string;
 }
 
-export default function Appbar({ showSidenav, toggleSidenav }: Props) {
+export default function Appbar({ showSidenav, toggleSidenav, title }: Props) {
   const [isProfileOptionOpened, setProfileOption] = useState<boolean>(false);
   const onMenuClick = (): void => toggleSidenav(!showSidenav);
   const onProfileClick = (): void => setProfileOption(!isProfileOptionOpened);
-  const date = new Date();
 
   return (
     <div className={styles.Appbar}>
@@ -25,7 +25,7 @@ export default function Appbar({ showSidenav, toggleSidenav }: Props) {
           <Menu />
         </IconButton>
 
-        <span className="subtitle2">{date.toDateString()}</span>
+        <span className="subtitle2">{title}</span>
       </div>
 
       <button onClick={onProfileClick} type="button" className={styles.Appbar__profileButton}>
