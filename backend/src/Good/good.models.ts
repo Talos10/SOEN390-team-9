@@ -204,7 +204,9 @@ class Good {
      */
     public static async getComponents(id: number): Promise<Component[]> {
         return await db
-            .select('componentId as id','name', 'composition_of_good.quantity').from('composition_of_good').innerJoin('inventory_good','componentId','id')
+            .select('componentId as id', 'name', 'composition_of_good.quantity')
+            .from('composition_of_good')
+            .innerJoin('inventory_good', 'componentId', 'id')
             .where('compositeId', id);
     }
 

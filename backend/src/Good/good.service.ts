@@ -330,7 +330,7 @@ class Service {
     ): Promise<Component> {
         const currentQuantity = await GoodModel.getCurrentQuantity(id);
         if (currentQuantity < requiredQuantity)
-            return { id: id,  quantity: requiredQuantity - currentQuantity };
+            return { id: id, quantity: requiredQuantity - currentQuantity };
         return { id: id, quantity: 0 };
     }
 
@@ -346,7 +346,9 @@ class Service {
             goods.map(async good => {
                 const components = await this.getRequiredComponents(good.id, good.quantity);
                 components.forEach(c => {
-                    quantities[c.id] = quantities[c.id] ? quantities[c.id] + c.quantity : c.quantity;
+                    quantities[c.id] = quantities[c.id]
+                        ? quantities[c.id] + c.quantity
+                        : c.quantity;
                 });
             })
         );
