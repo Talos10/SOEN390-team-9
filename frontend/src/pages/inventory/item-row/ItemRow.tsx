@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 import {
   Button,
   IconButton,
@@ -34,8 +34,8 @@ export default function ItemRow({ props, archiveFunc, open }: Props) {
   const [tableOpen, setTableOpen] = useState<boolean>(open);
 
   return (
-    <Fragment>
-      <TableRow onClick={() => setTableOpen(!tableOpen)} className="table_row">
+    <>
+      <TableRow onClick={() => setTableOpen(!tableOpen)} className="table-row">
         <TableCell>
           <IconButton size="small">
             {tableOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
@@ -43,8 +43,8 @@ export default function ItemRow({ props, archiveFunc, open }: Props) {
         </TableCell>
         <TableCell scope="row">{props.name}</TableCell>
         <TableCell align="left">{props.quantity} in stock</TableCell>
-        <TableCell align="left">
-          {props.type.charAt(0).toUpperCase() + props.type.slice(1)}
+        <TableCell align="left" style={{ textTransform: 'capitalize' }}>
+          {props.type}
         </TableCell>
         <TableCell align="left">{props.vendor}</TableCell>
       </TableRow>
@@ -57,19 +57,19 @@ export default function ItemRow({ props, archiveFunc, open }: Props) {
           </Collapse>
         </TableCell>
       </TableRow>
-    </Fragment>
+    </>
   );
 }
 
 function InfoTable({ props, archiveFunc }: InfoTableProps) {
   return (
     <Grid container spacing={3}>
-      <Grid item xs={9} className="Info">
+      <Grid item xs={9} className="info">
         {props.type === 'finished' && <FinishedGood {...{ item: props }} />}
         {props.type === 'semi-finished' && <SemiFinishedGood {...{ item: props }} />}
         {props.type === 'raw' && <RawMaterial {...{ item: props }} />}
       </Grid>
-      <Grid item xs={3} className="Archive">
+      <Grid item xs={3} className="archive">
         <Button
           variant="outlined"
           color="primary"
@@ -90,37 +90,37 @@ function InfoTable({ props, archiveFunc }: InfoTableProps) {
 
 function RawMaterial({ item }: ItemProps) {
   return (
-    <Fragment>
+    <>
       <p>Item Id: {item.id}</p>
       <p>Item cost: ${item.cost}</p>
       <p>Estimated delivery time: {item.processTime} days</p>
-    </Fragment>
+    </>
   );
 }
 
 function SemiFinishedGood({ item }: ItemProps) {
   return (
-    <Fragment>
+    <>
       <p>Item Id: {item.id}</p>
       <p>Item cost: ${item.cost}</p>
       <p>Manufacturing time: {item.processTime} minutes</p>
-    </Fragment>
+    </>
   );
 }
 
 function FinishedGood({ item }: ItemProps) {
   return (
-    <Fragment>
+    <>
       <p>Item Id: {item.id}</p>
       <p>Selling price: ${item.price}</p>
       <p>Manufacturing time: {item.processTime} minutes</p>
-    </Fragment>
+    </>
   );
 }
 
 function PropertiesTable(item: Item) {
   return (
-    <Table size="small" className="small_table">
+    <Table size="small" className="small-table">
       <TableHead>
         <TableRow>
           <TableCell>Properties</TableCell>
@@ -141,7 +141,7 @@ function PropertiesTable(item: Item) {
 
 function ComponentsTable(item: Item) {
   return (
-    <Table size="small" className="small_table">
+    <Table size="small" className="small-table">
       <TableHead>
         <TableRow>
           <TableCell>Made from</TableCell>

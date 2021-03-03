@@ -1,13 +1,4 @@
 .Inventory {
-  .search {
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    min-height: 36px;
-    max-height: 36px;
-    min-width: 64px;
-    margin-right: 25px;
-  }
-
   .inventory__top {
     display: flex;
     justify-content: space-between;
@@ -52,6 +43,33 @@
       @media (min-width: 768px) {
         font-size: 14px;
         color: var(--text);
+      }
+
+      &__search {
+        th {
+          padding-top: 10px;
+          padding-bottom: 0px;
+          border-bottom: none;
+        }
+
+        .search {
+          border: 1px solid var(--border);
+          border-radius: 5px;
+          min-height: 40px;
+          svg {
+            margin: 0 5px 0 5px;
+          }
+        }
+
+        &__filter {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+
+          label {
+            padding-right: 10px;
+          }
+        }
       }
 
       &__tr {
