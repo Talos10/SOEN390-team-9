@@ -141,7 +141,9 @@ export default function Inventory() {
                   <InputLabel>Filter by type:</InputLabel>
                   <Select value={table.typeFilter} onChange={handleChange}>
                     {filters.map((filter, i) => (
-                      <MenuItem key={i} value={i}>{filter}</MenuItem>
+                      <MenuItem key={i} value={i}>
+                        {filter}
+                      </MenuItem>
                     ))}
                   </Select>
                 </div>
