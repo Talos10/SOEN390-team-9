@@ -14,3 +14,49 @@
     margin-top: 10px;
   }
 }
+
+.table_row {
+  display: table-row;
+
+  td {
+    padding-top: 25px;
+    padding-bottom: 25px;
+
+    &:first-child {
+      padding-left: 30px;
+    }
+
+    &:last-child {
+      padding-right: 30px;
+    }
+  }
+
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #f5f5f5;
+  }
+}
+
+.small_table {
+  display: table-row;
+
+  th {
+    color: var(--text-faded);
+  }
+
+  td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  tbody {
+    tr {
+      &:last-child {
+        td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

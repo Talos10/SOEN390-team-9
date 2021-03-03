@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, Fragment } from 'react';
 import {
   Button,
   IconButton,
@@ -15,19 +15,31 @@ import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons/';
 import { Item } from '../../../interfaces/Items';
 import './ItemRow.scss';
 
-interface Props{
-  props:Item;
+interface Props {
+  props: Item;
+  archiveFunc: Function;
+  open: boolean;
+}
+
+interface InfoTableProps {
+  props: Item;
   archiveFunc: Function;
 }
 
-export default function ItemRow({props, archiveFunc}: Props) {
-  const [open, setOpen] = React.useState(false);
+interface ItemProps {
+  item: Item;
+}
+
+export default function ItemRow({ props, archiveFunc, open }: Props) {
+  const [tableOpen, setTableOpen] = useState<boolean>(open);
 
   return (
-    <React.Fragment>
-      <TableRow onClick={() => setOpen(!open)}>
+    <Fragment>
+      <TableRow onClick={() => setTableOpen(!tableOpen)} className="table_row">
         <TableCell>
-          <IconButton size="small">{open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}</IconButton>
+          <IconButton size="small">
+            {tableOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+          </IconButton>
         </TableCell>
         <TableCell scope="row">{props.name}</TableCell>
         <TableCell align="left">{props.quantity} in stock</TableCell>
@@ -38,56 +50,33 @@ export default function ItemRow({props, archiveFunc}: Props) {
       </TableRow>
       <TableRow className="info">
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={tableOpen} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              {props.type === 'finished' && <FinishedGood {...{props, archiveFunc}} />}
-              {props.type === 'semi-finished' && <SemiFinishedGood {...{props, archiveFunc}} />}
-              {props.type === 'raw' && <RawMaterial  {...{props, archiveFunc}} />}
+              <InfoTable {...{ props, archiveFunc }} />
             </Box>
           </Collapse>
         </TableCell>
       </TableRow>
-    </React.Fragment>
+    </Fragment>
   );
 }
 
-function ArchiveButton({props, archiveFunc}: Props) {
-  return (
-    <Button
-      variant="outlined"
-      color="primary"
-      className="button"
-      onClick={() => archiveFunc(props.id)}>
-      Archive
-    </Button>
-  );
-}
-
-function RawMaterial({props, archiveFunc}: Props) {
+function InfoTable({ props, archiveFunc }: InfoTableProps) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={9} className="Info">
-        <p>Item Id: {props.id}</p>
-        <p>Item cost: ${props.cost}</p>
-        <p>Estimated delivery time: {props.processTime} days</p>
+        {props.type === 'finished' && <FinishedGood {...{ item: props }} />}
+        {props.type === 'semi-finished' && <SemiFinishedGood {...{ item: props }} />}
+        {props.type === 'raw' && <RawMaterial {...{ item: props }} />}
       </Grid>
       <Grid item xs={3} className="Archive">
-      <ArchiveButton {...{props, archiveFunc}} />
-      </Grid>
-    </Grid>
-  );
-}
-
-function SemiFinishedGood({props, archiveFunc}: Props) {
-  return (
-    <Grid container spacing={3}>
-      <Grid item xs={9} className="Info">
-        <p>Item Id: {props.id}</p>
-        <p>Item cost: ${props.cost}</p>
-        <p>Manufacturing time: {props.processTime} minutes</p>
-      </Grid>
-      <Grid item xs={3}>
-      <ArchiveButton {...{props, archiveFunc}} />
+        <Button
+          variant="outlined"
+          color="primary"
+          className="button"
+          onClick={() => archiveFunc(props.id)}>
+          Archive
+        </Button>{' '}
       </Grid>
       <Grid item xs={6}>
         {props.components.length !== 0 && <ComponentsTable {...props} />}
@@ -99,33 +88,43 @@ function SemiFinishedGood({props, archiveFunc}: Props) {
   );
 }
 
-function FinishedGood({props, archiveFunc}: Props) {
+function RawMaterial({ item }: ItemProps) {
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={9} className="Info">
-        <p>Item Id: {props.id}</p>
-        <p>Selling price: ${props.price}</p>
-        <p>Manufacturing time: {props.processTime} minutes</p>
-      </Grid>
-      <Grid item xs={3} className="Archive">
-        <ArchiveButton {...{props, archiveFunc}} />
-      </Grid>
-      <Grid item xs={6}>
-        {props.components.length !== 0 && <ComponentsTable  {...props} />}
-      </Grid>
-      <Grid item xs={6}>
-        {props.properties.length !== 0 && <PropertiesTable  {...props} />}
-      </Grid>
-    </Grid>
+    <Fragment>
+      <p>Item Id: {item.id}</p>
+      <p>Item cost: ${item.cost}</p>
+      <p>Estimated delivery time: {item.processTime} days</p>
+    </Fragment>
+  );
+}
+
+function SemiFinishedGood({ item }: ItemProps) {
+  return (
+    <Fragment>
+      <p>Item Id: {item.id}</p>
+      <p>Item cost: ${item.cost}</p>
+      <p>Manufacturing time: {item.processTime} minutes</p>
+    </Fragment>
+  );
+}
+
+function FinishedGood({ item }: ItemProps) {
+  return (
+    <Fragment>
+      <p>Item Id: {item.id}</p>
+      <p>Selling price: ${item.price}</p>
+      <p>Manufacturing time: {item.processTime} minutes</p>
+    </Fragment>
   );
 }
 
 function PropertiesTable(item: Item) {
   return (
-    <Table size="small">
+    <Table size="small" className="small_table">
       <TableHead>
         <TableRow>
           <TableCell>Properties</TableCell>
+          <TableCell />
         </TableRow>
       </TableHead>
       <TableBody>
@@ -142,7 +141,7 @@ function PropertiesTable(item: Item) {
 
 function ComponentsTable(item: Item) {
   return (
-    <Table size="small">
+    <Table size="small" className="small_table">
       <TableHead>
         <TableRow>
           <TableCell>Made from</TableCell>
