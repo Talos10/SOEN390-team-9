@@ -5,6 +5,7 @@ interface Property {
 
 interface Component {
     id: number;
+    name?: string;
     quantity: number;
 }
 
