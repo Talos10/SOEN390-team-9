@@ -81,7 +81,7 @@ class ManufacturingOrder {
     public static async getOrderedGoodOfOrder(id: number): Promise<OrderedGood[]> {
         const orderedGoods = await db
             .select('compositeId', 'totalCost', 'quantity')
-            .from('ordered_good')
+            .from('manufacturing_ordered_good')
             .where('orderId', '=', id);
         return orderedGoods;
     }
@@ -115,7 +115,7 @@ class ManufacturingOrder {
             unique.push(o.compositeId);
             return true;
         });
-        await db('ordered_good').insert(uniqueGoods);
+        await db('manufacturing_ordered_good').insert(uniqueGoods);
     }
 
     /**
