@@ -27,7 +27,7 @@ export default function AddGoal() {
   };
 
   return (
-    <Container>
+    <Container title="Add Goal">
       <form className="AddForm" onSubmit={addGoal}>
         <div className="top">
           <h1 className="title">Add Goal</h1>

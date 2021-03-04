@@ -23,8 +23,8 @@ export default function ExportButton() {
   };
 
   return (
-    <Button color="primary" variant="contained" component="button" onClick={() => toCSV()}>
-      Export CSV
+    <Button variant="outlined" component="button" onClick={toCSV}>
+      Export
     </Button>
   );
 }

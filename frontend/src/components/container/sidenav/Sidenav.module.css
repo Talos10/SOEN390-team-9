@@ -59,24 +59,10 @@
   color: var(--text-white);
   font-size: 24px;
   font-weight: 300;
-}
-
-.SidenavLogo,
-.SidenavItem {
-  text-decoration: none;
-  display: flex;
-  align-items: center;
   height: 48px;
   padding-left: 16px;
   padding-right: 16px;
-}
-
-a.SidenavLogo,
-a.SidenavItem {
-  color: inherit;
-}
-
-.SidenavLogo:hover,
-.SidenavItem:hover {
-  background-color: var(--sidenav-bg-dark);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
 }

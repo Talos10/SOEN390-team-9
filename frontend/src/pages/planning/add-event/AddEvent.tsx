@@ -29,7 +29,7 @@ export default function AddEvent() {
   };
 
   return (
-    <Container>
+    <Container title="AddForm">
       <form className="AddForm" onSubmit={addEvent}>
         <div className="top">
           <h1 className="title">Add Event</h1>
