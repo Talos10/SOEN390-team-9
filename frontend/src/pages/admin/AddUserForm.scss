@@ -1,0 +1,61 @@
+.AddUserForm {
+  display: flex;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+
+  &__input {
+    height: 36.5px;
+    margin-right: 8px;
+    display: flex;
+    flex-grow: 1;
+
+    &__email,
+    &__password {
+      flex-grow: 1;
+      border: 1px solid var(--border);
+      height: 100%;
+      padding: 0 8px;
+      width: 0;
+
+      &:hover {
+        border-color: black;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 1px var(--primary);
+        border-color: var(--primary);
+      }
+    }
+
+    &__email {
+      border-radius: 4px 0 0 4px;
+    }
+
+    &__password {
+      margin-left: -1px;
+    }
+
+    &__role {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      border: 1px solid var(--border);
+      border-left: none;
+      height: 100%;
+      margin-left: -1px;
+      border-radius: 0 4px 4px 0;
+
+      .MuiInput-root {
+        &::before,
+        &::after {
+          content: none;
+        }
+      }
+
+      .MuiSelect-root {
+        padding: 9px 24px 10px 8px;
+      }
+    }
+  }
+}

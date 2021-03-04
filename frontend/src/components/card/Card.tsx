@@ -3,11 +3,9 @@ import styles from './Card.module.css';
 interface Props
   extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
 
-export default function Card(props: Props) {
-  const className = [styles.Card, props.className].join(' ');
-
+export default function Card({ className, ...props }: Props) {
   return (
-    <div {...props} className={className}>
+    <div {...props} className={`${styles.Card} ${className}`}>
       {props.children}
     </div>
   );

@@ -19,10 +19,7 @@ export default function Login() {
     const response = await auth.logIn(email, password);
 
     if (!response.status) handleLoginError(response.error);
-    else {
-      handleLoginSuccess();
-      window.location.reload(false);
-    }
+    else handleLoginSuccess();
   };
 
   const getCredentials = (form: HTMLFormElement) => {
@@ -54,6 +51,7 @@ export default function Login() {
               type="email"
               variant="outlined"
               label="Email"
+              autoComplete="email"
               fullWidth
               required
               error={error}
@@ -68,6 +66,7 @@ export default function Login() {
               name="password"
               type="password"
               variant="outlined"
+              autoComplete="current-password"
               label="Password"
               error={error}
               fullWidth
