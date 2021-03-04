@@ -73,7 +73,7 @@ class Controller {
             }
         );
 
-         /**
+        /**
          * Get all archived or non-archived customers
          */
         this.router.get(
@@ -82,11 +82,10 @@ class Controller {
             async (req: Request, res: Response) => {
                 const archivedNum = Number(req.params.archived);
                 var archived;
-                
+
                 if (archivedNum == 0) {
                     archived = false;
-                }
-                else {
+                } else {
                     archived = true;
                 }
 

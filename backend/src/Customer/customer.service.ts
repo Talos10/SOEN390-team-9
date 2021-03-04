@@ -7,10 +7,7 @@ class Service {
         return allCustomers;
     }
 
-    public async createNewCustomer(
-        name: string,
-        email: string,
-    ): Promise<number> {
+    public async createNewCustomer(name: string, email: string): Promise<number> {
         const newCustomer = new CustomerModel({
             name: name,
             email: email
@@ -24,11 +21,7 @@ class Service {
         return customer;
     }
 
-    public async updateCustomer(
-        customerID: number,
-        name: string,
-        email: string
-    ): Promise<number> {
+    public async updateCustomer(customerID: number, name: string, email: string): Promise<number> {
         const newCustomer = new CustomerModel({
             name: name,
             email: email
@@ -46,7 +39,9 @@ class Service {
         try {
             if (await CustomerModel.archive(customerID, archive)) {
                 logger.info(
-                    `${archive ? 'archive' : 'un-archive'} successful for customer with id: ${customerID}`,
+                    `${
+                        archive ? 'archive' : 'un-archive'
+                    } successful for customer with id: ${customerID}`,
                     ['customer', 'archive']
                 );
                 return [customerID];

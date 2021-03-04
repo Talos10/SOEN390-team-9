@@ -5,7 +5,7 @@ class Customer {
     public name: string;
     public email: string;
 
-    constructor(customer: { name: string; email: string}) {
+    constructor(customer: { name: string; email: string }) {
         this.name = customer.name;
         this.email = customer.email;
     }
