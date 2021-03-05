@@ -14,8 +14,9 @@ class Controller {
     }
 
     private initRoutes() {
-
-        // Retrieve all events
+        /**
+         * Get all the events
+         */
         this.router.get(
             '/events',
             passport.authenticate('jwt', { session: false }),
@@ -25,7 +26,9 @@ class Controller {
             }
         );
 
-        // Create new event
+        /**
+         * Create a new event
+         */
         this.router.post(
             '/newEvent',
             passport.authenticate('jwt', { session: false }),
@@ -36,7 +39,9 @@ class Controller {
             }
         );
 
-       // Delete an event
+       /**
+        * Delete an existing event
+        */
        this.router.delete(
             '/:eventId',
             passport.authenticate('jwt', { session: false }),
@@ -47,7 +52,9 @@ class Controller {
             }
         );
 
-    // Retrieve all goals
+    /**
+     * Get all goals
+     */
     this.router.get(
         '/goals',
         passport.authenticate('jwt', { session: false }),
@@ -57,7 +64,9 @@ class Controller {
         }
     );
 
-     // Create new goal
+     /**
+      * Create a new goal
+      */
      this.router.post(
         '/newGoal',
         passport.authenticate('jwt', { session: false }),
@@ -68,7 +77,9 @@ class Controller {
         }
     );
 
-     // Delete a goal
+     /**
+      * Delete an existing goal
+      */
      this.router.delete(
         '/:goalId',
         passport.authenticate('jwt', { session: false }),
@@ -79,7 +90,9 @@ class Controller {
         }
     );
 
-    // Update a goal
+    /**
+     * Update an existing goal (mark it as complete)
+     */
     this.router.put(
         '/:goalId',
         passport.authenticate('jwt', { session: false }),
