@@ -140,19 +140,6 @@ CREATE TABLE `soen_390_db`.`manufacturing_order` (
   
   collate = utf8mb4_unicode_ci;
 
--- Table to store the different orders of finished goods put in by customers.
-CREATE TABLE `soen_390_db`.`customer_order` (
-  `orderId` INT NOT NULL AUTO_INCREMENT,
-  `status` VARCHAR(45) NOT NULL,
-  `totalPrice` DECIMAL(10,2) NOT NULL,
-  `creationDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `completionDate` DATETIME,
-  PRIMARY KEY (`orderId`),
-  CONSTRAINT `validItemStatusCustomerOrder`
-  CHECK (`status` IN ("confirmed", "cancelled", "completed")))
-  
-  collate = utf8mb4_unicode_ci;
-
 -- Table to store the bought raw goods and to store the various semi-finished goods that
 -- the manufacturing division has given an order to produce for each manufacturing order.
 CREATE TABLE `soen_390_db`.`manufacturing_ordered_good` (
@@ -174,6 +161,25 @@ CREATE TABLE `soen_390_db`.`manufacturing_ordered_good` (
     
 	collate = utf8mb4_unicode_ci;
 
+-- Table to store the different orders of finished goods put in by customers.
+CREATE TABLE `soen_390_db`.`customer_order` (
+  `orderId` INT NOT NULL AUTO_INCREMENT,
+  `customerId` INT NOT NULL,
+  `status` VARCHAR(45) NOT NULL,
+  `totalPrice` DECIMAL(10,2) NOT NULL,
+  `creationDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `completionDate` DATETIME,
+  PRIMARY KEY (`orderId`),
+  CONSTRAINT `customerIdForeignKey`
+    FOREIGN KEY (`customerId`)
+    REFERENCES `soen_390_db`.`customer` (`customerId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `validItemStatusCustomerOrder`
+  CHECK (`status` IN ("confirmed", "cancelled", "completed")))
+  
+  collate = utf8mb4_unicode_ci;
+
 -- Table to store the various finished goods that are associated with each customer order.
 CREATE TABLE `soen_390_db`.`customer_ordered_good` (
   `orderId` INT NOT NULL,
@@ -191,24 +197,6 @@ CREATE TABLE `soen_390_db`.`customer_ordered_good` (
     REFERENCES `soen_390_db`.`inventory_good` (`id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
-    
-	collate = utf8mb4_unicode_ci;
-
--- Table to link the customers to their various orders.
-CREATE TABLE `soen_390_db`.`orders` (
-  `customerId` INT NOT NULL,
-  `orderId` INT NOT NULL,
-  PRIMARY KEY (`customerId`, `orderId`),
-  CONSTRAINT `customerIdForeignKey`
-    FOREIGN KEY (`customerId`)
-    REFERENCES `soen_390_db`.`customer` (`customerId`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `ordersCustomerOrderIDForeignKey`
-    FOREIGN KEY (`orderId`)
-    REFERENCES `soen_390_db`.`customer_order` (`orderId`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
     
 	collate = utf8mb4_unicode_ci;
 
@@ -280,22 +268,15 @@ VALUES
 ("completed", '2015-05-10 13:17:17', 55.76, NOW())
 ;
 
-INSERT `customer_order` (`status`, `creationDate`, `totalPrice`) 
+INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`) 
 VALUES
-("confirmed", '2015-05-10 13:17:17', 1245.99),
-("cancelled", '2015-05-10 13:17:17', 0)
+(1, "confirmed", '2015-05-10 13:17:17', 1245.99),
+(2, "cancelled", '2015-05-10 13:17:17', 0)
 ;
 
-INSERT `customer_order` (`status`, `creationDate`, `totalPrice`, `completionDate`) 
+INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`, `completionDate`) 
 VALUES
-("completed", '2015-05-10 13:17:17', 2491.98, NOW())
-;
-
-INSERT `orders` (`customerId`, `orderId`) 
-VALUES
-(1, 1),
-(2, 2),
-(3, 3)
+(3, "completed", '2015-05-10 13:17:17', 2491.98, NOW())
 ;
 
 INSERT `composition_of_good` (`compositeId`, `componentId`, `quantity`)
