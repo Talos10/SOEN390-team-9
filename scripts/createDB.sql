@@ -27,11 +27,11 @@ CREATE TABLE `soen_390_db`.`user` (
 
 -- Table to store the customers.
 CREATE TABLE `soen_390_db`.`customer` (
-  `customerID` INT NOT NULL AUTO_INCREMENT,
+  `customerId` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `archived` TINYINT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`customerID`))
+  PRIMARY KEY (`customerId`))
 
   collate = utf8mb4_unicode_ci;
 
@@ -196,12 +196,12 @@ CREATE TABLE `soen_390_db`.`customer_ordered_good` (
 
 -- Table to link the customers to their various orders.
 CREATE TABLE `soen_390_db`.`orders` (
-  `customerID` INT NOT NULL,
+  `customerId` INT NOT NULL,
   `orderId` INT NOT NULL,
-  PRIMARY KEY (`customerID`, `orderId`),
-  CONSTRAINT `customerIDForeignKey`
-    FOREIGN KEY (`customerID`)
-    REFERENCES `soen_390_db`.`customer` (`customerID`)
+  PRIMARY KEY (`customerId`, `orderId`),
+  CONSTRAINT `customerIdForeignKey`
+    FOREIGN KEY (`customerId`)
+    REFERENCES `soen_390_db`.`customer` (`customerId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `ordersCustomerOrderIDForeignKey`
@@ -291,7 +291,7 @@ VALUES
 ("completed", '2015-05-10 13:17:17', 2491.98, NOW())
 ;
 
-INSERT `orders` (`customerID`, `orderId`) 
+INSERT `orders` (`customerId`, `orderId`) 
 VALUES
 (1, 1),
 (2, 2),
