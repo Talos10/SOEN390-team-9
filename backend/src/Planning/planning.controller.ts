@@ -43,66 +43,66 @@ class Controller {
         * Delete an existing event
         */
        this.router.delete(
-            '/:eventId',
+            '/event/:eventId',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
-                const eventId = Number(req.params.id);
+                const eventId = Number(req.params.eventId);
                 const result = await this.planningService.deleteEvent(eventId);
                 res.json(result);
             }
         );
 
-    /**
-     * Get all goals
-     */
-    this.router.get(
-        '/goals',
-        passport.authenticate('jwt', { session: false }),
-        async (req: Request, res: Response) => {
-            const result = await this.planningService.getAllGoals();
-            res.json(result);
-        }
-    );
+        /**
+         * Get all goals
+         */
+        this.router.get(
+            '/goals',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const result = await this.planningService.getAllGoals();
+                res.json(result);
+            }
+        );
 
-     /**
-      * Create a new goal
-      */
-     this.router.post(
-        '/newGoal',
-        passport.authenticate('jwt', { session: false }),
-        async (req: Request, res: Response) => {
-            const newGoal = req.body;
-            const result = await this.planningService.addGoal(newGoal);
-            res.json(result);
-        }
-    );
+        /**
+         * Create a new goal
+         */
+        this.router.post(
+            '/newGoal',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const newGoal = req.body;
+                const result = await this.planningService.addGoal(newGoal);
+                res.json(result);
+            }
+        );
 
-     /**
-      * Delete an existing goal
-      */
-     this.router.delete(
-        '/:goalId',
-        passport.authenticate('jwt', { session: false }),
-        async (req: Request, res: Response) => {
-            const goalId = Number(req.params.id);
-            const result = await this.planningService.deleteGoal(goalId);
-            res.json(result);
-        }
-    );
+        /**
+         * Delete an existing goal
+         */
+        this.router.delete(
+            '/goal/:goalId',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const goalId = Number(req.params.goalId);
+                const result = await this.planningService.deleteGoal(goalId);
+                res.json(result);
+            }
+        );
 
-    /**
-     * Update an existing goal (mark it as complete)
-     */
-    this.router.put(
-        '/:goalId',
-        passport.authenticate('jwt', { session: false }),
-        async (req: Request, res: Response) => {
-            const id = Number(req.params.id);
-            const updatedGoal = req.body;
-            const result = await this.planningService.updateGoal(updatedGoal);
-            res.json(result);
-        }
-    );
+        /**
+         * Update an existing goal (mark it as complete)
+         */
+        this.router.put(
+            '/:goalId',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const id = Number(req.params.goalId);
+                const { completed, targetDate, title } = req.body;
+                const result = await this.planningService.updateGoal(id, completed, targetDate, title);
+                res.json(result);
+            }
+        );
 
     }
 }

@@ -11,13 +11,14 @@ import cors from 'cors';
 import UserController from './User/user.controller';
 import GoodController from './Good/good.controller';
 import ManufacturingController from './Manufacturing/manufacturing.controller';
+import PlanningController from './Planning/planning.controller';
 
 // Start the server
 const port = config.port;
 
 const app = new App({
     port: port,
-    controllers: [new UserController(), new GoodController(), new ManufacturingController()],
+    controllers: [new UserController(), new GoodController(), new ManufacturingController(), new PlanningController()],
     middleWares: [
         cors(),
         bodyParser.json(),

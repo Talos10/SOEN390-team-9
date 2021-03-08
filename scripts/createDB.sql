@@ -284,7 +284,7 @@ INSERT `goal` (`completed`, `targetDate`, `title`)
 VALUES
 (TRUE, "2021-04-10", "Build 2000 bikes"),
 (FALSE, "2021-05-05", "Make $200 000 of profit"),
-(FALSE, "2021-12-01", "Sell 1000 bikes"),
+(FALSE, "2021-12-01", "Sell 1000 bikes")
 ;
 
 -- run the line below by itself if you want to delete the adminuser from your sql db:
