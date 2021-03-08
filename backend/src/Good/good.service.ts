@@ -132,7 +132,7 @@ class Service {
         try {
             if (await GoodModel.archive(id, archive)) {
                 logger.info(
-                    `${archive ? 'archive' : 'un-archive'} successfull for good with id: ${id}`,
+                    `${archive ? 'archive' : 'un-archive'} successful for good with id: ${id}`,
                     ['good', 'archive']
                 );
                 return {

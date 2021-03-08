@@ -25,6 +25,16 @@ CREATE TABLE `soen_390_db`.`user` (
 
   collate = utf8mb4_unicode_ci;
 
+-- Table to store the customers.
+CREATE TABLE `soen_390_db`.`customer` (
+  `customerId` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `archived` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`customerId`))
+
+  collate = utf8mb4_unicode_ci;
+
 -- Table to store the raw materials, semi-finished goods, and finished goods all
 -- under one table.
 CREATE TABLE `soen_390_db`.`inventory_good` (
@@ -130,9 +140,22 @@ CREATE TABLE `soen_390_db`.`manufacturing_order` (
   
   collate = utf8mb4_unicode_ci;
 
+-- Table to store the different orders of finished goods put in by customers.
+CREATE TABLE `soen_390_db`.`customer_order` (
+  `orderId` INT NOT NULL AUTO_INCREMENT,
+  `status` VARCHAR(45) NOT NULL,
+  `totalPrice` DECIMAL(10,2) NOT NULL,
+  `creationDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `completionDate` DATETIME,
+  PRIMARY KEY (`orderId`),
+  CONSTRAINT `validItemStatusCustomerOrder`
+  CHECK (`status` IN ("confirmed", "cancelled", "completed")))
+  
+  collate = utf8mb4_unicode_ci;
+
 -- Table to store the bought raw goods and to store the various semi-finished goods that
 -- the manufacturing division has given an order to produce for each manufacturing order.
-CREATE TABLE `soen_390_db`.`ordered_good` (
+CREATE TABLE `soen_390_db`.`manufacturing_ordered_good` (
   `orderId` INT NOT NULL,
   `compositeId` INT NOT NULL,
   `totalCost` DECIMAL(10,2) NOT NULL,
@@ -168,10 +191,55 @@ CREATE TABLE `soen_390_db`.`goal` (
   `targetDate` DATE NOT NULL,
   `title` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`id`))
-
-	collate = utf8mb4_unicode_ci;
+               
+  collate = utf8mb4_unicode_ci;
 
 -- date is of the format yyyy-mm-dd and the price can be given with a maximum of two digits after the dot.
+
+
+-- Table to store the various finished goods that are associated with each customer order.
+CREATE TABLE `soen_390_db`.`customer_ordered_good` (
+  `orderId` INT NOT NULL,
+  `compositeId` INT NOT NULL,
+  `totalPrice` DECIMAL(10,2) NOT NULL,
+  `quantity` INT NOT NULL,
+  PRIMARY KEY (`orderId`, `compositeId`),
+  CONSTRAINT `customerOrderIDForeignKey`
+    FOREIGN KEY (`orderId`)
+    REFERENCES `soen_390_db`.`customer_order` (`orderId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `ordersInventoryItemIDForeignKey`
+    FOREIGN KEY (`compositeId`)
+    REFERENCES `soen_390_db`.`inventory_good` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE)
+    
+	collate = utf8mb4_unicode_ci;
+
+-- Table to link the customers to their various orders.
+CREATE TABLE `soen_390_db`.`orders` (
+  `customerId` INT NOT NULL,
+  `orderId` INT NOT NULL,
+  PRIMARY KEY (`customerId`, `orderId`),
+  CONSTRAINT `customerIdForeignKey`
+    FOREIGN KEY (`customerId`)
+    REFERENCES `soen_390_db`.`customer` (`customerId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `ordersCustomerOrderIDForeignKey`
+    FOREIGN KEY (`orderId`)
+    REFERENCES `soen_390_db`.`customer_order` (`orderId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+
+
+INSERT `customer` (`name`, `email`) 
+VALUES
+("Francois Legault", "legault@govt.qc.ca"),
+("Jackie Chan", "chan@hotmail.com"),
+("Pauline Marois", "marois@outlook.com")
+;
 
 INSERT `inventory_good` (`name`, `type`, `quantity`, `processTime`, `cost`) 
 VALUES
@@ -224,8 +292,30 @@ VALUES
 INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`) 
 VALUES
 ("processing", '2015-05-10 13:17:17', 55.55),
-("processing", '2015-05-10 13:17:17', 55.60),
-("completed", '2015-05-10 13:17:17', 55.76)
+("processing", '2015-05-10 13:17:17', 55.60)
+;
+
+INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`, `completionDate`) 
+VALUES
+("completed", '2015-05-10 13:17:17', 55.76, NOW())
+;
+
+INSERT `customer_order` (`status`, `creationDate`, `totalPrice`) 
+VALUES
+("confirmed", '2015-05-10 13:17:17', 1245.99),
+("cancelled", '2015-05-10 13:17:17', 0)
+;
+
+INSERT `customer_order` (`status`, `creationDate`, `totalPrice`, `completionDate`) 
+VALUES
+("completed", '2015-05-10 13:17:17', 2491.98, NOW())
+;
+
+INSERT `orders` (`customerId`, `orderId`) 
+VALUES
+(1, 1),
+(2, 2),
+(3, 3)
 ;
 
 INSERT `composition_of_good` (`compositeId`, `componentId`, `quantity`)
@@ -251,13 +341,19 @@ VALUES
 (16, 15, 2)
 ;
 
-INSERT `ordered_good` (`orderId`, `compositeId`, `quantity`, `totalCost`)
+INSERT `manufacturing_ordered_good` (`orderId`, `compositeId`, `quantity`, `totalCost`)
 VALUES
 (1, 16, 1, 20.55),
 (2, 1, 1, 25.10),
 (2, 2, 1, 21.23),
 (2, 3, 1, 22.14),
 (3, 11, 1, 25.66)
+;
+
+INSERT `customer_ordered_good` (`orderId`, `compositeId`, `quantity`, `totalPrice`)
+VALUES
+(1, 16, 1, 1245.99),
+(3, 16, 1, 2491.98)
 ;
 
 INSERT `property_of_good` (`compositeId`, `name`, `value`)
