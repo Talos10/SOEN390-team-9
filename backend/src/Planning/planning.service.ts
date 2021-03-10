@@ -6,7 +6,6 @@ import {ReturnMessage} from './planning.interfaces';
 import { config } from '../../config';
 import logger from '../shared/Logger';
 
-//**TODO: ADD Logger */
 class Service {
 
     /**
@@ -53,7 +52,7 @@ class Service {
             const newEvent = new EventModel({
                 date: event.date,
                 time: event.time,
-                title: event.title,
+                title: event.title
             });
             const res = await EventModel.addEvent(newEvent);
             return {status: true, message: res};

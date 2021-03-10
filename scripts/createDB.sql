@@ -233,6 +233,7 @@ CREATE TABLE `soen_390_db`.`orders` (
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 
+	collate = utf8mb4_unicode_ci;
 
 INSERT `customer` (`name`, `email`) 
 VALUES

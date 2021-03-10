@@ -30,7 +30,7 @@ class Controller {
          * Create a new event
          */
         this.router.post(
-            '/newEvent',
+            '/events',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const newEvent = req.body;
@@ -43,7 +43,7 @@ class Controller {
         * Delete an existing event
         */
        this.router.delete(
-            '/event/:eventId',
+            '/events/:eventId',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const eventId = Number(req.params.eventId);
@@ -68,7 +68,7 @@ class Controller {
          * Create a new goal
          */
         this.router.post(
-            '/newGoal',
+            '/goals',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const newGoal = req.body;
@@ -81,7 +81,7 @@ class Controller {
          * Delete an existing goal
          */
         this.router.delete(
-            '/goal/:goalId',
+            '/goals/:goalId',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const goalId = Number(req.params.goalId);
@@ -94,7 +94,7 @@ class Controller {
          * Update an existing goal (mark it as complete)
          */
         this.router.put(
-            '/:goalId',
+            '/goals/:goalId',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const id = Number(req.params.goalId);
