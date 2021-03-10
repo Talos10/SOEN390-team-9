@@ -20,6 +20,11 @@ const payload = {
     name: 'Fake Name',
     role: 'Fake Role'
 };
+const mockGoal = {
+    completed: false, 
+    targetDate: new Date("2022-01-01"),
+    title: 'test goal'
+}
 const token = jwt.sign(payload, config.jwt_public_key, { expiresIn: '1d' });
 
 describe('Planning Controller Test', () => {
@@ -48,6 +53,23 @@ describe('Planning Controller Test', () => {
         app.shutdown();
     });
 
+    it('Test get all goals route', async () => {
+        const mockPlanningService = sandbox.createStubInstance(PlanningService);
+        mockPlanningService.getAllGoals.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new PlanningController(mockPlanningService)],
+            middleWares: []
+        });
+        app.listen();
+        const res = await request(app.app)
+            .get('/planning/goals/')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
     it('Test post an event', async () => {
         const mockPlanningService = sandbox.createStubInstance(PlanningService);
         mockPlanningService.addEvent.resolves('foo');
@@ -70,6 +92,28 @@ describe('Planning Controller Test', () => {
         app.shutdown();
     });
 
+    it('Test post a goal', async () => {
+        const mockPlanningService = sandbox.createStubInstance(PlanningService);
+        mockPlanningService.addGoal.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new PlanningController(mockPlanningService)],
+            middleWares: []
+        });
+        app.listen();
+        const res = await request(app.app)
+            .post('/planning/goals')
+            .send({
+                "completed": 0,
+                "targetDate": "2021-11-06",
+                "title": "Sell 500 bikes"
+            })
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
     it('Test delete an event', async () => {
         const mockPlanningService = sandbox.createStubInstance(PlanningService);
         mockPlanningService.deleteEvent.resolves('foo');
@@ -81,6 +125,42 @@ describe('Planning Controller Test', () => {
         app.listen();
         const res = await request(app.app)
             .delete('/planning/events/1')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test delete a goal', async () => {
+        const mockPlanningService = sandbox.createStubInstance(PlanningService);
+        mockPlanningService.deleteGoal.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new PlanningController(mockPlanningService)],
+            middleWares: []
+        });
+        app.listen();
+        const res = await request(app.app)
+            .delete('/planning/goals/1')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test modify a goal', async () => {
+        const mockPlanningService = sandbox.createStubInstance(PlanningService);
+        mockPlanningService.updateGoal.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new PlanningController(mockPlanningService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .put('/planning/goals/:goalId')
+            .set('Accept', 'application/json')
+            .send(mockGoal)
             .set('Authorization', 'bearer ' + token);
         expect(res.body).to.equal('foo');
         expect(res.status).to.equal(200);
