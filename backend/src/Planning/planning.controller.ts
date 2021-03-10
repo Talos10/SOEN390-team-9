@@ -39,10 +39,10 @@ class Controller {
             }
         );
 
-       /**
-        * Delete an existing event
-        */
-       this.router.delete(
+        /**
+         * Delete an existing event
+         */
+        this.router.delete(
             '/events/:eventId',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
@@ -99,11 +99,15 @@ class Controller {
             async (req: Request, res: Response) => {
                 const id = Number(req.params.goalId);
                 const { completed, targetDate, title } = req.body;
-                const result = await this.planningService.updateGoal(id, completed, targetDate, title);
+                const result = await this.planningService.updateGoal(
+                    id,
+                    completed,
+                    targetDate,
+                    title
+                );
                 res.json(result);
             }
         );
-
     }
 }
 

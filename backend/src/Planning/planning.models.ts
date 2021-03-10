@@ -1,4 +1,4 @@
-import {EventInterface, GoalInterface} from './planning.interfaces';
+import { EventInterface, GoalInterface } from './planning.interfaces';
 import db from '../shared/dbConnection';
 
 class Event {
@@ -35,7 +35,6 @@ class Event {
     public static async addEvent(event: Event): Promise<number> {
         return await db('event').insert(event);
     }
-
 }
 
 class Goal {
@@ -66,7 +65,7 @@ class Goal {
     }
 
     /**
-     * Add a goal 
+     * Add a goal
      * @param goal the goal to be added
      */
     public static async addGoal(goal: Goal): Promise<number> {
@@ -74,7 +73,7 @@ class Goal {
     }
 
     /**
-     * 
+     *
      * @param goalId the id of the goal we wish to update
      * @param goal the updated goal
      */
@@ -83,11 +82,10 @@ class Goal {
             .update({
                 completed: goal.completed,
                 targetDate: goal.targetDate,
-                title: goal.title,
+                title: goal.title
             })
             .where('id', goalId);
     }
-
 }
 
 export { Event, Goal };

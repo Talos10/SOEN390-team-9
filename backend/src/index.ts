@@ -19,7 +19,13 @@ const port = config.port;
 
 const app = new App({
     port: port,
-    controllers: [new UserController(), new GoodController(), new ManufacturingController(), new CustomerController(), new PlanningController()],
+    controllers: [
+        new UserController(),
+        new GoodController(),
+        new ManufacturingController(),
+        new CustomerController(),
+        new PlanningController()
+    ],
     middleWares: [
         cors(),
         bodyParser.json(),

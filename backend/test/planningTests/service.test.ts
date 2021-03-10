@@ -4,8 +4,8 @@ import { expect } from 'chai';
 import 'mocha';
 
 import PlanningService from '../../src/Planning/planning.service';
-import {Event} from '../../src/Planning/planning.models';
-import {Goal} from '../../src/Planning/planning.models';
+import { Event } from '../../src/Planning/planning.models';
+import { Goal } from '../../src/Planning/planning.models';
 
 sinonStubPromise(sinon);
 
@@ -19,11 +19,11 @@ const mockEvent = {
 };
 
 const mockGoal = {
-    id: 4, 
-    completed: false, 
-    targetDate: new Date("2022-01-01"),
+    id: 4,
+    completed: false,
+    targetDate: new Date('2022-01-01'),
     title: 'test goal'
-}
+};
 
 describe('Planning Service Test', () => {
     beforeEach(() => {
@@ -48,7 +48,7 @@ describe('Planning Service Test', () => {
         const res = await planningService.getAllGoals();
         expect(res.message).to.equal('foo');
         expect(res.status).to.equal(true);
-    })
+    });
 
     it('Test add an event', async () => {
         const planningService = new PlanningService();
@@ -64,7 +64,7 @@ describe('Planning Service Test', () => {
         const res = await planningService.addGoal(mockGoal);
         expect(res.message).to.equal('foo');
         expect(res.status).to.equal(true);
-    })
+    });
 
     it('Test delete an event', async () => {
         const planningService = new PlanningService();
@@ -87,12 +87,11 @@ describe('Planning Service Test', () => {
         sandbox.stub(Goal, 'updateById').resolves('foo');
         const res = await planningService.updateGoal(
             mockGoal.id,
-            mockGoal.completed, 
-            mockGoal.targetDate, 
+            mockGoal.completed,
+            mockGoal.targetDate,
             mockGoal.title
         );
         expect(res.message).to.equal('foo');
         expect(res.status).to.equal(true);
-    })
+    });
 });
-

@@ -10,10 +10,10 @@ interface GoalInterface {
     title: string;
 }
 
- interface ReturnMessage {
-     status: boolean;
-     message: any | any[];
-     good?: any;
- }
+interface ReturnMessage {
+    status: boolean;
+    message: any | any[];
+    good?: any;
+}
 
-export {EventInterface, GoalInterface, ReturnMessage};
+export { EventInterface, GoalInterface, ReturnMessage };

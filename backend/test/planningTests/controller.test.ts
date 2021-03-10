@@ -21,10 +21,10 @@ const payload = {
     role: 'Fake Role'
 };
 const mockGoal = {
-    completed: false, 
-    targetDate: new Date("2022-01-01"),
+    completed: false,
+    targetDate: new Date('2022-01-01'),
     title: 'test goal'
-}
+};
 const token = jwt.sign(payload, config.jwt_public_key, { expiresIn: '1d' });
 
 describe('Planning Controller Test', () => {
@@ -82,9 +82,9 @@ describe('Planning Controller Test', () => {
         const res = await request(app.app)
             .post('/planning/events')
             .send({
-                "date": "2021-04-10",
-                "time": "9:00:00",
-                "title": "test event"
+                date: '2021-04-10',
+                time: '9:00:00',
+                title: 'test event'
             })
             .set('Authorization', 'bearer ' + token);
         expect(res.body).to.equal('foo');
@@ -104,9 +104,9 @@ describe('Planning Controller Test', () => {
         const res = await request(app.app)
             .post('/planning/goals')
             .send({
-                "completed": 0,
-                "targetDate": "2021-11-06",
-                "title": "Sell 500 bikes"
+                completed: 0,
+                targetDate: '2021-11-06',
+                title: 'Sell 500 bikes'
             })
             .set('Authorization', 'bearer ' + token);
         expect(res.body).to.equal('foo');
