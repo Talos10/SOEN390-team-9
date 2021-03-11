@@ -60,7 +60,7 @@ Supreme ERP is an ERP (enterprise resource planning) web app which is targeted t
     git clone https://github.com/Talos10/SOEN390-team-9.git --recursive
     ```
 
-### Running using docker
+### Running Using Docker
 
 * Start Supreme ERP
     ```
