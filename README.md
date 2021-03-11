@@ -27,7 +27,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
-        <li><a href="#running-using-docker">Running using docker<a></li>
+        <li><a href="#running-using-docker">Running Using Docker<a></li>
       </ul>
     </li>
     <li><a href="#more-info">More Information</a></li>
