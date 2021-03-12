@@ -58,14 +58,18 @@ export default function ImportButton() {
 
   /** Process the csv to JSON object and submits it*/
   const toJSON = async (selectorFiles: FileList | null) => {
+    // cases where nothing was selected
     if (selectorFiles === null) return;
     if (selectorFiles.length === 0) return;
+
+    // case where a file was selected
     const csvfile = selectorFiles[selectorFiles.length - 1];
     const blob = await csvfile.text();
     const options = { header: true };
     const results = readString(blob, options).data as Good[];
     const goodsList: Good[] = [];
 
+    // filtering and converting numerical values to the right datatype
     results.forEach(good => {
       if (good.name === '') return;
 
