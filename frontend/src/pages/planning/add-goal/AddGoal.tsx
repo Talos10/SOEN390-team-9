@@ -31,7 +31,7 @@ export default function AddGoal() {
     });
 
     const response = await request.json();
-    if(response.status) {
+    if (response.status) {
       history.push('/planning');
       snackbar.push(`${data?.title} has been saved`);
     }

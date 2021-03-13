@@ -8,17 +8,17 @@ import { useEffect, useState } from 'react';
 import { API_EVENTS, API_GOALS } from '../../utils/api';
 
 interface Event {
-  id: number,
-  date: string,
-  time: string,
-  title: string,
+  id: number;
+  date: string;
+  time: string;
+  title: string;
 }
 
 interface Goal {
-  id: number,
-  completed: boolean,
-  targetDate: string,
-  title: string
+  id: number;
+  completed: boolean;
+  targetDate: string;
+  title: string;
 }
 
 export default function Planning() {
@@ -32,7 +32,7 @@ export default function Planning() {
     const response = await request.json();
     const events = response.message as Event[];
     events.forEach(function (event) {
-      event.date = event.date.substring(0,10); // find a better way to do this
+      event.date = event.date.substring(0, 10); // find a better way to do this
     });
     setEvents(events);
   };
@@ -44,8 +44,8 @@ export default function Planning() {
     const response = await request.json();
     const goals = response.message as Goal[];
     goals.forEach(function (goal) {
-      goal.targetDate = goal.targetDate.substring(0,10); // find a better way to do this
-      goal.completed = !!(Number(goal.completed));
+      goal.targetDate = goal.targetDate.substring(0, 10); // find a better way to do this
+      goal.completed = !!Number(goal.completed);
     });
     setGoals(goals);
   };
