@@ -12,3 +12,7 @@ export const API_GOOD = `${api}/good`;
 export const API_GOOD_SINGLE = `${api}/good/single`;
 /** Archive a good */
 export const API_ARCHIVE_GOOD = `${api}/good/archive`;
+/** Get all events */
+export const API_EVENTS = `${api}/planning/events`;
+/** Get all goals */
+export const API_GOALS = `${api}/planning/goals`;

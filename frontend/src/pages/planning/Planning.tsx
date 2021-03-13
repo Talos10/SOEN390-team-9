@@ -3,28 +3,52 @@ import './Planning.scss';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { API_EVENTS, API_GOALS } from '../../utils/api';
+
+interface Event {
+  id: number,
+  date: string,
+  time: string,
+  title: string,
+}
+
+interface Goal {
+  id: number,
+  completed: boolean,
+  targetDate: string,
+  title: string
+}
 
 export default function Planning() {
-  //Dummy data (TODO Sprint 3: replace with backend logic)
-  const events = [
-    { id: 1, date: '03/18/2021', time: '10:00 AM', title: "Bruno's birthday celebration" },
-    { id: 2, date: '03/24/2021', time: '12:30 PM', title: 'Lunch and Learn' },
-    { id: 3, date: '04/14/2021', time: '11:00 AM', title: 'CEO company wide meeting' },
-    {
-      id: 4,
-      date: '05/20/2021',
-      time: '2:00 PM',
-      title: 'Meeting with vendor for new raw materials'
-    }
-  ];
+  const [events, setEvents] = useState<Event[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
 
-  //Dummy data (TODO Sprint 3: replace with backend logic)
-  const [goals, setGoals] = useState([
-    { id: 1, completed: true, date: '04/10/2021', title: 'Build 2000 bikes' },
-    { id: 2, completed: false, date: '05/25/2021', title: 'Make $200 000 of profit' },
-    { id: 3, completed: false, date: '12/01/2021', title: 'Sell 1500 bikes' }
-  ]);
+  const getEvents = async () => {
+    const request = await fetch(API_EVENTS, {
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    const response = await request.json();
+    const events = response.message as Event[];
+    events.forEach(function (event) {
+      event.date = event.date.substring(0,10); // find a better way to do this
+    });
+    setEvents(events);
+  };
+
+  const getGoals = async () => {
+    const request = await fetch(API_GOALS, {
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    const response = await request.json();
+    const goals = response.message as Goal[];
+    goals.forEach(function (goal) {
+      goal.targetDate = goal.targetDate.substring(0,10); // find a better way to do this
+    });
+    console.log(goals);
+    setGoals(goals);
+  };
 
   const handleCheckboxTick = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGoals(
@@ -33,6 +57,11 @@ export default function Planning() {
       )
     );
   };
+
+  useEffect(() => {
+    getGoals();
+    getEvents();
+  }, []);
 
   return (
     <Container title="Planning" className="Planning">
@@ -87,7 +116,7 @@ export default function Planning() {
           <tbody>
             {/*Display incomplete goals first*/}
             {goals
-              .filter(goal => goal.completed === false)
+              .filter(goal => goal.completed == false)
               .map(goal => (
                 <tr key={goal.id}>
                   <td className="name">
@@ -99,13 +128,13 @@ export default function Planning() {
                       color="primary"
                     />
                   </td>
-                  <td>{goal.date}</td>
+                  <td>{goal.targetDate}</td>
                   <td>{goal.title}</td>
                 </tr>
               ))}
             {/* Display completed goals at end */}
             {goals
-              .filter(goal => goal.completed === true)
+              .filter(goal => goal.completed == true)
               .map(goal => (
                 <tr key={goal.id} className="goal_completed">
                   <td className="name">
@@ -117,7 +146,7 @@ export default function Planning() {
                       color="primary"
                     />
                   </td>
-                  <td>{goal.date}</td>
+                  <td>{goal.targetDate}</td>
                   <td>{goal.title}</td>
                 </tr>
               ))}
