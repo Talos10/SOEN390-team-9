@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MenuItem, Select } from '@material-ui/core';
 
-import { Container, Card } from '../../components';
+import { Card, Progress } from '../../components';
 import { useSnackbar } from '../../contexts';
 import AddUserForm from './AddUserForm';
 import './Admin.scss';
@@ -14,7 +14,7 @@ interface User {
 }
 
 export default function Admin() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>();
   const snackbar = useSnackbar();
   const roles = ['admin', 'employee'];
 
@@ -68,8 +68,10 @@ export default function Admin() {
     getAllUsers();
   }, []);
 
-  return (
-    <Container title="Admin" className="Admin">
+  return users === undefined ? (
+    <Progress />
+  ) : (
+    <main className="Admin">
       <h1 className="title">Accounts</h1>
       <Card className="Admin__accounts">
         <AddUserForm roles={roles} getAllUsers={getAllUsers} />
@@ -88,6 +90,6 @@ export default function Admin() {
           </div>
         ))}
       </Card>
-    </Container>
+    </main>
   );
 }

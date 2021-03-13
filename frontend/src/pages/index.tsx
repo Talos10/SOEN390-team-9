@@ -1,6 +1,7 @@
 import Home from './home/Home';
 import Inventory from './inventory/Inventory';
 import AddItem from './inventory/add-item/AddItem';
+import ItemInfo from './inventory/ItemInfo';
 import Login from './login/Login';
 import NotFound from './not-found/NotFound';
 import Welcome from './welcome/Welcome';
@@ -23,5 +24,6 @@ export {
   Planning,
   AddEvent,
   AddGoal,
-  Admin
+  Admin,
+  ItemInfo
 };

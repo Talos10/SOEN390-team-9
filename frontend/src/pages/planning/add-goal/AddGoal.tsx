@@ -27,7 +27,7 @@ export default function AddGoal() {
   };
 
   return (
-    <Container title="Add Goal">
+    <main>
       <form className="AddForm" onSubmit={addGoal}>
         <div className="top">
           <h1 className="title">Add Goal</h1>
@@ -47,6 +47,6 @@ export default function AddGoal() {
           </Button>
         </div>
       </form>
-    </Container>
+    </main>
   );
 }

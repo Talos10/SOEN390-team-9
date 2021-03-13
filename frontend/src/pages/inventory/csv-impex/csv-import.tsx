@@ -102,7 +102,7 @@ export default function ImportButton() {
   };
 
   return (
-    <Button variant="outlined" component="label" htmlFor="csv_import">
+    <Button component="label" htmlFor="csv_import">
       Import
       <input
         id="csv_import"

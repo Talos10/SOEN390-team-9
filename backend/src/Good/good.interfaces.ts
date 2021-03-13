@@ -37,6 +37,8 @@ interface ReturnMessage {
 
 type AnyGood = RawGoodInterface | GoodInterface | SemiGoodInterface | FinishedGoodInterface;
 
+type SingleGoods = { id: number; schema: number; quality: string | null };
+
 export {
     AnyGood,
     ReturnMessage,
@@ -45,5 +47,6 @@ export {
     GoodInterface,
     RawGoodInterface,
     SemiGoodInterface,
-    FinishedGoodInterface
+    FinishedGoodInterface,
+    SingleGoods
 };

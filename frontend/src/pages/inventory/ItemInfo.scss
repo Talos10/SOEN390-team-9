@@ -1,0 +1,110 @@
+.ItemInfo {
+  max-width: 900px;
+  margin: 0 auto;
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+
+    &__left {
+      display: flex;
+      align-items: center;
+
+      .MuiButtonBase-root {
+        padding: 4px;
+        min-width: auto;
+        margin-right: 16px;
+      }
+
+      & > * {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .label {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .info {
+    padding-bottom: 8px;
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+
+      tr {
+        height: 50px;
+      }
+
+      tr:not(:last-child) td {
+        border-bottom: 1px solid var(--border);
+      }
+
+      td {
+        padding-top: 12px;
+        padding-bottom: 12px;
+
+        &:first-child {
+          font-size: 0.75rem;
+          letter-spacing: 0.07272727em;
+          font-weight: 500;
+          width: 175px;
+          color: var(--text-faded);
+          text-transform: uppercase;
+        }
+
+        &:last-child {
+          padding-right: 30px;
+        }
+
+        .recipe,
+        .properties {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+      }
+    }
+  }
+
+  .goods {
+    padding: 8px 0;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+
+      thead {
+        color: var(--font-faded);
+        font-weight: 500;
+      }
+
+      tr {
+        height: 50px;
+      }
+
+      td {
+        border-bottom: 1px solid var(--border);
+
+        &:first-child {
+          padding-left: 30px;
+          width: 150px;
+        }
+
+        &:last-child {
+          padding-right: 30px;
+        }
+      }
+    }
+  }
+
+  .bottom {
+    border-top: 1px solid var(--border);
+    padding-top: var(--padding);
+  }
+}

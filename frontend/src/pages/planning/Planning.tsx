@@ -35,7 +35,7 @@ export default function Planning() {
   };
 
   return (
-    <Container title="Planning" className="Planning">
+    <main className="Planning">
       <div className="planning_top">
         <h1 className="title table_title">Events</h1>
         <div className="planning_top_buttons">
@@ -124,6 +124,6 @@ export default function Planning() {
           </tbody>
         </table>
       </Card>
-    </Container>
+    </main>
   );
 }

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 
-import { Container } from '../../../components';
 import { API_GOOD_SINGLE } from '../../../utils/api';
 import { GeneralInfo, FinishedGood, Properties, SemiFinishedGood, RawMaterial } from '../shared';
 import { useSnackbar } from '../../../contexts';
@@ -148,7 +147,7 @@ export default function AddItem() {
   };
 
   return (
-    <Container title="Add Item">
+    <main>
       <form className="AddItem" onSubmit={tryAddItem}>
         <div className="top">
           <h1 className="title">Add Item</h1>
@@ -176,6 +175,6 @@ export default function AddItem() {
           </Button>
         </div>
       </form>
-    </Container>
+    </main>
   );
 }

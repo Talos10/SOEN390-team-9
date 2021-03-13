@@ -1,16 +1,12 @@
-import { Container } from '../../components';
-import React, { Component } from 'react';
+import { useSnackbar } from '../../contexts';
 
-type HomePage = {};
+export const Home = () => {
+  const snackbar = useSnackbar();
+  const testSnack = () => {
+    snackbar.push('What have you done!?', () => console.log('undid'));
+  };
 
-export class Home extends Component<{}, HomePage> {
-  render() {
-    return (
-      <Container title="Home">
-        <div>Welcome {localStorage.getItem('name')}.</div>
-      </Container>
-    );
-  }
-}
+  return <div>Welcome {localStorage.getItem('name')}.</div>;
+};
 
 export default Home;

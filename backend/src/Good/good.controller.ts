@@ -33,8 +33,8 @@ class Controller {
             '/id/:id',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
-                const id = req.params.id;
-                const results = await this.goodService.getSingleGood(Number(id));
+                const id = Number(req.params.id);
+                const results = await this.goodService.getSingleGood(id);
                 res.json(results);
             }
         );

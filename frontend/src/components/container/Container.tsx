@@ -9,7 +9,7 @@ interface Props
   title?: string;
 }
 
-export default function Container({ children, className, title, ...props }: Props) {
+export function Container({ children, className, title, ...props }: Props) {
   const [showSidenav, toggleSidenav] = useState<boolean>(false);
 
   showSidenav
@@ -19,9 +19,9 @@ export default function Container({ children, className, title, ...props }: Prop
   return (
     <div {...props} className={style.Container}>
       <Sidenav {...{ showSidenav, toggleSidenav }} />
-      <div>
+      <div className={style.Content}>
         <Appbar {...{ showSidenav, toggleSidenav, title }} />
-        <main className={`${style.main} ${className}`}>{children}</main>
+        <div className={`${style.main}`}>{children}</div>
       </div>
     </div>
   );

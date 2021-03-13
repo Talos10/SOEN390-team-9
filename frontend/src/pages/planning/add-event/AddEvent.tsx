@@ -29,7 +29,7 @@ export default function AddEvent() {
   };
 
   return (
-    <Container title="AddForm">
+    <main>
       <form className="AddForm" onSubmit={addEvent}>
         <div className="top">
           <h1 className="title">Add Event</h1>
@@ -49,6 +49,6 @@ export default function AddEvent() {
           </Button>
         </div>
       </form>
-    </Container>
+    </main>
   );
 }

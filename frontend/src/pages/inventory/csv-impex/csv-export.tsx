@@ -23,7 +23,7 @@ export default function ExportButton() {
   };
 
   return (
-    <Button variant="outlined" component="button" onClick={toCSV}>
+    <Button component="button" onClick={toCSV}>
       Export
     </Button>
   );
