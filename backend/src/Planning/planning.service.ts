@@ -92,7 +92,7 @@ class Service {
     public async addGoal(goal: GoalModel): Promise<ReturnMessage> {
         try {
             const newGoal = new GoalModel({
-                completed: goal.completed,
+                completed: false,
                 targetDate: goal.targetDate,
                 title: goal.title
             });

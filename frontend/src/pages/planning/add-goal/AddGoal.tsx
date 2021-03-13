@@ -9,7 +9,7 @@ import { useSnackbar } from '../../../contexts';
 
 interface newGoal {
   title?: string;
-  date?: string;
+  targetDate?: string;
 }
 
 export default function AddGoal() {
@@ -41,7 +41,7 @@ export default function AddGoal() {
     const data = new FormData(form);
     return {
       title: data.get('goal-title') as string | undefined,
-      date: data.get('goal-date') as string | undefined
+      targetDate: data.get('goal-date') as string | undefined
     };
   };
 

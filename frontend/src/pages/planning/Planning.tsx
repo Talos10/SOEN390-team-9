@@ -45,6 +45,7 @@ export default function Planning() {
     const goals = response.message as Goal[];
     goals.forEach(function (goal) {
       goal.targetDate = goal.targetDate.substring(0,10); // find a better way to do this
+      goal.completed = !!(Number(goal.completed));
     });
     setGoals(goals);
   };
@@ -115,7 +116,7 @@ export default function Planning() {
           <tbody>
             {/*Display incomplete goals first*/}
             {goals
-              .filter(goal => goal.completed == false)
+              .filter(goal => goal.completed === false)
               .map(goal => (
                 <tr key={goal.id}>
                   <td className="name">
@@ -133,7 +134,7 @@ export default function Planning() {
               ))}
             {/* Display completed goals at end */}
             {goals
-              .filter(goal => goal.completed == true)
+              .filter(goal => goal.completed === true)
               .map(goal => (
                 <tr key={goal.id} className="goal_completed">
                   <td className="name">
