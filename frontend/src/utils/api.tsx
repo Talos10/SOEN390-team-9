@@ -16,3 +16,7 @@ export const API_ARCHIVE_GOOD = `${api}/good/archive`;
 export const API_EVENTS = `${api}/planning/events`;
 /** Get all goals */
 export const API_GOALS = `${api}/planning/goals`;
+/** Add an event */
+export const API_ADD_EVENT = `${api}/planning/events`;
+/** Add a goal */
+export const API_ADD_GOAL = `${api}/planning/goals`;

@@ -46,7 +46,6 @@ export default function Planning() {
     goals.forEach(function (goal) {
       goal.targetDate = goal.targetDate.substring(0,10); // find a better way to do this
     });
-    console.log(goals);
     setGoals(goals);
   };
 
