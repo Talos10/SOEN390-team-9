@@ -174,6 +174,29 @@ CREATE TABLE `soen_390_db`.`manufacturing_ordered_good` (
     
 	collate = utf8mb4_unicode_ci;
 
+-- Table to store events
+CREATE TABLE `soen_390_db`.`event` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE NOT NULL,
+  `time` TIME NOT NULL,
+  `title` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`id`))
+
+	collate = utf8mb4_unicode_ci;
+
+-- Table to store goals
+CREATE TABLE `soen_390_db`.`goal` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `completed` BOOLEAN NOT NULL,
+  `targetDate` DATE NOT NULL,
+  `title` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`id`))
+               
+  collate = utf8mb4_unicode_ci;
+
+-- date is of the format yyyy-mm-dd and the price can be given with a maximum of two digits after the dot.
+
+
 -- Table to store the various finished goods that are associated with each customer order.
 CREATE TABLE `soen_390_db`.`customer_ordered_good` (
   `orderId` INT NOT NULL,
@@ -209,10 +232,8 @@ CREATE TABLE `soen_390_db`.`orders` (
     REFERENCES `soen_390_db`.`customer_order` (`orderId`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
-    
-	collate = utf8mb4_unicode_ci;
 
--- date is of the format yyyy-mm-dd and the price can be given with a maximum of two digits after the dot.
+	collate = utf8mb4_unicode_ci;
 
 INSERT `customer` (`name`, `email`) 
 VALUES
@@ -345,6 +366,22 @@ VALUES
 (16, "finish", "chrome"),
 (16, "color", "red"),
 (16, "number of speeds", "12")
+;
+
+INSERT `event` (`date`, `time`, `title`)
+VALUES
+("2021-02-17", "10:00:00", "Bruno's birthday celebration"),
+("2021-03-29", "12:30:00", "Lunch and Learn"),
+("2021-03-30", "11:00:00", "CEO company wide meeting"),
+("2021-04-01", "11:00:00", "Easter chocolate bunny giveaway"),
+("2021-05-07", "11:00:00", "Meeting with vendors for new raw materials")
+;
+
+INSERT `goal` (`completed`, `targetDate`, `title`)
+VALUES
+(TRUE, "2021-04-10", "Build 2000 bikes"),
+(FALSE, "2021-05-05", "Make $200 000 of profit"),
+(FALSE, "2021-12-01", "Sell 1000 bikes")
 ;
 
 -- run the line below by itself if you want to delete the adminuser from your sql db:
