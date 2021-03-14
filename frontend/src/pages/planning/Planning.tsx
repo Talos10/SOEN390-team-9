@@ -3,9 +3,11 @@ import './Planning.scss';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
-import { useEffect, useState } from 'react';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {IconButton} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 
-import { API_EVENTS, API_GOALS } from '../../utils/api';
+import { API_DELETE_EVENT, API_EVENTS, API_GOALS, API_DELETE_GOAL } from '../../utils/api';
 
 interface Event {
   id: number;
@@ -31,10 +33,12 @@ export default function Planning() {
     });
     const response = await request.json();
     const events = response.message as Event[];
-    events.forEach(function (event) {
-      event.date = event.date.substring(0, 10); // find a better way to do this
-    });
-    setEvents(events);
+    if (Array.isArray(events)) {
+      events.forEach(function (event) {
+        event.date = event.date.substring(0, 10); // find a better way to do this
+      });
+      setEvents(events);
+    }
   };
 
   const getGoals = async () => {
@@ -43,11 +47,13 @@ export default function Planning() {
     });
     const response = await request.json();
     const goals = response.message as Goal[];
-    goals.forEach(function (goal) {
-      goal.targetDate = goal.targetDate.substring(0, 10); // find a better way to do this
-      goal.completed = !!Number(goal.completed);
-    });
-    setGoals(goals);
+    if (Array.isArray(goals)) {
+      goals.forEach(goal => {
+        goal.targetDate = goal.targetDate.substring(0, 10); // find a better way to do this
+        goal.completed = !!Number(goal.completed);
+      });
+      setGoals(goals);
+    }
   };
 
   const handleCheckboxTick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +62,36 @@ export default function Planning() {
         goal.id === Number(event.target.value) ? { ...goal, completed: !goal.completed } : goal
       )
     );
+  };
+
+  const deleteEvent = async (id: number) => {
+    const request = await fetch(API_DELETE_EVENT + id, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const response = (await request.json()) as Response;
+    if (response.status) {
+      getEvents();
+    }
+  };
+
+  const deleteGoal = async (id: number) => {
+    const request = await fetch(API_DELETE_GOAL + id, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const response = (await request.json()) as Response;
+    if (response.status) {
+      getGoals();
+    }
   };
 
   useEffect(() => {
@@ -94,8 +130,13 @@ export default function Planning() {
             {events.map(event => (
               <tr key={event.id}>
                 <td className="name">{event.date}</td>
-                <td>{event.time}</td>
+                <td>{event.time.substring(0, event.time.length-3)}</td>
                 <td>{event.title}</td>
+                <td className="delete">
+                <IconButton name="event" onClick={() => deleteEvent(event.id)}>
+                  <DeleteIcon/>
+                </IconButton>
+               </td>
               </tr>
             ))}
           </tbody>
@@ -130,6 +171,11 @@ export default function Planning() {
                   </td>
                   <td>{goal.targetDate}</td>
                   <td>{goal.title}</td>
+                  <td className="delete">
+                    <IconButton name="goal" onClick={() => deleteGoal(goal.id)}>
+                      <DeleteIcon/>
+                    </IconButton>
+                  </td>
                 </tr>
               ))}
             {/* Display completed goals at end */}

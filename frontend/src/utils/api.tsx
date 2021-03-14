@@ -20,3 +20,7 @@ export const API_GOALS = `${api}/planning/goals`;
 export const API_ADD_EVENT = `${api}/planning/events`;
 /** Add a goal */
 export const API_ADD_GOAL = `${api}/planning/goals`;
+/** Delete an event */
+export const API_DELETE_EVENT = `${api}/planning/events/`;
+/** Delete an goal */
+export const API_DELETE_GOAL = `${api}/planning/goals/`;
