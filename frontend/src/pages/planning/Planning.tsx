@@ -4,10 +4,16 @@ import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {IconButton} from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
-import { API_DELETE_EVENT, API_EVENTS, API_GOALS, API_DELETE_GOAL, API_UPDATE_GOAL } from '../../utils/api';
+import {
+  API_DELETE_EVENT,
+  API_EVENTS,
+  API_GOALS,
+  API_DELETE_GOAL,
+  API_UPDATE_GOAL
+} from '../../utils/api';
 
 interface Event {
   id: number;
@@ -139,13 +145,18 @@ export default function Planning() {
             {events.map(event => (
               <tr key={event.id}>
                 <td className="name">{event.date}</td>
-                <td>{event.time.substring(0, event.time.length-3)}</td>
+                <td>{event.time.substring(0, event.time.length - 3)}</td>
                 <td>{event.title}</td>
                 <td className="delete">
-                <IconButton name="event" onClick={() => window.confirm("Are you sure you wish to delete this event?") && deleteEvent(event.id)}>
-                  <DeleteIcon/>
-                </IconButton>
-               </td>
+                  <IconButton
+                    name="event"
+                    onClick={() =>
+                      window.confirm('Are you sure you wish to delete this event?') &&
+                      deleteEvent(event.id)
+                    }>
+                    <DeleteIcon />
+                  </IconButton>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -173,7 +184,11 @@ export default function Planning() {
                     <Checkbox
                       value={goal.id}
                       checked={goal.completed}
-                      onChange={() => window.confirm("Are you sure you wish to update the completion status of this goal?") && handleCheckboxTick(goal.id)}
+                      onChange={() =>
+                        window.confirm(
+                          'Are you sure you wish to update the completion status of this goal?'
+                        ) && handleCheckboxTick(goal.id)
+                      }
                       name="checkedB"
                       color="primary"
                     />
@@ -181,8 +196,13 @@ export default function Planning() {
                   <td>{goal.targetDate}</td>
                   <td>{goal.title}</td>
                   <td className="delete">
-                    <IconButton name="goal" onClick={() => window.confirm("Are you sure you wish to delete this goal?") && deleteGoal(goal.id)}>
-                      <DeleteIcon/>
+                    <IconButton
+                      name="goal"
+                      onClick={() =>
+                        window.confirm('Are you sure you wish to delete this goal?') &&
+                        deleteGoal(goal.id)
+                      }>
+                      <DeleteIcon />
                     </IconButton>
                   </td>
                 </tr>
@@ -196,7 +216,11 @@ export default function Planning() {
                     <Checkbox
                       value={goal.id}
                       checked={goal.completed}
-                      onChange={() => window.confirm("Are you sure you wish to update the completion status of this goal?") && handleCheckboxTick(goal.id)}
+                      onChange={() =>
+                        window.confirm(
+                          'Are you sure you wish to update the completion status of this goal?'
+                        ) && handleCheckboxTick(goal.id)
+                      }
                       name="checkedB"
                       color="primary"
                     />
