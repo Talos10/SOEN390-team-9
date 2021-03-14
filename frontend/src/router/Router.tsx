@@ -14,6 +14,7 @@ import {
 } from '../pages';
 import Guard from './Guard';
 import { useAuth } from '../contexts/Auth';
+import Manufacturing from '../pages/manufacturing/Manufacturing';
 
 export default function Router() {
   const auth = useAuth();
@@ -27,6 +28,7 @@ export default function Router() {
       <Guard path="/inventory" component={Inventory} allowIf={auth.isLoggedIn} exact />
       <Guard path="/admin" component={Admin} allowIf={auth.getRole() === 'admin'} exact />
       <Guard path="/inventory/add-item" component={AddItem} allowIf={auth.isLoggedIn} exact />
+      <Guard path="/manufacturing" component={Manufacturing} allowIf={auth.isLoggedIn} exact />
       <Guard path="/planning" component={Planning} allowIf={auth.isLoggedIn} exact />
       <Guard path="/planning/add-event" component={AddEvent} allowIf={auth.isLoggedIn} exact />
       <Guard path="/planning/add-goal" component={AddGoal} allowIf={auth.isLoggedIn} exact />
