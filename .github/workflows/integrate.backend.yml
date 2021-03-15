@@ -1,0 +1,22 @@
+name: CI Backend
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Linting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '12'
+    - name: Install
+      working-directory: ./backend
+      run: npm ci
+    - name: Linting
+      working-directory: ./backend
+      run: npx prettier --check .
