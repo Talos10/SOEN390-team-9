@@ -7,16 +7,23 @@ on:
     branches: [ main ]
 
 jobs:
-  Linting:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
         node-version: '12'
-    - name: Install
+    - name: Install Dependencies
       working-directory: ./backend
       run: npm ci
-    - name: Linting
+    - name: Linting Check
       working-directory: ./backend
       run: npx prettier --check .
+    - name: Coverage Check
+      working-directory: ./backend
+      run: npm run coverage
+    - name: Build
+      working-directory: ./backend
+      run: npm run build
+  
