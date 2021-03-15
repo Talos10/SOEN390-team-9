@@ -18,3 +18,8 @@ jobs:
           heroku_app_name: "supreme-erp"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           appdir: "backend"
+          usedocker: true
+          docker_build_args: |
+            NODE_ENV
+        env:
+          NODE_ENV: production
