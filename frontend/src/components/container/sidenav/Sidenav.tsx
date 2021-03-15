@@ -58,6 +58,16 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
           </Button>
         </div>
 
+        <div className="Sidenav_button">
+          <Button
+            color={location.pathname.indexOf('/manufacturing') === 0 ? 'primary' : 'default'}
+            component={Link}
+            to="/manufacturing">
+            <Widgets style={{ paddingRight: 16 }} />
+            Manufacturing
+          </Button>
+        </div>
+
         <div className="Sidenav__button">
           <Button
             color={location.pathname.indexOf('/planning') === 0 ? 'primary' : 'default'}

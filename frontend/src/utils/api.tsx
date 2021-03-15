@@ -12,3 +12,5 @@ export const API_GOOD = `${api}/good`;
 export const API_GOOD_SINGLE = `${api}/good/single`;
 /** Archive a good */
 export const API_ARCHIVE_GOOD = `${api}/good/archive`;
+/** Get all orders */
+export const API_MAN = `${api}/manufacturing/order`;
