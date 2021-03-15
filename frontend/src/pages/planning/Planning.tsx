@@ -41,7 +41,7 @@ export default function Planning() {
     const events = response.message as Event[];
     if (Array.isArray(events)) {
       events.forEach(function (event) {
-        event.date = event.date.substring(0, 10); // find a better way to do this
+        event.date = event.date.substring(0, 10);
       });
       setEvents(events);
     }
@@ -55,7 +55,7 @@ export default function Planning() {
     const goals = response.message as Goal[];
     if (Array.isArray(goals)) {
       goals.forEach(goal => {
-        goal.targetDate = goal.targetDate.substring(0, 10); // find a better way to do this
+        goal.targetDate = goal.targetDate.substring(0, 10);
         goal.completed = !!Number(goal.completed);
       });
       setGoals(goals);
