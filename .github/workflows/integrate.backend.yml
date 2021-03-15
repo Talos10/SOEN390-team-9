@@ -8,17 +8,17 @@ on:
 jobs:
   test_pull_request:
     runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '12'
-    - name: Linting Test
-      working-directory: ./backend
-      run: npx prettier --check .
-    - name: Running Test
-      working-directory: ./backend
-      run: npm run coverage
-    - name: Build Test
-      working-directory: ./backend
-      run: npm run build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - name: Linting Test
+        working-directory: ./backend
+        run: npx prettier --check .
+      - name: Running Test
+        working-directory: ./backend
+        run: npm run coverage
+      - name: Build Test
+        working-directory: ./backend
+        run: npm run build
