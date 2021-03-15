@@ -14,11 +14,11 @@ jobs:
       with:
         node-version: '12'
     - name: Linting Test
-        working-directory: ./frontend
-        run: npx prettier --check .
+      working-directory: ./frontend
+      run: npx prettier --check .
     - name: Running Test
-        working-directory: ./frontend
-        run: npm test
+      working-directory: ./frontend
+      run: npm test
     - name: Build Test
-        working-directory: ./frontend
-        run: npm run build
+      working-directory: ./frontend
+      run: npm run build

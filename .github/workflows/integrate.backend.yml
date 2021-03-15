@@ -14,11 +14,11 @@ jobs:
       with:
         node-version: '12'
     - name: Linting Test
-        working-directory: ./backend
-        run: npx prettier --check .
+      working-directory: ./backend
+      run: npx prettier --check .
     - name: Running Test
-        working-directory: ./backend
-        run: npm run coverage
+      working-directory: ./backend
+      run: npm run coverage
     - name: Build Test
-        working-directory: ./backend
-        run: npm run build
+      working-directory: ./backend
+      run: npm run build
