@@ -7,7 +7,7 @@ import {
     RawGoodInterface,
     SemiGoodInterface,
     FinishedGoodInterface,
-    SingleGoods
+    SingleGood
 } from './good.interfaces';
 import db from '../shared/dbConnection';
 
@@ -50,7 +50,7 @@ class Good {
             schema = { ...schema, ...(await this.getPropertiesAndComponents(id)) };
         }
 
-        const goods: SingleGoods[] = await db.select('*').from('goods').where('schema', '=', id);
+        const goods: SingleGood[] = await db.select('*').from('goods').where('schema', '=', id);
 
         return { schema, goods };
     }

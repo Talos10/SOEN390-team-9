@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom';
 import { Button, Chip } from '@material-ui/core';
 import { useAuth, useSnackbar } from '../../contexts';
 import { API_ARCHIVE_GOOD, API_GOOD } from '../../utils/api';
-import { Card, Progress } from '../../components';
+import { Card, Progress, ReturnButton } from '../../components';
 import { Item } from '../../interfaces/Items';
 
 import './ItemInfo.scss';
-import { ArrowBack } from '@material-ui/icons';
 
 interface Response {
   status: true;
@@ -74,12 +73,14 @@ export default function ItemInfo() {
     <div className="ItemInfo">
       <div className="top">
         <div className="top__left">
-          <Button variant="outlined" component={Link} to="/inventory">
-            <ArrowBack />
-          </Button>
+          <ReturnButton to="/inventory" />
           <h1 className="title">{info.schema.name}</h1>
         </div>
-        <Button variant="contained" color="primary" component={Link} to="/manufacturing">
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to={`/manufacturing/create-order/${id}`}>
           Order item
         </Button>
       </div>

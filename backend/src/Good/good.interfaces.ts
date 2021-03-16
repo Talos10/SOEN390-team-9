@@ -29,24 +29,39 @@ interface FinishedGoodInterface extends GoodInterface {
     price: number;
 }
 
-interface ReturnMessage {
-    status: boolean;
-    message: any | any[];
+export interface SuccessMessage<T> {
+    status: true;
+    message: T;
+    good?: any;
+}
+
+export interface ErrorMessage {
+    status: false;
+    message: string;
     good?: any;
 }
 
 type AnyGood = RawGoodInterface | GoodInterface | SemiGoodInterface | FinishedGoodInterface;
 
-type SingleGoods = { id: number; schema: number; quality: string | null };
+type SingleGood = {
+    id: number;
+    schema: number;
+    quality: string | null;
+};
+
+type SchemaAndGoods = {
+    schema: AnyGood;
+    goods: SingleGood[];
+};
 
 export {
     AnyGood,
-    ReturnMessage,
     Property,
     Component,
     GoodInterface,
     RawGoodInterface,
     SemiGoodInterface,
     FinishedGoodInterface,
-    SingleGoods
+    SingleGood,
+    SchemaAndGoods
 };

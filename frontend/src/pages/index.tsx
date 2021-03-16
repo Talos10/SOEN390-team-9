@@ -12,6 +12,8 @@ import AddEvent from './planning/add-event/AddEvent';
 import AddGoal from './planning/add-goal/AddGoal';
 import Admin from './admin/Admin';
 
+export { CreateOrder } from './manufacturing/create-order/CreateOrder';
+
 export {
   Home,
   Inventory,

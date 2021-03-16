@@ -307,7 +307,10 @@ class Service {
 
         await Promise.all(
             orderedGoods.map(async o => {
-                const composite = (await this.goodService.getSingleGood(o.compositeId)).message;
+                const response = await this.goodService.getSingleGood(o.compositeId);
+                if (!response.status) return;
+
+                const composite = response.message.schema;
                 const cost = o.quantity * composite.cost;
                 orderedGoodWithCost.push({
                     quantity: o.quantity,

@@ -401,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `soen_390_db`.`goods` (
     FOREIGN KEY (`schema`)
     REFERENCES `soen_390_db`.`inventory_good` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION);
 
 INSERT `goods` (`id`, `schema`)
 VALUES
