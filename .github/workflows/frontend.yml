@@ -19,7 +19,7 @@ jobs:
       uses: deepakputhraya/action-branch-name@master
       with:
         regex: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+\/[a-zA-Z0-9_]+$'
-        allowed_prefixes: 'BUG,FEAT,CHORE,DOC,TASK'
+        allowed_prefixes: 'BUG,FEAT,CHORE,DOC,TASK,FIX'
         ignore: main
         min_length: 5
         max_length: 100
