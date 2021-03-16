@@ -7,7 +7,7 @@
 
 ### Get a single good by id
 - Method: **GET**
-- Enpoint: `/good/id/:id`
+- Endpoint: `/good/id/:id`
 - Authorization: Bearer token given from login
 
 ### Get all goods of a specific type (raw, semi-finished, finished)
