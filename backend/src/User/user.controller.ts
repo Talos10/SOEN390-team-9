@@ -86,13 +86,14 @@ class Controller {
                     );
                     message = {
                         id: result,
+                        status: true,
                         message: 'User was created successfully.'
                     };
                 } catch (e) {
                     message = {
+                        status: false,
                         message: e as string
                     };
-                    res.status(400);
                 }
 
                 res.json(message);
