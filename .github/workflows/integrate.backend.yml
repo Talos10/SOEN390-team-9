@@ -17,7 +17,7 @@ jobs:
     - name: Check branch naming convention
       uses: deepakputhraya/action-branch-name@master
       with:
-        regex: '^-\d+\/[a-zA-Z0-9_]+$'
+        regex: '^(BUG|FEAT|CHORE|DOC|TASK)-\d+\/[a-zA-Z0-9_]+$'
         allowed_prefixes: 'BUG,FEAT,CHORE,DOC,TASK'
         ignore: main
         min_length: 5
