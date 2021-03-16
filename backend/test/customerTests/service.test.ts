@@ -3,12 +3,10 @@ import sinonStubPromise from 'sinon-stub-promise';
 import { expect } from 'chai';
 import 'mocha';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { config } from '../../config';
 
 import CustomerService from '../../src/Customer/customer.service';
 import CustomerModel from '../../src/Customer/customer.models';
-import emailService from '../../src/Email/email.service';
 
 sinonStubPromise(sinon);
 

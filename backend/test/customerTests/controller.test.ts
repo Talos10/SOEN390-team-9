@@ -87,7 +87,7 @@ describe('Customer Controller Test', () => {
         app.shutdown();
     });
 
-    it('Test requireParams on create new user route', async () => {
+    it('Test requireParams on create new customer route', async () => {
         const mockCustomerService = sandbox.createStubInstance(CustomerService);
         mockCustomerService.createNewCustomer.resolves('foo');
         const app = new App({
