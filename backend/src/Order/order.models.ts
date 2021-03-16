@@ -25,7 +25,7 @@ class CustomerOrder {
      * Get all the customer orders
      */
     public static async getAll(): Promise<CompleteCustomerOrder[]> {
-        const orders = await db.select('*').from('customer_order');
+        const orders = await db().select('*').from('customer_order');
         return await this.getOrdersWithOrderedGoods(orders);
     }
 
@@ -50,7 +50,7 @@ class CustomerOrder {
      * @param id the id of the order
      */
     public static async getOrderedGoodOfOrder(id: number): Promise<OrderedGood[]> {
-        const orderedGoods = await db
+        const orderedGoods = await db()
             .select('compositeId', 'totalPrice', 'quantity')
             .from('customer_ordered_good')
             .where('orderId', '=', id);
@@ -62,7 +62,11 @@ class CustomerOrder {
      * @param id the id of the order
      */
     public static async getById(id: number): Promise<CompleteCustomerOrder | null> {
-        const order = await db.select('*').from('customer_order').where('orderId', '=', id).first();
+        const order = await db()
+            .select('*')
+            .from('customer_order')
+            .where('orderId', '=', id)
+            .first();
         if (!order) {
             return null;
         }
@@ -77,7 +81,7 @@ class CustomerOrder {
      * @param id the customer id
      */
     public static async getByCustomerId(id: number): Promise<CompleteCustomerOrder[]> {
-        const orders = await db.select('*').from('customer_order').where('customerId', '=', id);
+        const orders = await db().select('*').from('customer_order').where('customerId', '=', id);
         return await this.getOrdersWithOrderedGoods(orders);
     }
 
@@ -86,7 +90,7 @@ class CustomerOrder {
      * @param status the order status
      */
     public static async getByStatus(status: string): Promise<CompleteCustomerOrder[]> {
-        const orders = await db.select('*').from('customer_order').where('status', '=', status);
+        const orders = await db().select('*').from('customer_order').where('status', '=', status);
         return await this.getOrdersWithOrderedGoods(orders);
     }
 
@@ -94,7 +98,7 @@ class CustomerOrder {
      * Save order to the database
      */
     public async save(): Promise<number> {
-        const newOrder = await db('customer_order').insert({
+        const newOrder = await db()('customer_order').insert({
             totalPrice: this.totalPrice,
             status: this.status,
             customerId: this.customerId
@@ -120,7 +124,7 @@ class CustomerOrder {
             unique.push(o.compositeId);
             return true;
         });
-        await db('customer_ordered_good').insert(uniqueGoods);
+        await db()('customer_ordered_good').insert(uniqueGoods);
     }
 
     /**
@@ -129,7 +133,7 @@ class CustomerOrder {
      * @param fields the new fields
      */
     public static async updateOrder(id: number, fields: any) {
-        return await db('customer_order').update(fields).where('orderId', '=', id);
+        return await db()('customer_order').update(fields).where('orderId', '=', id);
     }
 }
 

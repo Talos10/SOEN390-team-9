@@ -106,8 +106,14 @@ class Service {
             email: email,
             password: bcrypt.hashSync(password, config.bcrypt_salt)
         });
-        const res = await UserModel.addUser(newUser);
-        return res;
+
+        try {
+            return await UserModel.addUser(newUser);
+        } catch (e) {
+            return Promise.reject(
+                'The given email address is currently in use by another user. Please enter a different one.'
+            );
+        }
     }
 
     public async findUserById(id: number): Promise<UserModel> {

@@ -167,7 +167,7 @@ describe('User Controller Test', () => {
             .set('Accept', 'application/json')
             .send(mockUser)
             .set('Authorization', 'bearer ' + token);
-        expect(res.body).to.equal('foo');
+        expect(res.body.id).to.equal('foo');
         expect(res.status).to.equal(200);
         app.shutdown();
     });
