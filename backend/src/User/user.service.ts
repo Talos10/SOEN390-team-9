@@ -110,7 +110,9 @@ class Service {
         try {
             return await UserModel.addUser(newUser);
         } catch (e) {
-            return Promise.reject("The given email address is currently in use by another user. Please enter a different one.");
+            return Promise.reject(
+                'The given email address is currently in use by another user. Please enter a different one.'
+            );
         }
     }
 

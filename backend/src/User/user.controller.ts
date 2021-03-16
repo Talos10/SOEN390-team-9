@@ -78,15 +78,20 @@ class Controller {
                 var message;
 
                 try {
-                    const result = await this.userService.createNewUser(name, role, email, password);
+                    const result = await this.userService.createNewUser(
+                        name,
+                        role,
+                        email,
+                        password
+                    );
                     message = {
-                        id : result,
-                        message : "User was created successfully."
-                    }
+                        id: result,
+                        message: 'User was created successfully.'
+                    };
                 } catch (e) {
                     message = {
-                        message : e as string
-                    }
+                        message: e as string
+                    };
                     res.status(400);
                 }
 
