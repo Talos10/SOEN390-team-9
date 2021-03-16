@@ -17,7 +17,7 @@ class Event {
      * Get all the events
      */
     public static async getAllEvents(): Promise<Event[]> {
-        return await db('event').select('*');
+        return await db()('event').select('*');
     }
 
     /**
@@ -25,7 +25,7 @@ class Event {
      * @param eventId the id of the event
      */
     public static async deleteEvent(eventId: number): Promise<number> {
-        return await db('event').where('id', eventId).del();
+        return await db()('event').where('id', eventId).del();
     }
 
     /**
@@ -33,7 +33,7 @@ class Event {
      * @param event the event to be added
      */
     public static async addEvent(event: Event): Promise<number> {
-        return await db('event').insert(event);
+        return await db()('event').insert(event);
     }
 }
 
@@ -53,7 +53,7 @@ class Goal {
      * Get all the goals
      */
     public static async getAllGoals(): Promise<Goal[]> {
-        return await db('goal').select('*');
+        return await db()('goal').select('*');
     }
 
     /**
@@ -61,7 +61,7 @@ class Goal {
      * @param goaldId the id of the goal
      */
     public static async deleteGoal(goalId: number): Promise<number> {
-        return await db('goal').where('id', goalId).del();
+        return await db()('goal').where('id', goalId).del();
     }
 
     /**
@@ -69,7 +69,7 @@ class Goal {
      * @param goal the goal to be added
      */
     public static async addGoal(goal: Goal): Promise<number> {
-        return await db('goal').insert(goal);
+        return await db()('goal').insert(goal);
     }
 
     /**
@@ -78,7 +78,7 @@ class Goal {
      * @param goal the updated goal
      */
     public static async updateById(goalId: number, goal: Goal): Promise<number> {
-        return await db('goal')
+        return await db()('goal')
             .update({
                 completed: goal.completed,
                 targetDate: goal.targetDate,

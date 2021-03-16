@@ -33,6 +33,13 @@ const config = {
             cancel: 'cancelled'
         }
     },
+    order: {
+        status: {
+            confirm: 'confirmed',
+            complete: 'completed',
+            cancel: 'cancelled'
+        }
+    },
     hostname: process.env.HOSTNAME || 'http://127.0.0.1:3000',
     bcrypt_salt: Number(process.env.BCRYPT_SALT) || 10
 };

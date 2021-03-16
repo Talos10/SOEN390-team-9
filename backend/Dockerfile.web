@@ -11,10 +11,6 @@ RUN cp -R node_modules /tmp/node_modules
 RUN npm install
 COPY . .
 
-FROM development as develop
-EXPOSE 5000
-CMD ["npm", "start"]
-
 FROM development as builder
 RUN npm install
 RUN npm run build

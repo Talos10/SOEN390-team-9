@@ -382,7 +382,16 @@ class Service {
      */
     public async allocateMaterialsForGoods(goods: Component[]): Promise<ReturnMessage> {
         const requiredComponents = await this.compileRequiredComponents(goods);
+        return await this.decrementQuantitiesOfGoods(requiredComponents);
+    }
 
+    /**
+     * Get Decrement the goods
+     * @param requiredComponents A list of goods to decrement
+     */
+    public async decrementQuantitiesOfGoods(
+        requiredComponents: Component[]
+    ): Promise<ReturnMessage> {
         const missing = await this.validateComponentsQuantities(requiredComponents);
         if (missing.length !== 0) return { status: false, message: missing };
 

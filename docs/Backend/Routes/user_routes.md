@@ -7,7 +7,7 @@
 
 ### Get a single user by ID
 - Method: **GET**
-- Enpoint: `/user/:id`
+- Endpoint: `/user/:id`
 - Authorization: Bearer token given from login
 
 ### Login

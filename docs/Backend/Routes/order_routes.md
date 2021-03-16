@@ -1,8 +1,8 @@
-# Manufacturing's routes
+# Order's routes
 
 ### Get all orders
 - Method: **GET**
-- Endpoint: `/manufacturing/order`
+- Endpoint: `/order`
 - Response:
     ```JSON
     {
@@ -11,39 +11,61 @@
     }
     ```
 
-### Get all orders with status
+### Get all orders by order id
 - Method: **GET**
-- Endpoint: `/manufacturing/order/status/:status`
+- Endpoint: `/order/id/:id`
 - Response:
     ```JSON
     {
         "status": "true or false",
-        "message": "an array of orders"
+        "message": {
+            "orderId": 2,
+            "customerId": 2,
+            "status": "cancelled",
+            "totalPrice": 0,
+            "creationDate": "2015-05-10T17:17:17.000Z",
+            "completionDate": null,
+            "orderedGoods": []
+        }
     }
     ```
 
-### Get all orders with id
+### Get all orders by customer id
 - Method: **GET**
-- Endpoint: `/manufacturing/order/id/:id`
+- Endpoint: `/order/customer/id/:id`
 - Response:
     ```JSON
     {
         "status": "true or false",
-        "message": "a single order"
+        "message": "order"
     }
     ```
 
-### Create new manufacturing order
+### Get all orders by status
+- Method: **GET**
+- Endpoint: `/order/status/:status`
+- Response:
+    ```JSON
+    {
+        "status": "true or false",
+        "message": "array of orders"
+    }
+    ```
+
+### Create new customer order
 - Method: **post**
-- Endpoint: `/manufacturing/order/`
+- Endpoint: `/order/`
 - Payload:
     ```JSON
-    [
-        {
-            "compositeId": 16,
-            "quantity": 10000
-        }
-    ]
+    {   
+        "customerId": 1,
+        "orderedGoods": [
+            {
+                "compositeId": 16,
+                "quantity": 10000
+            }
+        ]
+    }
     ```
 - Response:
     ```JSON
@@ -61,8 +83,8 @@
 
 ### Update order status
 - Method: **put**
-- Endpoint: `/manufacturing/order/:newStatus`
-- newStatus: confirmed, cancelled, processing, completed
+- Endpoint: `/order/:newStatus`
+- newStatus: confirmed, cancelled, completed
 - Payload:
     ```JSON
     [
@@ -71,23 +93,6 @@
         "the id of the orders..."
     ]
     ```
-- Response:
-    ```JSON
-    [
-        {
-            "status": false,
-            "message": "Order 1 is already completed"
-        },
-        {
-            "status": false,
-            "message": "Order 2 is already completed"
-        },
-    ]
-    ```
-
-### Mark orders as complete automatically
-- Method: **put**
-- Endpoint: `/manufacturing/order/complete/auto`
 - Response:
     ```JSON
     [

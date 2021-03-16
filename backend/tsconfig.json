@@ -73,5 +73,5 @@
         }
     },
     "include": ["src/**/*.ts", "spec/**/*.ts"],
-    "exclude": ["src/public/"]
+    "exclude": ["src/public/", "node_modules"]
 }
