@@ -1,0 +1,70 @@
+name: Frontend CI/CD pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ frontend/** ]
+  pull_request:
+    paths: [ frontend/** ]
+  workflow_dispatch:
+
+jobs:
+
+  naming:
+    name: Naming convention check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check branch naming convention
+      uses: deepakputhraya/action-branch-name@master
+      with:
+        regex: '^(BUG|FEAT|CHORE|DOC|TASK)-\d+\/[a-zA-Z0-9_]+$'
+        allowed_prefixes: 'BUG,FEAT,CHORE,DOC,TASK'
+        ignore: main
+        min_length: 5
+        max_length: 100
+    - name: Check commit message naming convention
+      uses: gsactions/commit-message-checker@v1
+      with:
+        pattern: '^(BUG|FEAT|CHORE|DOC|TASK)-\d+:[a-zA-Z0-9_ ]+$'
+        flags: 'gm'
+        error: 'Commit message does not follow the naming convention'
+        excludeDescription: 'true'
+        excludeTitle: 'true'
+        checkAllCommitMessages: 'false'
+
+  linting:
+    needs: naming
+    name: Linting check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '12'
+    - name: Install Dependencies
+      working-directory: ./frontend
+      run: npm ci
+    - name: Linting Check
+      working-directory: ./frontend
+      run: npx prettier --check .
+
+  test:
+    needs: linting
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '12'
+    - name: Install Dependencies
+      working-directory: ./frontend
+      run: npm ci
+    - name: Build
+      working-directory: ./frontend
+      run: npm run build
+    - name: Test
+      working-directory: ./frontend
+      run: npm test
+
