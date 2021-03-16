@@ -62,7 +62,11 @@ class CustomerOrder {
      * @param id the id of the order
      */
     public static async getById(id: number): Promise<CompleteCustomerOrder | null> {
-        const order = await db().select('*').from('customer_order').where('orderId', '=', id).first();
+        const order = await db()
+            .select('*')
+            .from('customer_order')
+            .where('orderId', '=', id)
+            .first();
         if (!order) {
             return null;
         }
