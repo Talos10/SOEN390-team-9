@@ -36,7 +36,7 @@ services:
             - database
         build:
             context: ./backend
-            target: develop
+            target: release
         ports:
             - 5000:5000
         env_file: ./env/backend.env

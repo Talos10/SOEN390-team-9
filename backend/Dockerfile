@@ -1,4 +1,5 @@
 FROM node:12.20.1-alpine AS base
+RUN apk add --no-cache bash
 WORKDIR /app
 
 FROM base AS development
