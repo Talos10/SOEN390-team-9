@@ -34,9 +34,9 @@ services:
     backend:
         depends_on: 
             - database
-        command: sh -c "/wait && npm start"
         build:
             context: ./backend
+            target: develop
         ports:
             - 5000:5000
         env_file: ./env/backend.env

@@ -4,13 +4,11 @@
     "scripts": {
         "build": "ts-node build.ts",
         "lint": "eslint . --ext .ts",
-        "start:prod": "node -r module-alias/register ./dist --env=production",
+        "start:prod": "node ./dist/src --env=production",
         "start": "nodemon --legacy-watch",
         "test": "NODE_ENV=test mocha --exit -r ts-node/register test/**/*.test.ts",
         "coverage": "nyc --check-coverage --lines 80 --reporter=text npm run test",
-        "format": "npx prettier --write .",
-        "postinstall": "tsc",
-        "deploy": "git add . && git commit -m Heroku && git push heroku main"
+        "format": "npx prettier --write ."
     },
     "nodemonConfig": {
         "watch": [
@@ -63,8 +61,6 @@
         "build.ts"
     ],
     "dependencies": {
-        "@types/basic-auth": "^1.1.3",
-        "@types/passport-jwt": "^3.0.3",
         "basic-auth": "^2.0.1",
         "bcrypt": "^5.0.0",
         "body-parser": "^1.19.0",
@@ -89,6 +85,7 @@
         "passport-jwt": "^4.0.0"
     },
     "devDependencies": {
+        "@types/basic-auth": "^1.1.3",
         "@istanbuljs/nyc-config-typescript": "^1.0.1",
         "@types/bcrypt": "^3.0.0",
         "@types/chai": "^4.2.14",

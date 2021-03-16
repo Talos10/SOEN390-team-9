@@ -78,10 +78,11 @@ jobs:
     - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: "supreme-erp"
+        heroku_app_name: 'supreme-erp'
         heroku_email: ${{secrets.HEROKU_EMAIL}}
-        appdir: "backend"
+        appdir: 'backend'
         usedocker: true
+        docker_heroku_process_type: 'web'
         docker_build_args: |
           NODE_ENV
       env:

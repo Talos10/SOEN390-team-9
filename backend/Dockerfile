@@ -1,15 +1,25 @@
-FROM node:12.20.1-alpine
+FROM node:12.20.1-alpine AS base
+WORKDIR /app
 
-WORKDIR /code
+FROM base AS development
+COPY package.json ./
 
-COPY package.json /code
-ENV WAIT_VERSION 2.7.2
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
-RUN chmod +x /wait
+RUN npm install --only=prod
+RUN cp -R node_modules /tmp/node_modules
+
 RUN npm install
+COPY . .
 
-COPY . /code
-
+FROM development as develop
 EXPOSE 5000
-
 CMD ["npm", "start"]
+
+FROM development as builder
+RUN npm install
+RUN npm run build
+
+FROM base as release
+COPY --from=builder /tmp/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./
+CMD ["npm", "run", "start:prod"]
