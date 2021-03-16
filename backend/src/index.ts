@@ -12,6 +12,7 @@ import UserController from './User/user.controller';
 import GoodController from './Good/good.controller';
 import CustomerController from './Customer/customer.controller';
 import ManufacturingController from './Manufacturing/manufacturing.controller';
+import OrderController from './Order/order.controller';
 import PlanningController from './Planning/planning.controller';
 
 // Start the server
@@ -24,6 +25,7 @@ const app = new App({
         new GoodController(),
         new ManufacturingController(),
         new CustomerController(),
+        new OrderController(),
         new PlanningController()
     ],
     middleWares: [

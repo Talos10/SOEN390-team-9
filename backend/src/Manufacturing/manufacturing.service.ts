@@ -4,7 +4,6 @@ import { addMinute } from '../shared/Helpers';
 import logger from '../shared/Logger';
 import GoodService from '../Good/good.service';
 import { config } from '../../config';
-import { defaultMaxListeners } from 'events';
 
 const status = config.manufacturing.status;
 

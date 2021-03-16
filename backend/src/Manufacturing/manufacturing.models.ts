@@ -21,7 +21,7 @@ class ManufacturingOrder {
      * Get all the manufacturing orders
      */
     public static async getAll(): Promise<ManufacturingOrderInterface[]> {
-        const orders = await db.select('*').from('manufacturing_order');
+        const orders = await db().select('*').from('manufacturing_order');
         return await this.getOrdersWithOrderedGoods(orders);
     }
 
@@ -31,7 +31,7 @@ class ManufacturingOrder {
     public static async getOrdersWithStatus(
         status: string
     ): Promise<ManufacturingOrderInterface[]> {
-        const orders = await db
+        const orders = await db()
             .select('*')
             .from('manufacturing_order')
             .where('status', '=', status);
@@ -42,7 +42,7 @@ class ManufacturingOrder {
      * Get all the manufacturing orders with status
      */
     public static async getOrderFromId(id: number): Promise<ManufacturingOrderInterface> {
-        const existing = await db
+        const existing = await db()
             .select('*')
             .from('manufacturing_order')
             .where('orderId', '=', id)
@@ -79,7 +79,7 @@ class ManufacturingOrder {
      * @param id the id of the order
      */
     public static async getOrderedGoodOfOrder(id: number): Promise<OrderedGood[]> {
-        const orderedGoods = await db
+        const orderedGoods = await db()
             .select('compositeId', 'totalCost', 'quantity')
             .from('manufacturing_ordered_good')
             .where('orderId', '=', id);
@@ -90,7 +90,7 @@ class ManufacturingOrder {
      * Save order to the database
      */
     public async save(): Promise<number> {
-        const newOrder = await db('manufacturing_order').insert({
+        const newOrder = await db()('manufacturing_order').insert({
             totalCost: this.totalCost,
             status: status.confirm
         });
@@ -115,7 +115,7 @@ class ManufacturingOrder {
             unique.push(o.compositeId);
             return true;
         });
-        await db('manufacturing_ordered_good').insert(uniqueGoods);
+        await db()('manufacturing_ordered_good').insert(uniqueGoods);
     }
 
     /**
@@ -124,7 +124,7 @@ class ManufacturingOrder {
      * @param status the new status
      */
     public static async updateOrder(id: number, fields: any) {
-        return await db('manufacturing_order').update(fields).where('orderId', '=', id);
+        return await db()('manufacturing_order').update(fields).where('orderId', '=', id);
     }
 
     /**
@@ -132,7 +132,7 @@ class ManufacturingOrder {
      */
     public static async getOrdersThatShouldBeCompleted(): Promise<ManufacturingOrderInterface[]> {
         const currentDate = new Date();
-        const orders = await db
+        const orders = await db()
             .select('orderId')
             .from('manufacturing_order')
             .where('estimatedEndDate', '<=', currentDate)

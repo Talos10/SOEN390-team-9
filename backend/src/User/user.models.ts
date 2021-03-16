@@ -17,29 +17,29 @@ class User {
     }
 
     public static async getAll(): Promise<User[]> {
-        return await db('user').select('userID', 'name', 'role', 'email');
+        return await db()('user').select('userID', 'name', 'role', 'email');
     }
 
     public static async addUser(user: User): Promise<number> {
-        return await db('user').insert(user);
+        return await db()('user').insert(user);
     }
 
     public static async findById(userID: number): Promise<User> {
-        return await db('user')
+        return await db()('user')
             .select('userId', 'name', 'role', 'email')
             .where('userID', userID)
             .first();
     }
 
     public static async findByEmailAuth(email: string): Promise<User> {
-        return await db('user')
+        return await db()('user')
             .select('userId', 'name', 'role', 'email', 'password')
             .where('email', email)
             .first();
     }
 
     public static async findByResetPasswordToken(token: string): Promise<User> {
-        return await db('user')
+        return await db()('user')
             .select('userId', 'name', 'role', 'email', 'password')
             .where('resetPasswordToken', token)
             .andWhere('resetPasswordExpires', '>=', Date.now())
@@ -47,7 +47,7 @@ class User {
     }
 
     public static async updateById(userID: number, user: User): Promise<number> {
-        return await db('user')
+        return await db()('user')
             .update({
                 name: user.name,
                 role: user.role,
@@ -60,12 +60,12 @@ class User {
     }
 
     public static async deleteUser(userId: number): Promise<number> {
-        return await db('user').where('userID', userId).del();
+        return await db()('user').where('userID', userId).del();
     }
 
     public static async deleteAll(): Promise<number> {
-        const result = await db('user').del();
-        await db.raw('ALTER TABLE user AUTO_INCREMENT = 1');
+        const result = await db()('user').del();
+        await db().raw('ALTER TABLE user AUTO_INCREMENT = 1');
         return result;
     }
 }
