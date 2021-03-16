@@ -415,7 +415,7 @@ class Service {
      */
     public async decrementQuantitiesOfGoods(
         requiredComponents: Component[]
-    ): Promise<ReturnMessage> {
+    ): Promise<SuccessMessage<string> | ErrorMessage | { status: false; message: Component[] }> {
         const missing = await this.validateComponentsQuantities(requiredComponents);
         if (missing.length !== 0) return { status: false, message: missing };
 

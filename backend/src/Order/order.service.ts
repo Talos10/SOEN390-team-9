@@ -3,6 +3,7 @@ import GoodService from '../Good/good.service';
 import { config } from '../../config';
 import { OrderedGood, ReturnMessage } from './order.interfaces';
 import { CustomerOrder } from './order.models';
+import { SchemaAndGoods } from 'src/Good/good.interfaces';
 
 const status = config.order.status;
 
@@ -121,7 +122,8 @@ class Service {
 
         await Promise.all(
             orderedGoods.map(async o => {
-                const composite = (await this.goodService.getSingleGood(o.compositeId)).message;
+                const composite: any = ((await this.goodService.getSingleGood(o.compositeId))
+                    .message as SchemaAndGoods).schema;
                 if (!composite.price) throw new Error('Composite has no price');
                 const price = o.quantity * composite.price;
                 orderedGoodWithPrice.push({
