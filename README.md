@@ -27,7 +27,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
-        <li><a href="#running-using-docker">Running using docker<a></li>
+        <li><a href="#running-using-docker">Running Using Docker<a></li>
       </ul>
     </li>
     <li><a href="#more-info">More Information</a></li>
@@ -60,7 +60,7 @@ Supreme ERP is an ERP (enterprise resource planning) web app which is targeted t
     git clone https://github.com/Talos10/SOEN390-team-9.git --recursive
     ```
 
-### Running using docker
+### Running Using Docker
 
 * Start Supreme ERP
     ```

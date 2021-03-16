@@ -1,92 +1,84 @@
 import { useState, useEffect } from 'react';
-import { Menu, MenuItem, Chip } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
+import {
+  Autocomplete,
+  AutocompleteChangeDetails,
+  AutocompleteChangeReason
+} from '@material-ui/lab';
 import { v4 as uuid } from 'uuid';
 
 import './Recipe.scss';
 
-interface Ingredient {
+interface Good {
+  name: string;
   id: number;
   uuid: string;
-  name: string;
-}
-
-interface Materials {
-  name: string;
-  id: number;
-  type: string;
+  type?: string;
 }
 
 export default function Recipe() {
-  // Fetching materials from backend stuff
-  const [materials, setMaterials] = useState<Materials[]>([]);
+  const [goods, setGoods] = useState<Good[]>([]);
+  const [recipe, setRecipe] = useState<Good[]>([]);
 
-  const getMaterials = async () => {
+  const getGood = async () => {
     const response = await fetch('http://localhost:5000/good', {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
     const data = await response.json();
-    const items = data.message as Materials[];
-    const materials = items.filter(item => item.type === 'raw' || item.type === 'semi-finished');
-    setMaterials(materials);
+    const goods = (data.message as Good[])
+      .filter(good => good.type === 'raw' || good.type === 'semi-finished')
+      .map(good => ({ name: good.name, id: good.id, uuid: uuid() }));
+    setGoods(goods);
+  };
+
+  const sortAlphabetically = (a: Good, b: Good) => {
+    return a.name < b.name ? -1 : a.name === b.name ? 0 : 1;
+  };
+
+  const handleChange = (
+    _: unknown,
+    values: Good[],
+    reason: AutocompleteChangeReason,
+    details: AutocompleteChangeDetails<Good> | undefined
+  ) => {
+    if (!details) return;
+
+    if (reason === 'select-option') {
+      const { id, name, type } = details.option;
+      setGoods([...goods, { id, name, type, uuid: uuid() }]);
+      setRecipe(values);
+    }
+
+    if (reason === 'remove-option') {
+      const uuid = details.option.uuid;
+      const filteredGoods = goods.filter(good => good.uuid !== uuid);
+      setGoods(filteredGoods);
+      setRecipe(values);
+    }
   };
 
   useEffect(() => {
-    getMaterials();
+    getGood();
   }, []);
-
-  // Form stuff
-  const [recipe, setRecipe] = useState<Ingredient[]>([]);
-
-  const addIngredient = (material: any) => {
-    const { name, id } = material;
-    setRecipe([...recipe, { name: name, id: id, uuid: uuid() }]);
-    handleClose();
-  };
-
-  const removeIngredient = (uuid: string) => {
-    setRecipe(recipe.filter(ingredient => ingredient.uuid !== uuid));
-  };
-
-  // Material Menu Stuff
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLDivElement | HTMLLabelElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <div className="Recipe">
-      <label onClick={handleClick}>Recipe</label>
-      <div role="button" className="recipe-input" tabIndex={0} onClick={handleClick}>
-        {recipe.map(ingredient => (
-          <Chip
-            key={ingredient.uuid}
-            label={ingredient.name}
-            onDelete={() => removeIngredient(ingredient.uuid)}
-          />
-        ))}
-      </div>
+      <label htmlFor="recipe">Recipe</label>
+      <Autocomplete
+        className="Recipe__combobox"
+        onChange={handleChange}
+        multiple
+        disableClearable={true}
+        options={goods.sort(sortAlphabetically)}
+        getOptionLabel={good => good.name}
+        getOptionSelected={(good, ingredient) => good.uuid === ingredient.uuid}
+        renderInput={params => (
+          <TextField {...params} variant="outlined" id="recipe" type="text" />
+        )}></Autocomplete>
 
       {recipe.map(ingredient => (
-        <input name="ingredient" key={ingredient.uuid} type="hidden" value={ingredient.id} />
+        <input key={ingredient.uuid} name="ingredient" type="hidden" value={ingredient.id} />
       ))}
-
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}>
-        {materials.map(material => (
-          <MenuItem key={material.id} onClick={() => addIngredient(material)}>
-            {material.name}
-          </MenuItem>
-        ))}
-      </Menu>
     </div>
   );
 }
