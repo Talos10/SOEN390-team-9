@@ -139,6 +139,7 @@ export default function Planning() {
               <th>Date</th>
               <th>Time</th>
               <th>Title</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -172,6 +173,7 @@ export default function Planning() {
               <th>Completed</th>
               <th>Target Date</th>
               <th>Goal</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -227,6 +229,16 @@ export default function Planning() {
                   </td>
                   <td>{goal.targetDate}</td>
                   <td>{goal.title}</td>
+                  <td className="delete">
+                    <IconButton
+                      name="goal"
+                      onClick={() =>
+                        window.confirm('Are you sure you wish to delete this goal?') &&
+                        deleteGoal(goal.id)
+                      }>
+                      <DeleteIcon />
+                    </IconButton>
+                  </td>
                 </tr>
               ))}
           </tbody>

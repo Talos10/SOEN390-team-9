@@ -60,11 +60,6 @@ export default function AddGoal() {
           </div>
         </div>
         <Goal />
-        <div className="bottom">
-          <Button type="submit" color="primary" variant="contained">
-            Save
-          </Button>
-        </div>
       </form>
     </Container>
   );

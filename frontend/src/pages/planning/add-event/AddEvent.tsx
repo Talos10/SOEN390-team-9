@@ -62,11 +62,6 @@ export default function AddEvent() {
           </div>
         </div>
         <Event />
-        <div className="bottom">
-          <Button type="submit" color="primary" variant="contained">
-            Save
-          </Button>
-        </div>
       </form>
     </Container>
   );
