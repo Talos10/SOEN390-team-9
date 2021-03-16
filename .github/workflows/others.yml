@@ -31,4 +31,3 @@ jobs:
         error: 'Commit message does not follow the naming convention'
         excludeDescription: 'true'
         excludeTitle: 'true'
-        checkAllCommitMessages: 'false'
