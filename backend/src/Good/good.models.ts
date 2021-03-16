@@ -37,7 +37,7 @@ class Good {
      * @param id the id of the good
      */
     public static async findById(id: number) {
-        let schema: AnyGood | null = await db
+        let schema: AnyGood | undefined = await db()
             .select('inventory_good.*', 'raw_good.vendor', 'finished_good.price')
             .from('inventory_good')
             .leftJoin('raw_good', 'raw_good.id', 'inventory_good.id')
@@ -50,7 +50,7 @@ class Good {
             schema = { ...schema, ...(await this.getPropertiesAndComponents(id)) };
         }
 
-        const goods: SingleGood[] = await db.select('*').from('goods').where('schema', '=', id);
+        const goods: SingleGood[] = await db().select('*').from('goods').where('schema', '=', id);
 
         return { schema, goods };
     }
@@ -62,7 +62,7 @@ class Good {
      */
     public static async getByType(type: string, archive?: boolean): Promise<AnyGood[]> {
         const dbName = `${type}_good`;
-        const existing = await db
+        const existing = await db()
             .select('*')
             .from('inventory_good')
             .innerJoin(dbName, `${dbName}.id`, 'inventory_good.id')
@@ -75,7 +75,7 @@ class Good {
      * Get all the goods
      */
     public static async getAllGoods(): Promise<AnyGood[]> {
-        const existing = await db
+        const existing = await db()
             .select('inventory_good.*', 'raw_good.vendor', 'finished_good.price')
             .from('inventory_good')
             .leftJoin('raw_good', 'raw_good.id', 'inventory_good.id')
@@ -122,7 +122,7 @@ class Good {
      * @param archive a boolean representing if we want to archive or not
      */
     public static async archive(id: number, archive: boolean): Promise<number> {
-        return await db('inventory_good')
+        return await db()('inventory_good')
             .update({
                 archived: archive ? 1 : 0
             })
@@ -134,7 +134,7 @@ class Good {
      */
     public async save(): Promise<number> {
         try {
-            const newGood = await db('inventory_good').insert({
+            const newGood = await db()('inventory_good').insert({
                 name: this.name,
                 type: this.type,
                 quantity: this.quantity,
@@ -167,7 +167,7 @@ class Good {
             unique.push(p.name);
             return true;
         });
-        await db('property_of_good').insert(uniqueProperties);
+        await db()('property_of_good').insert(uniqueProperties);
     }
 
     /**
@@ -187,7 +187,7 @@ class Good {
             unique.push(c.componentId);
             return true;
         });
-        await db('composition_of_good').insert(uniqueComponents);
+        await db()('composition_of_good').insert(uniqueComponents);
     }
 
     /**
@@ -195,7 +195,7 @@ class Good {
      * @param id The id of the composite
      */
     public static async getProperties(id: number): Promise<Property[]> {
-        return await db('property_of_good').select('name', 'value').where('compositeId', id);
+        return await db()('property_of_good').select('name', 'value').where('compositeId', id);
     }
 
     /**
@@ -203,7 +203,7 @@ class Good {
      * @param id The id of the composite
      */
     public static async getComponents(id: number): Promise<Component[]> {
-        return await db
+        return await db()
             .select('componentId as id', 'name', 'composition_of_good.quantity')
             .from('composition_of_good')
             .innerJoin('inventory_good', 'componentId', 'id')
@@ -215,7 +215,7 @@ class Good {
      * @param id The id of the composite
      */
     public static async getCurrentQuantity(id: number): Promise<number> {
-        const existing = await db
+        const existing = await db()
             .select('quantity')
             .from('inventory_good')
             .where('inventory_good.id', '=', id)
@@ -229,7 +229,7 @@ class Good {
      * @param dec The amount to decrement
      */
     public static async decrementGoodQuantity(id: number, dec: number): Promise<number> {
-        return await db('inventory_good').decrement('quantity', dec).where('id', '=', id);
+        return await db()('inventory_good').decrement('quantity', dec).where('id', '=', id);
     }
 
     /**
@@ -238,7 +238,7 @@ class Good {
      * @param inc The amount to increment
      */
     public static async incrementGoodQuantity(id: number, inc: number): Promise<number> {
-        return await db('inventory_good').increment('quantity', inc).where('id', '=', id);
+        return await db()('inventory_good').increment('quantity', inc).where('id', '=', id);
     }
 }
 
@@ -258,7 +258,7 @@ class RawGood extends Good {
     public async save(): Promise<number> {
         let id = await super.save();
         try {
-            const temp = await db('raw_good').insert({
+            const temp = await db()('raw_good').insert({
                 vendor: this.vendor,
                 id: id
             });
@@ -284,7 +284,7 @@ class SemiFinishedGood extends Good {
     public async save(): Promise<number> {
         let id = await super.save();
         try {
-            await db('semi-finished_good').insert({
+            await db()('semi-finished_good').insert({
                 id: id
             });
             return id;
@@ -311,7 +311,7 @@ class FinishedGood extends Good {
     public async save(): Promise<number> {
         const id = await super.save();
         try {
-            await db('finished_good').insert({
+            await db()('finished_good').insert({
                 price: this.price,
                 id: id
             });

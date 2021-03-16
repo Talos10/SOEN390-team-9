@@ -8,8 +8,8 @@ import jwt from 'jsonwebtoken';
 import { config } from '../../config';
 
 import App from '../../src/app';
-import ManufacturingService from '../../src/Manufacturing/manufacturing.service';
-import ManufacturingController from '../../src/Manufacturing/manufacturing.controller';
+import OrderService from '../../src/Order/order.service';
+import OrderController from '../../src/Order/order.controller';
 
 sinonStubPromise(sinon);
 
@@ -22,7 +22,7 @@ const payload = {
 };
 const token = jwt.sign(payload, config.jwt_public_key, { expiresIn: '1d' });
 
-describe('Manufacturing Controller Test', () => {
+describe('Customer Order Controller Test', () => {
     beforeEach(() => {
         sandbox = sinon.createSandbox();
     });
@@ -32,67 +32,84 @@ describe('Manufacturing Controller Test', () => {
     });
 
     it('Test get all orders route', async () => {
-        const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
-        mockManufacturingService.getAllOrders.resolves('foo');
+        const mockOrderService = sandbox.createStubInstance(OrderService);
+        mockOrderService.getAllOrders.resolves('foo');
         const app = new App({
             port: testPort,
-            controllers: [new ManufacturingController(mockManufacturingService)],
+            controllers: [new OrderController(mockOrderService)],
             middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
         });
         app.listen();
         const res = await request(app.app)
-            .get('/manufacturing/order/')
+            .get('/order/')
             .set('Authorization', 'bearer ' + token);
         expect(res.body).to.equal('foo');
         expect(res.status).to.equal(200);
         app.shutdown();
     });
 
-    it('Test get all orders from status route', async () => {
-        const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
-        mockManufacturingService.getOrdersWithStatus.resolves('foo');
+    it('Test get order by id route', async () => {
+        const mockOrderService = sandbox.createStubInstance(OrderService);
+        mockOrderService.getOrderById.resolves('foo');
         const app = new App({
             port: testPort,
-            controllers: [new ManufacturingController(mockManufacturingService)],
+            controllers: [new OrderController(mockOrderService)],
             middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
         });
         app.listen();
         const res = await request(app.app)
-            .get('/manufacturing/order/status/123')
+            .get('/order/id/1')
             .set('Authorization', 'bearer ' + token);
         expect(res.body).to.equal('foo');
         expect(res.status).to.equal(200);
         app.shutdown();
     });
 
-    it('Test get all orders from id route', async () => {
-        const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
-        mockManufacturingService.getOrderFromId.resolves('foo');
+    it('Test get order by customer id route', async () => {
+        const mockOrderService = sandbox.createStubInstance(OrderService);
+        mockOrderService.getOrderByCustomerId.resolves('foo');
         const app = new App({
             port: testPort,
-            controllers: [new ManufacturingController(mockManufacturingService)],
+            controllers: [new OrderController(mockOrderService)],
             middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
         });
         app.listen();
         const res = await request(app.app)
-            .get('/manufacturing/order/id/123')
+            .get('/order/customer/id/1')
             .set('Authorization', 'bearer ' + token);
         expect(res.body).to.equal('foo');
         expect(res.status).to.equal(200);
         app.shutdown();
     });
 
-    it('Test create all orders from id route', async () => {
-        const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
-        mockManufacturingService.createNewOrder.resolves('foo');
+    it('Test get order by status route', async () => {
+        const mockOrderService = sandbox.createStubInstance(OrderService);
+        mockOrderService.getOrderByOrderStatus.resolves('foo');
         const app = new App({
             port: testPort,
-            controllers: [new ManufacturingController(mockManufacturingService)],
+            controllers: [new OrderController(mockOrderService)],
             middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
         });
         app.listen();
         const res = await request(app.app)
-            .post('/manufacturing/order/')
+            .get('/order/status/bob')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test create order route', async () => {
+        const mockOrderService = sandbox.createStubInstance(OrderService);
+        mockOrderService.createNewOrder.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new OrderController(mockOrderService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .post('/order/')
             .set('Content-Type', 'application/json')
             .send(JSON.stringify([{ id: 1, archive: true }]))
             .set('Authorization', 'bearer ' + token);
@@ -101,36 +118,17 @@ describe('Manufacturing Controller Test', () => {
         app.shutdown();
     });
 
-    it('Test complete single order', async () => {
-        const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
-        mockManufacturingService.updateStatusOfOrdersInBulk.resolves('foo');
+    it('Update order status route', async () => {
+        const mockOrderService = sandbox.createStubInstance(OrderService);
+        mockOrderService.updateStatusOfOrdersInBulk.resolves('foo');
         const app = new App({
             port: testPort,
-            controllers: [new ManufacturingController(mockManufacturingService)],
+            controllers: [new OrderController(mockOrderService)],
             middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
         });
         app.listen();
         const res = await request(app.app)
-            .put('/manufacturing/order/complete')
-            .set('Content-Type', 'application/json')
-            .send(JSON.stringify([{ id: 1, archive: true }]))
-            .set('Authorization', 'bearer ' + token);
-        expect(res.body).to.equal('foo');
-        expect(res.status).to.equal(200);
-        app.shutdown();
-    });
-
-    it('Test complete order auto', async () => {
-        const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
-        mockManufacturingService.autoCompleteOrders.resolves('foo');
-        const app = new App({
-            port: testPort,
-            controllers: [new ManufacturingController(mockManufacturingService)],
-            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
-        });
-        app.listen();
-        const res = await request(app.app)
-            .put('/manufacturing/order/complete/auto')
+            .put('/order/complete')
             .set('Content-Type', 'application/json')
             .send(JSON.stringify([{ id: 1, archive: true }]))
             .set('Authorization', 'bearer ' + token);
