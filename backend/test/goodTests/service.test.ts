@@ -40,7 +40,7 @@ describe('Good Service Test', () => {
         const goodService = new GoodService();
         sandbox.stub(goodService, 'cleanUpGood').returns(['foo']);
         sandbox.stub(Good, 'findById').resolves('foo');
-        const res = await goodService.getSingleGood(123);
+        const res: any = await goodService.getSingleGood(123);
         expect(res.message[0]).to.equal('foo');
         expect(res.status).to.equal(true);
     });
