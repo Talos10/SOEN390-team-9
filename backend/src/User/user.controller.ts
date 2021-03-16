@@ -3,6 +3,7 @@ import UserService from './user.service';
 import passport from 'passport';
 import auth from 'basic-auth';
 import { requireParams, isNotNUllUndefinedEmpty } from '../shared/middleware/paramsChecker';
+import logger from '../shared/Logger';
 
 class Controller {
     public path = '/user';
@@ -16,11 +17,21 @@ class Controller {
     }
 
     private async initInitialAdminAccount() {
-        const users = await this.userService.getAllUsers();
-        if (users.length === 0) {
+        let users = null;
+        for (let i = 0; i < 10; i++) {
+            try {
+                users = await this.userService.getAllUsers();
+                break;
+            } catch (e) {
+                logger.error(`Unable to connect to database: ${i + 1}/10`);
+                await new Promise(r => setTimeout(r, 3000));
+            }
+        }
+        if (users && users.length === 0) {
             // Create the initial admin account if there are no users in db
             this.userService.createNewUser('Admin', 'admin', 'admin@email.com', 'admin');
         }
+        logger.info('Database connection successfull');
     }
 
     private initRoutes() {
