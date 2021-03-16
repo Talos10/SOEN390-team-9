@@ -17,14 +17,13 @@ class Controller {
     }
 
     private async initInitialAdminAccount() {
-        let users = null
-        for(let i = 0; i < 10; i++){
+        let users = null;
+        for (let i = 0; i < 10; i++) {
             try {
                 users = await this.userService.getAllUsers();
                 break;
-            }
-            catch(e) {
-                logger.error(`Unable to connect to database: ${i+1}/10`)
+            } catch (e) {
+                logger.error(`Unable to connect to database: ${i + 1}/10`);
                 await new Promise(r => setTimeout(r, 3000));
             }
         }
@@ -32,7 +31,7 @@ class Controller {
             // Create the initial admin account if there are no users in db
             this.userService.createNewUser('Admin', 'admin', 'admin@email.com', 'admin');
         }
-        logger.info('Database connection successfull')
+        logger.info('Database connection successfull');
     }
 
     private initRoutes() {
