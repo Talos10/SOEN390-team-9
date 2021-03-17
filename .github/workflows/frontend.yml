@@ -72,9 +72,9 @@ jobs:
       with:
         name: build
         path: |
-        ./frontend/build
-        ./frontend/.firebaserc
-        ./frontend/firebase.json
+          frontend/build
+          frontend/.firebaserc
+          frontend/firebase.json
 
   deploy:
     needs: test
@@ -87,7 +87,7 @@ jobs:
       uses: actions/download-artifact@master
       with:
         name: build
-        path: .
+        path: frontend/
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@master
       with:
