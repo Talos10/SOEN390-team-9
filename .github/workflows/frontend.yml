@@ -71,7 +71,7 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: build
-        path: ./frontend/build
+        path: ./frontend
 
   deploy:
     needs: test
