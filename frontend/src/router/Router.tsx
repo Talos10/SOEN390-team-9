@@ -26,10 +26,10 @@ export default function Router() {
   return (
     <Switch>
       <Guard path="/" allowIf={!auth.isLoggedIn} component={Login} redirect="/home" exact />
+      <Route path="/forgot" component={ForgotPassword} exact />
+      <Route path="/reset/:token" component={ResetPassword} exact />
       <>
         <Container>
-          <Route path="/forgot" component={ForgotPassword} exact />
-          <Route path="/reset/:token" component={ResetPassword} exact />
           <Guard path="/home" component={Home} allowIf={auth.isLoggedIn} exact />
           <Guard path="/admin" component={Admin} allowIf={auth.getRole() === 'admin'} exact />
 
