@@ -10,28 +10,28 @@ on:
 
 jobs:
 
-  naming:
-    name: Naming convention check
-    runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_dispatch'
-    steps:
-    - uses: actions/checkout@v2
-    - name: Check branch naming convention
-      uses: deepakputhraya/action-branch-name@master
-      with:
-        regex: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+\/[a-zA-Z0-9_]+$'
-        allowed_prefixes: 'BUG,FEAT,CHORE,DOC,TASK,FIX'
-        ignore: main
-        min_length: 5
-        max_length: 100
-    - name: Check commit message naming convention
-      uses: gsactions/commit-message-checker@v1
-      with:
-        pattern: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+:[a-zA-Z0-9_ ]+$'
-        flags: 'gm'
-        error: 'Commit message does not follow the naming convention'
-        excludeDescription: True
-        excludeTitle: True
+  # naming:
+  #   name: Naming convention check
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name != 'workflow_dispatch'
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Check branch naming convention
+  #     uses: deepakputhraya/action-branch-name@master
+  #     with:
+  #       regex: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+\/[a-zA-Z0-9_]+$'
+  #       allowed_prefixes: 'BUG,FEAT,CHORE,DOC,TASK,FIX'
+  #       ignore: main
+  #       min_length: 5
+  #       max_length: 100
+  #   - name: Check commit message naming convention
+  #     uses: gsactions/commit-message-checker@v1
+  #     with:
+  #       pattern: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+:[a-zA-Z0-9_ ]+$'
+  #       flags: 'gm'
+  #       error: 'Commit message does not follow the naming convention'
+  #       excludeDescription: True
+  #       excludeTitle: True
 
   # linting:
   #   needs: naming
@@ -50,7 +50,7 @@ jobs:
   #     run: npx prettier --check .
 
   test:
-    needs: linting
+    # needs: linting
     name: Build and test
     runs-on: ubuntu-latest
     steps:
