@@ -71,7 +71,10 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: build
-        path: ./frontend
+        path: |
+        ./frontend/build
+        ./frontend/.firebaserc
+        ./frontend/firebase.json
 
   deploy:
     needs: test
