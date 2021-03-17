@@ -10,46 +10,46 @@ on:
 
 jobs:
 
-  naming:
-    name: Naming convention check
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Check branch naming convention
-      uses: deepakputhraya/action-branch-name@master
-      with:
-        regex: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+\/[a-zA-Z0-9_]+$'
-        allowed_prefixes: 'BUG,FEAT,CHORE,DOC,TASK,FIX'
-        ignore: main
-        min_length: 5
-        max_length: 100
-    - name: Check commit message naming convention
-      uses: gsactions/commit-message-checker@v1
-      with:
-        pattern: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+:[a-zA-Z0-9_ ]+$'
-        flags: 'gm'
-        error: 'Commit message does not follow the naming convention'
-        excludeDescription: 'true'
-        excludeTitle: 'true'
+  # naming:
+  #   name: Naming convention check
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - name: Check branch naming convention
+  #     uses: deepakputhraya/action-branch-name@master
+  #     with:
+  #       regex: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+\/[a-zA-Z0-9_]+$'
+  #       allowed_prefixes: 'BUG,FEAT,CHORE,DOC,TASK,FIX'
+  #       ignore: main
+  #       min_length: 5
+  #       max_length: 100
+  #   - name: Check commit message naming convention
+  #     uses: gsactions/commit-message-checker@v1
+  #     with:
+  #       pattern: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+:[a-zA-Z0-9_ ]+$'
+  #       flags: 'gm'
+  #       error: 'Commit message does not follow the naming convention'
+  #       excludeDescription: 'true'
+  #       excludeTitle: 'true'
 
-  linting:
-    needs: naming
-    name: Linting check
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '12'
-    - name: Install Dependencies
-      working-directory: ./frontend
-      run: npm ci
-    - name: Linting Check
-      working-directory: ./frontend
-      run: npx prettier --check .
+  # linting:
+  #   needs: naming
+  #   name: Linting check
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: actions/setup-node@v2
+  #     with:
+  #       node-version: '12'
+  #   - name: Install Dependencies
+  #     working-directory: ./frontend
+  #     run: npm ci
+  #   - name: Linting Check
+  #     working-directory: ./frontend
+  #     run: npx prettier --check .
 
   test:
-    needs: linting
+    # needs: linting
     name: Build and test
     runs-on: ubuntu-latest
     steps:
@@ -60,9 +60,9 @@ jobs:
     - name: Install Dependencies
       working-directory: ./frontend
       run: npm install
-    - name: Test
-      working-directory: ./frontend
-      run: npm test
+    # - name: Test
+    #   working-directory: ./frontend
+    #   run: npm test
     - name: Build
       working-directory: ./frontend
       run: npm run build
@@ -92,5 +92,5 @@ jobs:
       with:
         args: deploy --only hosting
       env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUPREME_ERP }}
         REACT_APP_API: 'https://supreme-erp.herokuapp.com'
