@@ -1,6 +1,6 @@
 interface Orders {
   orderId: number;
-  status: string;
+  status: 'processing' | 'completed' | 'confirmed';
   cost: number;
   creationDate: string;
   startDate: string;

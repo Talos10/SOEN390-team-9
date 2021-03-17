@@ -28,10 +28,10 @@ body.sidenav-open {
       }
 
       &Primary {
-        background-color: var(--primary-transparent);
+        background-color: var(--primary-faded);
 
         &:hover {
-          background-color: var(--primary-transparent);
+          background-color: var(--primary-faded);
         }
 
         .MuiButton-label {

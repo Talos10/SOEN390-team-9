@@ -2,17 +2,11 @@ import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Button, Chip } from '@material-ui/core';
-import { useAuth, useSnackbar } from '../../contexts';
-import { API_ARCHIVE_GOOD, API_GOOD } from '../../utils/api';
+import { useSnackbar, useBackend } from '../../contexts';
 import { Card, Progress, ReturnButton } from '../../components';
 import { Item } from '../../interfaces/Items';
 
 import './ItemInfo.scss';
-
-interface Response {
-  status: true;
-  message: string;
-}
 
 interface Info {
   schema: Item;
@@ -27,33 +21,20 @@ export default function ItemInfo() {
   const { id } = useParams<{ id: string }>();
   const [info, setInfo] = useState<Info>();
   const snackbar = useSnackbar();
-  const auth = useAuth();
   const history = useHistory();
+  const { inventory } = useBackend();
 
   useEffect(() => {
     const getItems = async () => {
-      const request = await fetch(`${API_GOOD}/id/${id}`, {
-        headers: { Authorization: auth.getAuthorization() }
-      });
-      const response = await request.json();
-      setInfo(response.message);
+      const item = (await inventory.getGood(id)) as Info;
+      setInfo(item);
     };
 
     getItems();
-  }, [id, auth]);
+  }, [id, inventory]);
 
   const archiveItem = async () => {
-    const data = [{ id: id, archive: true }];
-    const request = await fetch(API_ARCHIVE_GOOD, {
-      method: 'POST',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    const responses = (await request.json()) as Response[];
+    const responses = await inventory.archiveGood(id);
 
     // Will only run at max 1 time because we archive 1 item at a time
     for (var i = 0; i < responses.length; i++) {

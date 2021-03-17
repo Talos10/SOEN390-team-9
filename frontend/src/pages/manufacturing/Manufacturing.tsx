@@ -1,14 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Checkbox
-} from '@material-ui/core';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { Orders } from '../../interfaces/Orders';
 import { API_MAN } from '../../utils/api';
 import { Card } from '../../components';
@@ -57,15 +49,11 @@ export default function Manufacturing() {
         <Table size="small" className="table">
           <TableHead>
             <TableRow className="table__tr">
-              <TableCell width="10%">
-                <Checkbox color="primary" /*onChange={handleChange}*/ />
-              </TableCell>
-              <TableCell width="15%">Order</TableCell>
-              <TableCell width="15%">Creation Date</TableCell>
-              <TableCell width="15%">Product</TableCell>
-              <TableCell width="15%">Due Date</TableCell>
-              <TableCell width="15%">Quantity</TableCell>
-              <TableCell width="15%">Status</TableCell>
+              <TableCell width="10%">Order</TableCell>
+              <TableCell width="20%">Creation Date</TableCell>
+              <TableCell width="20%">Due Date</TableCell>
+              <TableCell width="20%">Quantity</TableCell>
+              <TableCell width="20%">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

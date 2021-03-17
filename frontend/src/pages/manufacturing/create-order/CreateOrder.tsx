@@ -5,7 +5,7 @@ import { Button, TextField, InputAdornment } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
 import './CreateOrder.scss';
-import { useSnackbar } from '../../../contexts';
+import { useBackend, useSnackbar } from '../../../contexts';
 import { useHistory } from 'react-router';
 
 interface Order {
@@ -21,23 +21,20 @@ export function CreateOrder() {
     compositeId: undefined,
     quantity: 1
   });
+  const { manufacturing, inventory } = useBackend();
   const snackbar = useSnackbar();
   const history = useHistory();
 
-  const getGoods = async () => {
-    const request = await fetch('http://localhost:5000/good', {
-      headers: { Authorization: `bearer ${localStorage.token}` }
-    });
-    const response = await request.json();
-    const goods = (response.message as Item[])
-      .filter(good => good.type === 'finished' || good.type === 'semi-finished')
-      .sort((a: Item, b: Item) => (a.name < b.name ? -1 : a.name === b.name ? 0 : 1));
-    setGoods(goods);
-  };
-
   useEffect(() => {
+    const getGoods = async () => {
+      const goods = (await inventory.getAllGoods())
+        .filter(good => good.type === 'finished' || good.type === 'semi-finished')
+        .sort((a: Item, b: Item) => (a.name < b.name ? -1 : a.name === b.name ? 0 : 1));
+      setGoods(goods);
+    };
+
     getGoods();
-  }, []);
+  }, [inventory]);
 
   const selectGood = (_: unknown, value: Item) => {
     setOrder({
@@ -56,21 +53,13 @@ export function CreateOrder() {
   const createOrder = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const request = await fetch('http://localhost:5000/manufacturing/order/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `bearer ${localStorage.token}`
-      },
-      body: JSON.stringify([
-        {
-          compositeId: order.good!.id,
-          quantity: order.quantity
-        }
-      ])
-    });
+    const response = await manufacturing.createOrder([
+      {
+        compositeId: order.good!.id,
+        quantity: order.quantity
+      }
+    ]);
 
-    const response = await request.json();
     snackbar.push(response.message);
     if (response.message) {
       history.push('/manufacturing');

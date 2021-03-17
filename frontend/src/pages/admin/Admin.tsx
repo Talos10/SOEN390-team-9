@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { MenuItem, Select } from '@material-ui/core';
 
 import { Card, Progress } from '../../components';
-import { useSnackbar } from '../../contexts';
+import { useSnackbar, useBackend } from '../../contexts';
 import AddUserForm from './AddUserForm';
 import './Admin.scss';
 
@@ -16,6 +16,7 @@ interface User {
 export default function Admin() {
   const [users, setUsers] = useState<User[]>();
   const snackbar = useSnackbar();
+  const { admin } = useBackend();
   const roles = ['admin', 'employee'];
 
   const tryChangeRole = async (user: User, e: React.ChangeEvent<{ value: unknown }>) => {
@@ -27,12 +28,7 @@ export default function Admin() {
   };
 
   const deleteUser = async ({ userID, email }: User) => {
-    const request = await fetch(`http://localhost:5000/user/${userID}`, {
-      method: 'DELETE',
-      headers: { Authorization: `bearer ${localStorage.token}` }
-    });
-
-    const response = await request.json();
+    const response = await admin.deleteUser({ userID });
     if (!response.error) {
       snackbar.push(`${email} has been removed.`);
       getAllUsers();
@@ -40,33 +36,18 @@ export default function Admin() {
   };
 
   const changeRole = async (user: User, role: string) => {
-    const { userID, name, email } = user;
-    const request = await fetch(`http://localhost:5000/user/${userID}`, {
-      method: 'PUT',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ userID, name, email, role })
-    });
-
-    const response = await request.json();
-    if (!response.error) snackbar.push(`Set ${email} to ${role}.`);
+    const response = await admin.changeRole(user, role);
+    if (!response.error) snackbar.push(`Set ${user.email} to ${role}.`);
   };
 
-  const getAllUsers = async () => {
-    const request = await fetch('http://localhost:5000/user/', {
-      method: 'GET',
-      headers: { Authorization: `bearer ${localStorage.getItem('token')}` }
-    });
-    const response = await request.json();
-    const usersData = response as User[];
-    setUsers(usersData);
-  };
+  const getAllUsers = useCallback(async () => {
+    const users = await admin.getAllUsers();
+    setUsers(users);
+  }, [admin]);
 
   useEffect(() => {
     getAllUsers();
-  }, []);
+  }, [getAllUsers]);
 
   return users === undefined ? (
     <Progress />

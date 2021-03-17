@@ -9,15 +9,17 @@ import reportWebVitals from './reportWebVitals';
 import Theme from './Theme';
 import './styles/normalize.css';
 import './styles/styles.scss';
-import { SnackbarProvider, AuthProvider } from './contexts';
+import { SnackbarProvider, AuthProvider, BackendProvider } from './contexts';
 
 ReactDOM.render(
   <ThemeProvider theme={Theme}>
     <SnackbarProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <BackendProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </BackendProvider>
       </AuthProvider>
     </SnackbarProvider>
   </ThemeProvider>,

@@ -1,5 +1,5 @@
 import { Button, Select, MenuItem } from '@material-ui/core';
-import { useSnackbar } from '../../contexts';
+import { useSnackbar, useBackend } from '../../contexts';
 
 import './AddUserForm.scss';
 
@@ -10,22 +10,15 @@ interface Props {
 
 export default function AddUserForm({ roles, getAllUsers }: Props) {
   const snackbar = useSnackbar();
+  const { admin } = useBackend();
 
   const tryAddAccount = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const user = getFormData(form);
 
-    const request = await fetch('http://localhost:5000/user/', {
-      method: 'POST',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(user)
-    });
+    const response = await admin.addUser(user);
 
-    const response = await request.json();
     if (response.error) snackbar.push(response.error);
     else {
       snackbar.push(`Added ${user.email}.`);

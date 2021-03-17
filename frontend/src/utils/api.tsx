@@ -1,4 +1,4 @@
-const api = process.env.REACT_APP_API ?? 'http://localhost:5000';
+export const api = process.env.REACT_APP_API ?? 'http://localhost:5000';
 
 /** Attempt to log in */
 export const API_USER_LOGIN = `${api}/user/login`;
@@ -14,3 +14,5 @@ export const API_GOOD_SINGLE = `${api}/good/single`;
 export const API_ARCHIVE_GOOD = `${api}/good/archive`;
 /** Get all orders */
 export const API_MAN = `${api}/manufacturing/order`;
+/** Get all orders */
+export const API_MAN_ID = `${api}/manufacturing/order/id/`;

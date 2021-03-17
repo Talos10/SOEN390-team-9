@@ -27,4 +27,10 @@ const get_connection = () => {
     return connection;
 };
 
-export default get_connection;
+let connection: any;
+const db = () => {
+    connection = connection ?? get_connection();
+    return connection;
+};
+
+export default db;

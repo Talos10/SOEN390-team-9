@@ -13,6 +13,7 @@ import AddGoal from './planning/add-goal/AddGoal';
 import Admin from './admin/Admin';
 
 export { CreateOrder } from './manufacturing/create-order/CreateOrder';
+export { OrderInfo } from './manufacturing/order-info/OrderInfo';
 
 export {
   Home,

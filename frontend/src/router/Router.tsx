@@ -12,7 +12,8 @@ import {
   AddEvent,
   AddGoal,
   Admin,
-  CreateOrder
+  CreateOrder,
+  OrderInfo
 } from '../pages';
 import Guard from './Guard';
 import { Container } from '../components';
@@ -53,6 +54,12 @@ export default function Router() {
           <Guard
             path="/manufacturing/create-order/:id"
             component={CreateOrder}
+            allowIf={auth.isLoggedIn}
+            exact
+          />
+          <Guard
+            path="/manufacturing/order-info/:id"
+            component={OrderInfo}
             allowIf={auth.isLoggedIn}
             exact
           />

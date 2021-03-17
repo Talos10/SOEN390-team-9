@@ -38,7 +38,7 @@ class Service {
     public async getSingleGood(id: number) {
         try {
             const good = await GoodModel.findById(id);
-            return good
+            return good.schema !== undefined
                 ? ({
                       status: true,
                       message: this.cleanUpGood(good)
