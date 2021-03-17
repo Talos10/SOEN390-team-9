@@ -1,5 +1,7 @@
-export const api = process.env.REACT_APP_API ?? 'http://localhost:5000';
+export const api = process.env.REACT_APP_API ?? 'http://localhost:5000'; // https://supreme-erp.herokuapp.com
 
+/** Base user */
+export const API_USER = `${api}/user`;
 /** Attempt to log in */
 export const API_USER_LOGIN = `${api}/user/login`;
 /** Send email about password reset */

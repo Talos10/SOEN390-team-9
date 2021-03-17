@@ -9,6 +9,16 @@
   <p align="center">
     Fun project built and designed by Team 9 for Soen390
     <br />
+    <br />
+    <a href="https://github.com/Talos10/SOEN390-team-9/actions/workflows/backend.yml" target="_blank">
+      <img src="https://github.com/Talos10/SOEN390-team-9/actions/workflows/backend.yml/badge.svg?branch=main" alt="Backend CI/CD pipeline">
+    </a>
+    <a href="https://github.com/Talos10/SOEN390-team-9/actions/workflows/frontend.yml" target="_blank">
+      <img src="https://github.com/Talos10/SOEN390-team-9/actions/workflows/frontend.yml/badge.svg?branch=main" alt="Frontend CI/CD pipeline">
+    </a>
+    <a href="https://github.com/Talos10/SOEN390-team-9/actions/workflows/others.yml" target="_blank">
+      <img src="https://github.com/Talos10/SOEN390-team-9/actions/workflows/others.yml/badge.svg?branch=main" alt="Other CI/CD pipeline">
+    </a>
   </p>
 </p>
 <br />
@@ -19,6 +29,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#demo">Demo</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -39,6 +50,9 @@
 
 Supreme ERP is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes.
 
+### Demo
+* Try the live demo for free here: https://erp-supreme.web.app/
+* Default credentials: `admin@email.com` for the email and `admin` for the password.
 ### Built With
 * Frontend Framework [React](https://reactjs.org/)
 * Backend Framework [Express](https://expressjs.com/)

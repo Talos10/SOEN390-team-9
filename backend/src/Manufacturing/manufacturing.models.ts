@@ -3,7 +3,7 @@ import {
     ManufacturingOrderInterface,
     ManufacturingConstructor
 } from './manufacturing.interfaces';
-import db from '../shared/dbConnection';
+import { get_connection as db } from '../shared/dbConnection';
 import { config } from '../../config';
 
 const status = config.manufacturing.status;

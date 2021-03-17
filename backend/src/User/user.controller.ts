@@ -4,6 +4,7 @@ import passport from 'passport';
 import auth from 'basic-auth';
 import { requireParams, isNotNUllUndefinedEmpty } from '../shared/middleware/paramsChecker';
 import logger from '../shared/Logger';
+import { set_connection } from '../shared/dbConnection';
 
 class Controller {
     public path = '/user';
@@ -20,6 +21,7 @@ class Controller {
         let users = null;
         for (let i = 0; i < 10; i++) {
             try {
+                set_connection();
                 users = await this.userService.getAllUsers();
                 break;
             } catch (e) {

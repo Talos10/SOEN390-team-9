@@ -5,6 +5,7 @@ import { Card, Progress } from '../../components';
 import { useSnackbar, useBackend } from '../../contexts';
 import AddUserForm from './AddUserForm';
 import './Admin.scss';
+import { API_USER } from '../../utils/api';
 
 interface User {
   userID: number;
