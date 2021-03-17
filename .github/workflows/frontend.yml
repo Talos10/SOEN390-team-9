@@ -79,7 +79,7 @@ jobs:
     needs: test
     name: Deploy to Firebase
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
+    # if: github.event_name != 'pull_request'
     steps:
     - uses: actions/checkout@v2
     - name: Download Artifact
