@@ -9,6 +9,16 @@
   <p align="center">
     Fun project built and designed by Team 9 for Soen390
     <br />
+    <br />
+    <a href="https://github.com/Talos10/SOEN390-team-9/actions/workflows/backend.yml" target="_blank">
+      <img src="https://github.com/Talos10/SOEN390-team-9/actions/workflows/backend.yml/badge.svg" alt="Backend CI/CD pipeline">
+    </a>
+    <a href="https://github.com/Talos10/SOEN390-team-9/actions/workflows/frontend.yml" target="_blank">
+      <img src="https://github.com/Talos10/SOEN390-team-9/actions/workflows/frontend.yml/badge.svg" alt="Frontend CI/CD pipeline">
+    </a>
+    <a href="https://github.com/Talos10/SOEN390-team-9/actions/workflows/others.yml" target="_blank">
+      <img src="https://github.com/Talos10/SOEN390-team-9/actions/workflows/others.yml/badge.svg" alt="Other CI/CD pipeline">
+    </a>
   </p>
 </p>
 <br />

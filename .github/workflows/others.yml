@@ -13,6 +13,7 @@ jobs:
   naming:
     name: Naming convention check
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
     steps:
     - uses: actions/checkout@v2
     - name: Check branch naming convention
@@ -29,5 +30,5 @@ jobs:
         pattern: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+:[a-zA-Z0-9_ ]+$'
         flags: 'gm'
         error: 'Commit message does not follow the naming convention'
-        excludeDescription: 'true'
-        excludeTitle: 'true'
+        excludeDescription: True
+        excludeTitle: True
