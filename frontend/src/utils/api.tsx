@@ -14,3 +14,17 @@ export const API_GOOD = `${api}/good`;
 export const API_GOOD_SINGLE = `${api}/good/single`;
 /** Archive a good */
 export const API_ARCHIVE_GOOD = `${api}/good/archive`;
+/** Get all events */
+export const API_EVENTS = `${api}/planning/events`;
+/** Get all goals */
+export const API_GOALS = `${api}/planning/goals`;
+/** Add an event */
+export const API_ADD_EVENT = `${api}/planning/events`;
+/** Add a goal */
+export const API_ADD_GOAL = `${api}/planning/goals`;
+/** Delete an event */
+export const API_DELETE_EVENT = `${api}/planning/events/`;
+/** Delete an goal */
+export const API_DELETE_GOAL = `${api}/planning/goals/`;
+/** Update goal */
+export const API_UPDATE_GOAL = `${api}/planning/goals/`;

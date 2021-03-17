@@ -353,8 +353,6 @@ VALUES
 
 INSERT `event` (`date`, `time`, `title`)
 VALUES
-("2021-02-17", "10:00:00", "Bruno's birthday celebration"),
-("2021-03-29", "12:30:00", "Lunch and Learn"),
 ("2021-03-30", "11:00:00", "CEO company wide meeting"),
 ("2021-04-01", "11:00:00", "Easter chocolate bunny giveaway"),
 ("2021-05-07", "11:00:00", "Meeting with vendors for new raw materials")
