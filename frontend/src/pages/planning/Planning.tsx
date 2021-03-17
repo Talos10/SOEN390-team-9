@@ -3,36 +3,116 @@ import './Planning.scss';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
-import { useState } from 'react';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { IconButton } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+
+import {
+  API_DELETE_EVENT,
+  API_EVENTS,
+  API_GOALS,
+  API_DELETE_GOAL,
+  API_UPDATE_GOAL
+} from '../../utils/api';
+
+interface Event {
+  id: number;
+  date: string;
+  time: string;
+  title: string;
+}
+
+interface Goal {
+  id: number;
+  completed: boolean;
+  targetDate: string;
+  title: string;
+}
 
 export default function Planning() {
-  //Dummy data (TODO Sprint 3: replace with backend logic)
-  const events = [
-    { id: 1, date: '03/18/2021', time: '10:00 AM', title: "Bruno's birthday celebration" },
-    { id: 2, date: '03/24/2021', time: '12:30 PM', title: 'Lunch and Learn' },
-    { id: 3, date: '04/14/2021', time: '11:00 AM', title: 'CEO company wide meeting' },
-    {
-      id: 4,
-      date: '05/20/2021',
-      time: '2:00 PM',
-      title: 'Meeting with vendor for new raw materials'
+  const [events, setEvents] = useState<Event[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
+
+  const getEvents = async () => {
+    const request = await fetch(API_EVENTS, {
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    const response = await request.json();
+    const events = response.message as Event[];
+    if (Array.isArray(events)) {
+      events.forEach(function (event) {
+        event.date = event.date.substring(0, 10);
+      });
+      setEvents(events);
     }
-  ];
-
-  //Dummy data (TODO Sprint 3: replace with backend logic)
-  const [goals, setGoals] = useState([
-    { id: 1, completed: true, date: '04/10/2021', title: 'Build 2000 bikes' },
-    { id: 2, completed: false, date: '05/25/2021', title: 'Make $200 000 of profit' },
-    { id: 3, completed: false, date: '12/01/2021', title: 'Sell 1500 bikes' }
-  ]);
-
-  const handleCheckboxTick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGoals(
-      goals.map(goal =>
-        goal.id === Number(event.target.value) ? { ...goal, completed: !goal.completed } : goal
-      )
-    );
   };
+
+  const getGoals = async () => {
+    const request = await fetch(API_GOALS, {
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    const response = await request.json();
+    const goals = response.message as Goal[];
+    if (Array.isArray(goals)) {
+      goals.forEach(goal => {
+        goal.targetDate = goal.targetDate.substring(0, 10);
+        goal.completed = !!Number(goal.completed);
+      });
+      setGoals(goals);
+    }
+  };
+
+  const handleCheckboxTick = async (id: number) => {
+    const goal = goals.find(goal => goal.id === id);
+    const payload = { ...goal, completed: goal ? !goal.completed : false };
+    const request = await fetch(API_UPDATE_GOAL + id, {
+      method: 'PUT',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const response = (await request.json()) as Response;
+    if (response.status) {
+      getGoals();
+    }
+  };
+
+  const deleteEvent = async (id: number) => {
+    const request = await fetch(API_DELETE_EVENT + id, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const response = (await request.json()) as Response;
+    if (response.status) {
+      getEvents();
+    }
+  };
+
+  const deleteGoal = async (id: number) => {
+    const request = await fetch(API_DELETE_GOAL + id, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const response = (await request.json()) as Response;
+    if (response.status) {
+      getGoals();
+    }
+  };
+
+  useEffect(() => {
+    getGoals();
+    getEvents();
+  }, []);
 
   return (
     <main className="Planning">
@@ -59,14 +139,25 @@ export default function Planning() {
               <th>Date</th>
               <th>Time</th>
               <th>Title</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {events.map(event => (
               <tr key={event.id}>
                 <td className="name">{event.date}</td>
-                <td>{event.time}</td>
+                <td>{event.time.substring(0, event.time.length - 3)}</td>
                 <td>{event.title}</td>
+                <td className="delete">
+                  <IconButton
+                    name="event"
+                    onClick={() =>
+                      window.confirm('Are you sure you wish to delete this event?') &&
+                      deleteEvent(event.id)
+                    }>
+                    <DeleteIcon />
+                  </IconButton>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -82,6 +173,7 @@ export default function Planning() {
               <th>Completed</th>
               <th>Target Date</th>
               <th>Goal</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -94,13 +186,27 @@ export default function Planning() {
                     <Checkbox
                       value={goal.id}
                       checked={goal.completed}
-                      onChange={handleCheckboxTick}
+                      onChange={() =>
+                        window.confirm(
+                          'Are you sure you wish to update the completion status of this goal?'
+                        ) && handleCheckboxTick(goal.id)
+                      }
                       name="checkedB"
                       color="primary"
                     />
                   </td>
-                  <td>{goal.date}</td>
+                  <td>{goal.targetDate}</td>
                   <td>{goal.title}</td>
+                  <td className="delete">
+                    <IconButton
+                      name="goal"
+                      onClick={() =>
+                        window.confirm('Are you sure you wish to delete this goal?') &&
+                        deleteGoal(goal.id)
+                      }>
+                      <DeleteIcon />
+                    </IconButton>
+                  </td>
                 </tr>
               ))}
             {/* Display completed goals at end */}
@@ -112,13 +218,27 @@ export default function Planning() {
                     <Checkbox
                       value={goal.id}
                       checked={goal.completed}
-                      onChange={handleCheckboxTick}
+                      onChange={() =>
+                        window.confirm(
+                          'Are you sure you wish to update the completion status of this goal?'
+                        ) && handleCheckboxTick(goal.id)
+                      }
                       name="checkedB"
                       color="primary"
                     />
                   </td>
-                  <td>{goal.date}</td>
+                  <td>{goal.targetDate}</td>
                   <td>{goal.title}</td>
+                  <td className="delete">
+                    <IconButton
+                      name="goal"
+                      onClick={() =>
+                        window.confirm('Are you sure you wish to delete this goal?') &&
+                        deleteGoal(goal.id)
+                      }>
+                      <DeleteIcon />
+                    </IconButton>
+                  </td>
                 </tr>
               ))}
           </tbody>

@@ -79,7 +79,7 @@ jobs:
     needs: test
     name: Deploy to Firebase
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
+    # if: github.event_name != 'pull_request'
     steps:
     - uses: actions/checkout@v2
     - name: Download Artifact
@@ -93,5 +93,5 @@ jobs:
         args: deploy --only hosting
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUPREME_ERP }}
-        PROJECT_PATH: './frontend'
+        # PROJECT_PATH: './frontend'
         REACT_APP_API: 'https://supreme-erp.herokuapp.com'
