@@ -104,7 +104,6 @@ describe('Planning Controller Test', () => {
         const res = await request(app.app)
             .post('/planning/goals')
             .send({
-                completed: 0,
                 targetDate: '2021-11-06',
                 title: 'Sell 500 bikes'
             })

@@ -67,6 +67,10 @@
           color: var(--text);
         }
 
+        .delete {
+          float: right;
+        }
+
         th {
           padding-top: 20px;
           padding-bottom: 20px;
@@ -83,7 +87,6 @@
         transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
         &:hover {
-          cursor: pointer;
           background-color: #f5f5f5;
         }
       }
