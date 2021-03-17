@@ -1,4 +1,4 @@
-import db from '../shared/dbConnection';
+import { get_connection as db } from '../shared/dbConnection';
 
 class User {
     public userId!: number;

@@ -6,7 +6,7 @@ import {
   AutocompleteChangeReason
 } from '@material-ui/lab';
 import { v4 as uuid } from 'uuid';
-
+import { API_GOOD } from '../../../utils/api';
 import './Recipe.scss';
 
 interface Good {
@@ -21,7 +21,7 @@ export default function Recipe() {
   const [recipe, setRecipe] = useState<Good[]>([]);
 
   const getGood = async () => {
-    const response = await fetch('http://localhost:5000/good', {
+    const response = await fetch(API_GOOD, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
     const data = await response.json();

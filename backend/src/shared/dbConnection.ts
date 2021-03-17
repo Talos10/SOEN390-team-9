@@ -4,7 +4,7 @@ import MockConnection from '../../test/others/mySqlMock';
 
 let connection: any;
 
-const get_connection = () => {
+const set_connection = () => {
     if (connection) connection.destroy();
 
     //creating a connection to local db and then testing it
@@ -27,7 +27,10 @@ const get_connection = () => {
         logger.error('Error while trying to connect to database');
         throw e;
     }
+};
+
+const get_connection = () => {
     return connection;
 };
 
-export default get_connection;
+export { get_connection, set_connection };

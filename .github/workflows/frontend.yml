@@ -13,6 +13,7 @@ jobs:
   naming:
     name: Naming convention check
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch'
     steps:
     - uses: actions/checkout@v2
     - name: Check branch naming convention
@@ -29,8 +30,8 @@ jobs:
         pattern: '^(FIX|BUG|FEAT|CHORE|DOC|TASK)-\d+:[a-zA-Z0-9_ ]+$'
         flags: 'gm'
         error: 'Commit message does not follow the naming convention'
-        excludeDescription: 'true'
-        excludeTitle: 'true'
+        excludeDescription: True
+        excludeTitle: True
 
   linting:
     needs: naming
@@ -59,11 +60,37 @@ jobs:
         node-version: '12'
     - name: Install Dependencies
       working-directory: ./frontend
-      run: npm ci
-    - name: Build
-      working-directory: ./frontend
-      run: npm run build
+      run: npm install
     - name: Test
       working-directory: ./frontend
       run: npm test
+    - name: Build
+      working-directory: ./frontend
+      run: npm run build
+    - name: Archive Production Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: build
+        path: |
+          frontend/build
+          frontend/.firebaserc
+          frontend/firebase.json
 
+  deploy:
+    needs: test
+    name: Deploy to Firebase
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download Artifact
+      uses: actions/download-artifact@master
+      with:
+        name: build
+        path: .
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUPREME_ERP }}
