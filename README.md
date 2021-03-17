@@ -53,6 +53,7 @@ Supreme ERP is an ERP (enterprise resource planning) web app which is targeted t
 ### Demo
 * Try the live demo for **free** here: https://erp-supreme.web.app/
 * Default credentials: `admin@email.com` for the email and `admin` for the password.
+
 ### Built With
 * Frontend Framework [React](https://reactjs.org/)
 * Backend Framework [Express](https://expressjs.com/)
