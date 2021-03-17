@@ -29,8 +29,8 @@ export function CreateOrder() {
     const getGoods = async () => {
       const goods = (await inventory.getAllGoods()).sort((a: Item, b: Item) =>
         (a.type === 'raw' && b.type === 'semi-finished') ||
-          (a.type === 'raw' && b.type === 'finished') ||
-          (a.type === 'semi-finished' && b.type === 'finished')
+        (a.type === 'raw' && b.type === 'finished') ||
+        (a.type === 'semi-finished' && b.type === 'finished')
           ? -1
           : 1
       );
