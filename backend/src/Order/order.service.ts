@@ -123,8 +123,8 @@ class Service {
         await Promise.all(
             orderedGoods.map(async o => {
                 const composite: any = ((await this.goodService.getSingleGood(o.compositeId))
-                    .message as SchemaAndGoods).schema;
-                if (!composite.price) throw new Error('Composite has no price');
+                    .message as SchemaAndGoods)?.schema;
+                if (!composite?.price) throw new Error('Composite has no price');
                 const price = o.quantity * composite.price;
                 orderedGoodWithPrice.push({
                     quantity: o.quantity,

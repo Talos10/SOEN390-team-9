@@ -138,7 +138,7 @@ describe('Customer Order Service Test', () => {
         const mockOrderService = new OrderService(mockGoodService);
 
         sandbox.stub(mockOrderService, 'validateOrderedGoods').returns(true);
-        mockGoodService.getSingleGood.resolves({ message: { price: 10 } });
+        mockGoodService.getSingleGood.resolves({ message: { schema: { price: 10 } } });
 
         const res = await mockOrderService.getTotalPrice([{ compositeId: 1, quantity: 2 }]);
         expect(res.totalPrice).to.equal(20);
