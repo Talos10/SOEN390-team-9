@@ -1,4 +1,4 @@
-const api = process.env.REACT_APP_API ?? 'http://localhost:5000';
+const api = process.env.REACT_APP_API ?? 'https://supreme-erp.herokuapp.com/';
 
 /** Attempt to log in */
 export const API_USER_LOGIN = `${api}/user/login`;
