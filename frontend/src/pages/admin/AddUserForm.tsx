@@ -1,6 +1,6 @@
 import { Button, Select, MenuItem } from '@material-ui/core';
 import { useSnackbar } from '../../contexts';
-
+import { API_USER } from '../../utils/api';
 import './AddUserForm.scss';
 
 interface Props {
@@ -16,7 +16,7 @@ export default function AddUserForm({ roles, getAllUsers }: Props) {
     const form = e.target as HTMLFormElement;
     const user = getFormData(form);
 
-    const request = await fetch('http://localhost:5000/user/', {
+    const request = await fetch(API_USER, {
       method: 'POST',
       headers: {
         Authorization: `bearer ${localStorage.token}`,

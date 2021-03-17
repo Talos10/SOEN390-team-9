@@ -5,6 +5,7 @@ import { Container, Card } from '../../components';
 import { useSnackbar } from '../../contexts';
 import AddUserForm from './AddUserForm';
 import './Admin.scss';
+import { API_USER } from '../../utils/api';
 
 interface User {
   userID: number;
@@ -27,7 +28,7 @@ export default function Admin() {
   };
 
   const deleteUser = async ({ userID, email }: User) => {
-    const request = await fetch(`http://localhost:5000/user/${userID}`, {
+    const request = await fetch(`${API_USER}/${userID}`, {
       method: 'DELETE',
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
@@ -41,7 +42,7 @@ export default function Admin() {
 
   const changeRole = async (user: User, role: string) => {
     const { userID, name, email } = user;
-    const request = await fetch(`http://localhost:5000/user/${userID}`, {
+    const request = await fetch(`${API_USER}/${userID}`, {
       method: 'PUT',
       headers: {
         Authorization: `bearer ${localStorage.token}`,
@@ -55,7 +56,7 @@ export default function Admin() {
   };
 
   const getAllUsers = async () => {
-    const request = await fetch('http://localhost:5000/user/', {
+    const request = await fetch(`${API_USER}/user/`, {
       method: 'GET',
       headers: { Authorization: `bearer ${localStorage.getItem('token')}` }
     });
