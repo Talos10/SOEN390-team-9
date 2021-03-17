@@ -56,7 +56,7 @@ export default function Admin() {
   };
 
   const getAllUsers = async () => {
-    const request = await fetch(`${API_USER}/user/`, {
+    const request = await fetch(API_USER, {
       method: 'GET',
       headers: { Authorization: `bearer ${localStorage.getItem('token')}` }
     });
