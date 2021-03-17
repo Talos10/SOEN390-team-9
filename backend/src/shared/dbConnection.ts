@@ -2,8 +2,11 @@ import { config } from '../../config';
 import logger from './Logger';
 import MockConnection from '../../test/others/mySqlMock';
 
+let connection: any;
+
 const get_connection = () => {
-    let connection: any;
+    if (connection) connection.destroy();
+
     //creating a connection to local db and then testing it
     try {
         if (config.env === 'development' || config.env === 'production') {
