@@ -8,7 +8,7 @@ import {
     SemiGoodInterface,
     FinishedGoodInterface
 } from './good.interfaces';
-import db from '../shared/dbConnection';
+import { get_connection as db } from '../shared/dbConnection';
 
 class Good {
     public name: string;

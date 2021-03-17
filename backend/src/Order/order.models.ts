@@ -1,4 +1,4 @@
-import db from '../shared/dbConnection';
+import { get_connection as db } from '../shared/dbConnection';
 import { config } from '../../config';
 import { OrderedGood, CompleteCustomerOrder } from './order.interfaces';
 
