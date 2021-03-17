@@ -93,3 +93,4 @@ jobs:
         args: deploy --only hosting
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUPREME_ERP }}
+        REACT_APP_API: 'https://supreme-erp.herokuapp.com'
