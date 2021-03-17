@@ -24,7 +24,7 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
   return (
     <aside className={`Sidenav ${styles.Sidenav} ${showSidenav ? styles.sidenavOpen : ''}`}>
       <nav>
-        <div className={styles.SidenavLogo}>ERP Software</div>
+        <div className={styles.SidenavLogo}>Supreme ERP</div>
 
         <div className="Sidenav__button">
           <Button

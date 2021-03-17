@@ -75,7 +75,7 @@ export default function ForgotPassword() {
       </Snackbar>
 
       <div className="login-card">
-        <p className="login-card__title lead">ERP Software</p>
+        <p className="login-card__title lead">Supreme ERP</p>
         <p className="login-card__header_forgot h4">Forgot Password</p>
 
         <p className="login-card__info">

@@ -41,7 +41,7 @@ export default function Login() {
   return (
     <div className="Login">
       <div className="login-card">
-        <p className="login-card__title lead">ERP Software</p>
+        <p className="login-card__title lead">Supreme ERP</p>
         <p className="login-card__header h4">Log In</p>
 
         <form onSubmit={tryLogin} className="login-card__form">
