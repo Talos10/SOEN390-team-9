@@ -27,9 +27,13 @@ export function CreateOrder() {
 
   useEffect(() => {
     const getGoods = async () => {
-      const goods = (await inventory.getAllGoods())
-        .filter(good => good.type === 'finished' || good.type === 'semi-finished')
-        .sort((a: Item, b: Item) => (a.name < b.name ? -1 : a.name === b.name ? 0 : 1));
+      const goods = (await inventory.getAllGoods()).sort((a: Item, b: Item) =>
+        (a.type === 'raw' && b.type === 'semi-finished') ||
+        (a.type === 'raw' && b.type === 'finished') ||
+        (a.type === 'semi-finished' && b.type === 'finished')
+          ? -1
+          : 1
+      );
       setGoods(goods);
     };
 
@@ -89,7 +93,7 @@ export function CreateOrder() {
             onChange={selectGood}
             disableClearable={true}
             options={goods}
-            getOptionLabel={good => good.name}
+            getOptionLabel={good => `${good.name} - ${good.type}`}
             renderInput={params => (
               <TextField
                 {...params}
