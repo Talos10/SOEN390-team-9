@@ -157,7 +157,7 @@ export default function ItemInfo() {
 
       <div className="bottom">
         <Button variant="outlined" color="secondary" onClick={archiveItem}>
-          Archieve
+          Archive
         </Button>
       </div>
     </div>
