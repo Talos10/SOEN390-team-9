@@ -1,4 +1,4 @@
-export const api = process.env.REACT_APP_API ?? 'http://localhost:5000'; // https://supreme-erp.herokuapp.com
+export const api = process.env.REACT_APP_API ?? 'https://supreme-erp.herokuapp.com'; // 'http://localhost:5000'
 
 /** Base user */
 export const API_USER = `${api}/user`;
