@@ -19,7 +19,7 @@ export default function AddUserForm({ roles, getAllUsers }: Props) {
 
     const response = await admin.addUser(user);
 
-    if (response.error) snackbar.push(response.error);
+    if (!response.status) snackbar.push(response.message);
     else {
       snackbar.push(`Added ${user.email}.`);
       form.reset();

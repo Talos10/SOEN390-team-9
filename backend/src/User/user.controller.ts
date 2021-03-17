@@ -105,7 +105,7 @@ class Controller {
                 } catch (e) {
                     message = {
                         status: false,
-                        error: e as string
+                        message: e as string
                     };
                 }
 
