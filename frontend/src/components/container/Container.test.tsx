@@ -3,7 +3,7 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import { AuthProvider } from '../../contexts';
-import Container from './Container';
+import { Container } from './Container';
 
 test('displays children', () => {
   const history = createMemoryHistory();

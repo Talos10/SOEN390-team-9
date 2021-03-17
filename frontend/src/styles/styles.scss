@@ -2,7 +2,7 @@
 :root {
   /* Primary Colors */
   --primary: #3888f0;
-  --primary-transparent: #3888f01f;
+  --primary-faded: #3888f01f;
   --bg: #ffffff;
   --bg-dark: #f6f7f9;
   --border: #dadce0;
@@ -10,6 +10,13 @@
   --text-white: #ffffff;
   --text-faded: #5f6368;
   --text-title: #476282;
+
+  /* Order Status Color */
+  --red: #ffcfcc;
+  --orange: #ffea8a;
+  --green: #aee9d1;
+  --blue: #aedee9;
+  --grey: #e0e0e0;
 
   /* Sidenav */
   --sidenav-bg: #122c44;
@@ -19,6 +26,7 @@
 
   /* Effects */
   --shadow-soft: 0px 1px 3px #3c40434d, 0px 1px 3px 1px #3c404326;
+  --bg-transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
   /* Positioning */
   --padding: 16px;

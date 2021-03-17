@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { TextField } from '@material-ui/core';
 import {
   Autocomplete,
@@ -6,7 +6,8 @@ import {
   AutocompleteChangeReason
 } from '@material-ui/lab';
 import { v4 as uuid } from 'uuid';
-import { API_GOOD } from '../../../utils/api';
+import { useBackend } from '../../../contexts';
+
 import './Recipe.scss';
 
 interface Good {
@@ -19,17 +20,14 @@ interface Good {
 export default function Recipe() {
   const [goods, setGoods] = useState<Good[]>([]);
   const [recipe, setRecipe] = useState<Good[]>([]);
+  const { inventory } = useBackend();
 
-  const getGood = async () => {
-    const response = await fetch(API_GOOD, {
-      headers: { Authorization: `bearer ${localStorage.token}` }
-    });
-    const data = await response.json();
-    const goods = (data.message as Good[])
+  const getGood = useCallback(async () => {
+    const goods = (await inventory.getAllGoods())
       .filter(good => good.type === 'raw' || good.type === 'semi-finished')
       .map(good => ({ name: good.name, id: good.id, uuid: uuid() }));
     setGoods(goods);
-  };
+  }, [inventory]);
 
   const sortAlphabetically = (a: Good, b: Good) => {
     return a.name < b.name ? -1 : a.name === b.name ? 0 : 1;
@@ -59,7 +57,7 @@ export default function Recipe() {
 
   useEffect(() => {
     getGood();
-  }, []);
+  }, [getGood]);
 
   return (
     <div className="Recipe">

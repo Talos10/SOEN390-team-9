@@ -1,0 +1,69 @@
+.CreateOrder {
+  max-width: 900px;
+  margin: 0 auto;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .title {
+      margin-bottom: 0;
+    }
+
+    &__left,
+    &__right {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  p {
+    font-weight: 500;
+  }
+
+  .input-field {
+    display: flex;
+    margin-bottom: var(--padding);
+
+    & > :first-child {
+      flex-grow: 1;
+      margin-right: 8px;
+    }
+
+    & > :last-child {
+      width: 100px;
+    }
+  }
+
+  .summary {
+    border-top: 1px solid var(--border);
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: var(--padding) var(--padding) 0;
+    line-height: 28px;
+
+    @media (min-width: 768px) {
+      margin-left: -24px;
+      margin-right: -24px;
+    }
+
+    &__line-item,
+    &__total {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__line-item {
+      color: var(--text-faded);
+      margin-bottom: 8px;
+    }
+
+    &__total {
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+      font-weight: 500;
+    }
+  }
+}

@@ -1,7 +1,7 @@
-import { Dispatch } from 'react';
+import { Dispatch, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import { Home, Widgets, SupervisorAccount, CalendarToday } from '@material-ui/icons';
+import { Home, Widgets, SupervisorAccount, CalendarToday, Build } from '@material-ui/icons';
 
 import { useAuth } from '../../../contexts';
 import styles from './Sidenav.module.css';
@@ -16,14 +16,19 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
   const location = useLocation();
   const auth = useAuth();
 
+  // When the page changes, we want the sidenav to close.
+  useEffect(() => {
+    toggleSidenav(false);
+  }, [location, toggleSidenav]);
+
   return (
     <aside className={`Sidenav ${styles.Sidenav} ${showSidenav ? styles.sidenavOpen : ''}`}>
       <nav>
-        <div className={styles.SidenavLogo}>ERP Software</div>
+        <div className={styles.SidenavLogo}>Supreme ERP</div>
 
         <div className="Sidenav__button">
           <Button
-            color={location.pathname === '/home' ? 'primary' : 'default'}
+            color={location.pathname.indexOf('home') === 0 ? 'primary' : 'default'}
             component={Link}
             to="/home">
             <Home style={{ paddingRight: 16 }} />
@@ -34,7 +39,7 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
         {auth.getRole() === 'admin' && (
           <div className="Sidenav__button">
             <Button
-              color={location.pathname === '/admin' ? 'primary' : 'default'}
+              color={location.pathname.indexOf('/admin') === 0 ? 'primary' : 'default'}
               component={Link}
               to="/admin">
               <SupervisorAccount style={{ paddingRight: 16 }} />
@@ -45,7 +50,7 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
 
         <div className="Sidenav__button">
           <Button
-            color={location.pathname === '/inventory' ? 'primary' : 'default'}
+            color={location.pathname.indexOf('/inventory') === 0 ? 'primary' : 'default'}
             component={Link}
             to="/inventory">
             <Widgets style={{ paddingRight: 16 }} />
@@ -55,7 +60,17 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
 
         <div className="Sidenav__button">
           <Button
-            color={location.pathname === '/planning' ? 'primary' : 'default'}
+            color={location.pathname.indexOf('/manufacturing') === 0 ? 'primary' : 'default'}
+            component={Link}
+            to="/manufacturing">
+            <Build style={{ paddingRight: 16 }} />
+            Manufacturing
+          </Button>
+        </div>
+
+        <div className="Sidenav__button">
+          <Button
+            color={location.pathname.indexOf('/planning') === 0 ? 'primary' : 'default'}
             component={Link}
             to="/planning">
             <CalendarToday style={{ paddingRight: 16 }} />

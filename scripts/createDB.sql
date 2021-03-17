@@ -369,3 +369,24 @@ VALUES
 -- drop user if exists 'admin'@'localhost';
 
 -- https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql
+
+
+CREATE TABLE IF NOT EXISTS `soen_390_db`.`goods` (
+  `id` INT NOT NULL,
+  `schema` INT NULL,
+  `quality` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  INDEX `schema_idx` (`schema` ASC) VISIBLE,
+  CONSTRAINT `schema`
+    FOREIGN KEY (`schema`)
+    REFERENCES `soen_390_db`.`inventory_good` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+INSERT `goods` (`id`, `schema`)
+VALUES
+(1, 1),
+(2, 1),
+(5, 1),
+(6, 2);

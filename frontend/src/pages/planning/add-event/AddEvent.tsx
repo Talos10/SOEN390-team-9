@@ -1,4 +1,3 @@
-import { Container } from '../../../components';
 import { Button } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -48,7 +47,7 @@ export default function AddEvent() {
   };
 
   return (
-    <Container title="AddForm">
+    <main>
       <form className="AddForm" onSubmit={addEvent}>
         <div className="top">
           <h1 className="title">Add Event</h1>
@@ -63,6 +62,6 @@ export default function AddEvent() {
         </div>
         <Event />
       </form>
-    </Container>
+    </main>
   );
 }

@@ -4,7 +4,14 @@ import {
     SemiFinishedGood as SemiModel,
     FinishedGood as FinishModel
 } from './good.models';
-import { Property, Component, ReturnMessage } from './good.interfaces';
+import {
+    AnyGood,
+    Property,
+    Component,
+    SuccessMessage,
+    ErrorMessage,
+    SchemaAndGoods
+} from './good.interfaces';
 import { config } from '../../config';
 import logger from '../shared/Logger';
 
@@ -12,13 +19,15 @@ class Service {
     /**
      * Get all the goods in the database
      */
-    public async getAllGoods(): Promise<ReturnMessage> {
+    public async getAllGoods() {
         try {
             const goods = await GoodModel.getAllGoods();
-            return { status: true, message: this.cleanUpMultipleOfGoods(goods) };
+            return { status: true, message: this.cleanUpMultipleOfGoods(goods) } as SuccessMessage<
+                AnyGood[]
+            >;
         } catch (e) {
             logger.error(`Failed to get all goods`, ['good', 'find', 'good'], e.message);
-            return { status: false, message: `Failed while getting all goods` };
+            return { status: false, message: `Failed while getting all goods` } as ErrorMessage;
         }
     }
 
@@ -26,19 +35,25 @@ class Service {
      * Gets a good by id
      * @param id The id of the good
      */
-    public async getSingleGood(id: number): Promise<ReturnMessage> {
+    public async getSingleGood(id: number) {
         try {
             const good = await GoodModel.findById(id);
-            return good
-                ? { status: true, message: this.cleanUpGood(good) }
-                : { status: false, message: `Good with id: ${id} not found` };
+            return good.schema !== undefined
+                ? ({
+                      status: true,
+                      message: this.cleanUpGood(good)
+                  } as SuccessMessage<SchemaAndGoods>)
+                : ({ status: false, message: `Good with id: ${id} not found` } as ErrorMessage);
         } catch (e) {
             logger.error(
                 `Failed to get good by id with id: ${id}`,
                 ['good', 'find', 'id'],
                 e.message
             );
-            return { status: false, message: `Failed while getting good with id ${id}` };
+            return {
+                status: false,
+                message: `Failed while getting good with id ${id}`
+            } as ErrorMessage;
         }
     }
 
@@ -46,17 +61,22 @@ class Service {
      * Get all goods of a specific type
      * @param type The type of goods
      */
-    public async getAllGoodsOfType(type: string): Promise<ReturnMessage> {
+    public async getAllGoodsOfType(type: string) {
         try {
             const goods = await GoodModel.getByType(type);
-            return { status: true, message: this.cleanUpMultipleOfGoods(goods) };
+            return { status: true, message: this.cleanUpMultipleOfGoods(goods) } as SuccessMessage<
+                AnyGood[]
+            >;
         } catch (e) {
             logger.error(
                 `Failed to get goods by type with type: ${type}`,
                 ['good', 'find', 'type'],
                 e.message
             );
-            return { status: false, message: `Failed while getting goods with type ${type}` };
+            return {
+                status: false,
+                message: `Failed while getting goods with type ${type}`
+            } as ErrorMessage;
         }
     }
 
@@ -64,10 +84,12 @@ class Service {
      * Get all goods of a specific type
      * @param type The type of goods
      */
-    public async getAllArchivedGoodsOfType(type: string): Promise<ReturnMessage> {
+    public async getAllArchivedGoodsOfType(type: string) {
         try {
             const goods = await GoodModel.getByType(type, true);
-            return { status: true, message: this.cleanUpMultipleOfGoods(goods) };
+            return { status: true, message: this.cleanUpMultipleOfGoods(goods) } as SuccessMessage<
+                AnyGood[]
+            >;
         } catch (e) {
             logger.error(
                 `Failed to get archived goods by type with type: ${type}`,
@@ -77,7 +99,7 @@ class Service {
             return {
                 status: false,
                 message: `Failed while getting archived goods with type ${type}`
-            };
+            } as ErrorMessage;
         }
     }
 
@@ -115,7 +137,9 @@ class Service {
      * Archive multiple goods
      * @param goods an array of ids
      */
-    public async archiveMultipleGoods(goods: any[]): Promise<ReturnMessage[]> {
+    public async archiveMultipleGoods(
+        goods: any[]
+    ): Promise<(SuccessMessage<string> | ErrorMessage)[]> {
         return await Promise.all(
             goods.map(async good => {
                 return await this.archiveGood(good.id, good.archive);
@@ -128,7 +152,7 @@ class Service {
      * @param id the id of the good
      * @param archive a boolean if we want to archive or not
      */
-    public async archiveGood(id: number, archive: boolean): Promise<ReturnMessage> {
+    public async archiveGood(id: number, archive: boolean) {
         try {
             if (await GoodModel.archive(id, archive)) {
                 logger.info(
@@ -140,14 +164,14 @@ class Service {
                     message: `${
                         archive ? 'archive' : 'un-archive'
                     } successfull for good with id: ${id}`
-                };
+                } as SuccessMessage<string>;
             }
             return {
                 status: false,
                 message: `Failed to ${
                     archive ? 'archive' : 'un-archive'
                 } good with id ${id}, good not found`
-            };
+            } as ErrorMessage;
         } catch (e) {
             logger.error(
                 `Failed to ${archive ? 'archive' : 'un-archive'} good with id: ${id}`,
@@ -157,7 +181,7 @@ class Service {
             return {
                 status: false,
                 message: `Failed to ${archive ? 'archive' : 'un-archive'} good with id ${id}`
-            };
+            } as ErrorMessage;
         }
     }
 
@@ -165,7 +189,7 @@ class Service {
      * Add many new goods
      * @param goods goods to save
      */
-    public async addBulkGoods(goods: any[]): Promise<ReturnMessage[]> {
+    public async addBulkGoods(goods: any[]) {
         return await Promise.all(
             goods.map(async good => {
                 return await this.addSingleGood(good);
@@ -177,7 +201,7 @@ class Service {
      * Add a single good to the database
      * @param good The good we want to add
      */
-    public async addSingleGood(good: any): Promise<ReturnMessage> {
+    public async addSingleGood(good: any): Promise<SuccessMessage<string> | ErrorMessage> {
         if (!this.validateGoodFormat(good))
             return { status: false, message: 'Failed while validating good', good: good };
 
@@ -380,7 +404,7 @@ class Service {
      * Get the materials necessary to make goods
      * @param goods A list of goods to make
      */
-    public async allocateMaterialsForGoods(goods: Component[]): Promise<ReturnMessage> {
+    public async allocateMaterialsForGoods(goods: Component[]) {
         const requiredComponents = await this.compileRequiredComponents(goods);
         return await this.decrementQuantitiesOfGoods(requiredComponents);
     }
@@ -391,7 +415,7 @@ class Service {
      */
     public async decrementQuantitiesOfGoods(
         requiredComponents: Component[]
-    ): Promise<ReturnMessage> {
+    ): Promise<SuccessMessage<string> | ErrorMessage | { status: false; message: Component[] }> {
         const missing = await this.validateComponentsQuantities(requiredComponents);
         if (missing.length !== 0) return { status: false, message: missing };
 

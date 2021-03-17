@@ -260,8 +260,10 @@ describe('Manufacturing Service Test', () => {
         mockGoodService.getSingleGood.resolves({
             status: true,
             message: {
-                cost: 100,
-                processTime: 100
+                schema: {
+                    cost: 100,
+                    processTime: 100
+                }
             }
         });
         const res = await manufacturingService.getTotalCostAndEstimatedEndTimeOfOrder(mock);

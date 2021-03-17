@@ -98,7 +98,7 @@ export default function ResetPassword() {
       </Snackbar>
 
       <div className="login-card">
-        <p className="login-card__title lead">ERP Software</p>
+        <p className="login-card__title lead">Supreme ERP</p>
         <p className="login-card__header h4">Modify Password</p>
 
         <form onSubmit={tryResetPassword} className="login-card__form">

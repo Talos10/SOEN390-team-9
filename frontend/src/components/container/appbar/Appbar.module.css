@@ -4,7 +4,6 @@
   color: var(--text-white);
   position: sticky;
   top: 0;
-  margin-bottom: 16px;
   padding-right: 16px;
   height: 48px;
   display: flex;
@@ -24,7 +23,6 @@
   .Appbar {
     padding-left: 8px;
     padding-right: 24px;
-    margin-bottom: 24px;
   }
 }
 

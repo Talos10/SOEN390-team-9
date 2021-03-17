@@ -3,9 +3,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/icons/Menu';
 
 import ProfileOptions from './profile-options/ProfileOptions';
-import ProfileIcon from '../../../assets/profile-icon.jpg';
 import styles from './Appbar.module.css';
 import { Portal } from '@material-ui/core';
+import { AccountCircle } from '@material-ui/icons';
 
 interface Props {
   showSidenav: boolean;
@@ -28,9 +28,9 @@ export default function Appbar({ showSidenav, toggleSidenav, title }: Props) {
         <span className="subtitle2">{title}</span>
       </div>
 
-      <button onClick={onProfileClick} type="button" className={styles.Appbar__profileButton}>
-        <img className={styles.Appbar__profileIcon} src={ProfileIcon} alt="Profile" />
-      </button>
+      <IconButton onClick={onProfileClick} type="button" className={styles.Appbar__profileButton}>
+        <AccountCircle />
+      </IconButton>
 
       {isProfileOptionOpened && (
         <Portal>

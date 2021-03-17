@@ -6,7 +6,8 @@ import {
     GoodInterface,
     RawGoodInterface,
     SemiGoodInterface,
-    FinishedGoodInterface
+    FinishedGoodInterface,
+    SingleGood
 } from './good.interfaces';
 import { get_connection as db } from '../shared/dbConnection';
 
@@ -35,8 +36,8 @@ class Good {
      * Retrieve a good from an id
      * @param id the id of the good
      */
-    public static async findById(id: number): Promise<AnyGood> {
-        const existing = await db()
+    public static async findById(id: number) {
+        let schema: AnyGood | undefined = await db()
             .select('inventory_good.*', 'raw_good.vendor', 'finished_good.price')
             .from('inventory_good')
             .leftJoin('raw_good', 'raw_good.id', 'inventory_good.id')
@@ -45,14 +46,13 @@ class Good {
             .where('inventory_good.id', '=', id)
             .first();
 
-        if (existing) {
-            return {
-                ...existing,
-                ...(await this.getPropertiesAndComponents(id))
-            };
+        if (schema) {
+            schema = { ...schema, ...(await this.getPropertiesAndComponents(id)) };
         }
 
-        return existing;
+        const goods: SingleGood[] = await db().select('*').from('goods').where('schema', '=', id);
+
+        return { schema, goods };
     }
 
     /**

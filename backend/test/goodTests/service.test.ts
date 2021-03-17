@@ -38,10 +38,10 @@ describe('Good Service Test', () => {
 
     it('Test get single goods', async () => {
         const goodService = new GoodService();
-        sandbox.stub(goodService, 'cleanUpGood').returns(['foo']);
-        sandbox.stub(Good, 'findById').resolves('foo');
-        const res = await goodService.getSingleGood(123);
-        expect(res.message[0]).to.equal('foo');
+        sandbox.stub(goodService, 'cleanUpGood').returns({ schema: 'foo' });
+        sandbox.stub(Good, 'findById').resolves({ schema: 'foo' });
+        const res: any = await goodService.getSingleGood(123);
+        expect(res.message.schema).to.equal('foo');
         expect(res.status).to.equal(true);
     });
 

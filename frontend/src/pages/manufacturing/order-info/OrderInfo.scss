@@ -1,0 +1,97 @@
+.OrderInfo {
+  max-width: 900px;
+  margin: 0 auto;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .title {
+      margin-bottom: 0;
+    }
+
+    &__left,
+    &__right {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  .label {
+    position: relative;
+    padding-left: 36px;
+    line-height: 28px;
+    color: var(--text);
+    font-weight: 500;
+    text-transform: capitalize;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 14px;
+    }
+
+    &.cancelled::before {
+      background-color: var(--grey);
+    }
+
+    &.processing::before {
+      background-color: var(--orange);
+    }
+
+    &.confirmed::before {
+      background-color: var(--blue);
+    }
+
+    &.completed::before {
+      background-color: var(--green);
+    }
+  }
+
+  .summary {
+    line-height: 28px;
+
+    &__line-item,
+    &__total {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__line-item {
+      color: var(--text-faded);
+      margin-bottom: 8px;
+    }
+
+    &__total {
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+      font-weight: 500;
+    }
+  }
+
+  .confirmation {
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: var(--padding) var(--padding) 0;
+    display: flex;
+    justify-content: flex-end;
+
+    & > * {
+      margin-left: 8px;
+    }
+
+    @media (min-width: 768px) {
+      margin-left: -24px;
+      margin-right: -24px;
+    }
+  }
+}

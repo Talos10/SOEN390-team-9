@@ -1,8 +1,8 @@
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, Button } from '@material-ui/core';
 import { createContext, useContext, useState } from 'react';
 
 const SnackbarContext = createContext({
-  push: (message: string) => {}
+  push: (message: string, callback?: () => void) => {}
 });
 
 interface Provider {
@@ -11,9 +11,21 @@ interface Provider {
 
 export const SnackbarProvider = ({ ...props }: Provider) => {
   const [message, setMessage] = useState<string>();
+  const [undo, setUndo] = useState<{ invoke: () => void }>();
 
-  const push = (message: string) => {
+  const push = (message: string, undo?: () => void) => {
     setMessage(message);
+    setUndo(undo && { invoke: undo });
+  };
+
+  const handleClose = () => {
+    setMessage(undefined);
+    setUndo(undefined);
+  };
+
+  const handleUndo = () => {
+    undo?.invoke();
+    handleClose();
   };
 
   return (
@@ -22,8 +34,17 @@ export const SnackbarProvider = ({ ...props }: Provider) => {
       <Snackbar
         open={message !== undefined}
         autoHideDuration={6000}
-        onClose={() => setMessage(undefined)}
+        onClose={handleClose}
         message={message}
+        action={
+          undo === undefined ? (
+            <></>
+          ) : (
+            <Button color="secondary" onClick={handleUndo}>
+              UNDO
+            </Button>
+          )
+        }
       />
     </>
   );

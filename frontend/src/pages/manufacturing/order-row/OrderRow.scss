@@ -1,0 +1,23 @@
+.Manufacturing {
+  tbody tr {
+    height: 50px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #f5f5f5;
+      transition: var(--bg-transition);
+    }
+  }
+
+  .processing .MuiChip-root {
+    background-color: var(--orange);
+  }
+
+  .completed .MuiChip-root {
+    background-color: var(--green);
+  }
+
+  .confirmed .MuiChip-root {
+    background-color: var(--blue);
+  }
+}

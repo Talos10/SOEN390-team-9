@@ -1,4 +1,4 @@
-const api = process.env.REACT_APP_API ?? 'https://supreme-erp.herokuapp.com';
+export const api = process.env.REACT_APP_API ?? 'https://supreme-erp.herokuapp.com'; // https://supreme-erp.herokuapp.com
 
 /** Base user */
 export const API_USER = `${api}/user`;
@@ -14,6 +14,10 @@ export const API_GOOD = `${api}/good`;
 export const API_GOOD_SINGLE = `${api}/good/single`;
 /** Archive a good */
 export const API_ARCHIVE_GOOD = `${api}/good/archive`;
+/** Get all orders */
+export const API_MAN = `${api}/manufacturing/order`;
+/** Get all orders */
+export const API_MAN_ID = `${api}/manufacturing/order/id/`;
 /** Get all events */
 export const API_EVENTS = `${api}/planning/events`;
 /** Get all goals */

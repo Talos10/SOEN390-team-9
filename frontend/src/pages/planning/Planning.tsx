@@ -1,4 +1,4 @@
-import { Container, Card } from '../../components';
+import { Card } from '../../components';
 import './Planning.scss';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
@@ -115,7 +115,7 @@ export default function Planning() {
   }, []);
 
   return (
-    <Container title="Planning" className="Planning">
+    <main className="Planning">
       <div className="planning_top">
         <h1 className="title table_title">Events</h1>
         <div className="planning_top_buttons">
@@ -244,6 +244,6 @@ export default function Planning() {
           </tbody>
         </table>
       </Card>
-    </Container>
+    </main>
   );
 }
