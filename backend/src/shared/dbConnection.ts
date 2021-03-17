@@ -27,7 +27,7 @@ const set_connection = () => {
         logger.error('Error while trying to connect to database');
         throw e;
     }
-}
+};
 
 const get_connection = () => {
     return connection;
