@@ -11,7 +11,7 @@
     npm install
     ```
 
-### Start the backend
+### Start the Backend
 - Start the backend on http://localhost:5000
     ```
     npm start
@@ -32,7 +32,7 @@ Click here to download the Postman Collection
 - [ChaiJs](https://www.chaijs.com/) is used as our assertion library
 - [SinonJs](https://sinonjs.org/) is used as our Stubs and mock library
 
-### Running tests
+### Running Tests
 - Run test (first option for linux and second option for windows)
     ```
     npm test
