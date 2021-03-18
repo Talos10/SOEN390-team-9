@@ -186,11 +186,7 @@ export default function Planning() {
                     <Checkbox
                       value={goal.id}
                       checked={goal.completed}
-                      onChange={() =>
-                        window.confirm(
-                          'Are you sure you wish to update the completion status of this goal?'
-                        ) && handleCheckboxTick(goal.id)
-                      }
+                      onChange={() => handleCheckboxTick(goal.id)}
                       name="checkedB"
                       color="primary"
                     />
@@ -218,11 +214,7 @@ export default function Planning() {
                     <Checkbox
                       value={goal.id}
                       checked={goal.completed}
-                      onChange={() =>
-                        window.confirm(
-                          'Are you sure you wish to update the completion status of this goal?'
-                        ) && handleCheckboxTick(goal.id)
-                      }
+                      onChange={() => handleCheckboxTick(goal.id)}
                       name="checkedB"
                       color="primary"
                     />
