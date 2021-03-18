@@ -59,7 +59,7 @@ Supreme ERP is an ERP (enterprise resource planning) web app which is targeted t
 * Backend Framework [Express](https://expressjs.com/)
 * RDMS [MySql](https://expressjs.com/)
 * Language [TypeScript](https://www.typescriptlang.org/)
-* Continuous integration service [Travis CI](https://nodejs.org/en/)
+* CI/CD service [GitHub Actions](https://docs.github.com/en/actions)
 
 ## Getting Started
 
