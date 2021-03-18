@@ -48,7 +48,7 @@
 
 ## About The Project
 
-Supreme ERP is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes.
+**Supreme ERP** is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes.
 
 ### Demo
 * Try the live demo for **free** here: https://erp-supreme.web.app/
