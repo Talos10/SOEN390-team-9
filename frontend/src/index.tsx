@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core';
@@ -15,7 +14,7 @@ ReactDOM.render(
   <ThemeProvider theme={Theme}>
     <SnackbarProvider>
       <AuthProvider>
-        <BackendProvider>
+        <BackendProvider client={process.env.REACT_APP_API ?? 'https://supreme-erp.herokuapp.com'}>
           <BrowserRouter>
             <App />
           </BrowserRouter>
