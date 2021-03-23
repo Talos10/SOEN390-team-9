@@ -1,7 +1,14 @@
 import { Dispatch, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-import { Home, Widgets, SupervisorAccount, CalendarToday, Build } from '@material-ui/icons';
+import {
+  Home,
+  Widgets,
+  SupervisorAccount,
+  CalendarToday,
+  Build,
+  Timeline
+} from '@material-ui/icons';
 
 import { useAuth } from '../../../contexts';
 import styles from './Sidenav.module.css';
@@ -65,6 +72,16 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
             to="/manufacturing">
             <Build style={{ paddingRight: 16 }} />
             Manufacturing
+          </Button>
+        </div>
+
+        <div className="Sidenav__button">
+          <Button
+            color={location.pathname.indexOf('/sales') === 0 ? 'primary' : 'default'}
+            component={Link}
+            to="/sales">
+            <Timeline style={{ paddingRight: 16 }} />
+            Sales
           </Button>
         </div>
 
