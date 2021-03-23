@@ -1,0 +1,85 @@
+.CreateOrder {
+  max-width: 900px;
+  margin: 0 auto;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .title {
+      margin-bottom: 0;
+    }
+
+    &__left,
+    &__right {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  p {
+    font-weight: 500;
+  }
+
+  .customer {
+    display: flex;
+    justify-content: space-between;
+    div {
+      width: 98%;
+    }
+  }
+
+  .input-field {
+    margin-bottom: var(--padding);
+
+    & > :nth-child(2) {
+      margin-right: 8px;
+    }
+
+    & > :nth-last-child(2) {
+      width: 100px;
+    }
+  }
+
+  .order-info {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+
+    thead {
+      font-weight: 500;
+      color: var(--font-faded);
+      text-transform: uppercase;
+    }
+    tr {
+      border-bottom: 1px solid var(--border);
+      height: 50px;
+    }
+
+    .total {
+      text-transform: uppercase;
+      border-bottom: none;
+      font-weight: 500;
+    }
+
+    .quantity {
+      width: 100px;
+    }
+
+    .price {
+      display: flex;
+      justify-content: space-between;
+      vertical-align: middle;
+    }
+
+    .missing {
+      padding-left: 10px;
+      .MuiChip-root {
+        background-color: var(--red);
+      }
+    }
+  }
+}
