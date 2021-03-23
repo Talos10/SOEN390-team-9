@@ -1,6 +1,7 @@
 import { get_connection as db } from '../shared/dbConnection';
 import { config } from '../../config';
 import { OrderedGood, CompleteCustomerOrder } from './order.interfaces';
+import Customer from '../Customer/customer.models';
 
 const status = config.order.status;
 
@@ -39,6 +40,7 @@ class CustomerOrder {
         const ordersWithGoods = await Promise.all(
             orders.map(async order => ({
                 ...order,
+                customer: await Customer.findById(order.customerId),
                 orderedGoods: await this.getOrderedGoodOfOrder(order.orderId)
             }))
         );
@@ -72,6 +74,7 @@ class CustomerOrder {
         }
         return await {
             ...order,
+            customer: await Customer.findById(order.customerId),
             orderedGoods: await this.getOrderedGoodOfOrder(order.orderId)
         };
     }
