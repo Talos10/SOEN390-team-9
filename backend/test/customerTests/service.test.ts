@@ -12,7 +12,7 @@ sinonStubPromise(sinon);
 
 let sandbox: sinon.SinonSandbox;
 
-const mockCustomerModel : CustomerModel= {
+const mockCustomerModel: CustomerModel = {
     customerId: 1,
     name: 'john',
     email: 'doe'
