@@ -8,7 +8,7 @@ export default function RawMaterial() {
       <label htmlFor="buying-price">Buying Price</label>
       <TextField
         type="number"
-        inputProps={{ min: '0', step: '0.01' }}
+        inputProps={{ min: '0.01', step: '0.01' }}
         id="buying-price"
         name="buying-price"
         variant="outlined"
@@ -26,7 +26,7 @@ export default function RawMaterial() {
       <TextField
         required
         type="number"
-        inputProps={{ min: '0' }}
+        inputProps={{ min: '0.01', step: '0.01' }}
         id="edt"
         name="edt"
         variant="outlined"
