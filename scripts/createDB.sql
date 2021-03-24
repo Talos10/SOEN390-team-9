@@ -407,21 +407,6 @@ VALUES
 (2, 2)
 ;
 
--- CREATE TABLE `soen_390_db`.`machine` (
---   `machineId` INT NOT NULL AUTO_INCREMENT,
---   `status` VARCHAR(45) NOT NULL,
---   `numberOrderCompleted` INT NOT NULL DEFAULT 0,
---   PRIMARY KEY (`machineId`),
---   CONSTRAINT `validMachineStatus`
---   CHECK (`status` IN ("free", "busy")))
---   
---   collate = utf8mb4_unicode_ci;
-
--- -- Table where we store the order on which a machine is working on.
--- CREATE TABLE `soen_390_db`.`schedule` (
---   `machineId` INT NOT NULL AUTO_INCREMENT,
---   `orderId` INT NOT NULL,
-
 INSERT `property_of_good` (`compositeId`, `name`, `value`)
 VALUES
 (4, "leather quality", "full-grain"),
