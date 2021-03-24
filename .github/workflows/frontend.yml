@@ -34,6 +34,7 @@ jobs:
         excludeTitle: 'true'
 
   linting:
+    needs: naming
     name: Linting check
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
@@ -50,8 +51,10 @@ jobs:
       run: npx prettier --check .
 
   test:
+    needs: linting
     name: Build and test
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -76,7 +79,6 @@ jobs:
           frontend/firebase.json
 
   deploy:
-    needs: test
     name: Deploy to Firebase
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
