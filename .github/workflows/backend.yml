@@ -13,6 +13,7 @@ jobs:
   naming:
     name: Naming convention check
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
     - uses: actions/checkout@v2
     - name: Check branch naming convention
@@ -36,6 +37,7 @@ jobs:
     needs: naming
     name: Linting check
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -52,6 +54,26 @@ jobs:
     needs: linting
     name: Build and test
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '12'
+    - name: Install Dependencies
+      working-directory: ./backend
+      run: npm ci
+    - name: Build
+      working-directory: ./backend
+      run: npm run build
+    - name: Test coverage
+      working-directory: ./backend
+      run: npm run coverage
+
+  test-deploy:
+    name: Build and test
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -68,7 +90,7 @@ jobs:
       run: npm run coverage
 
   deploy:
-    needs: test
+    needs: test-deploy
     name: Deploy to Heroku
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request'
