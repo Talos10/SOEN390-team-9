@@ -2,21 +2,18 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { Orders } from '../../interfaces/Orders';
-import { API_MAN } from '../../utils/api';
 import { Card } from '../../components';
 import './Manufacturing.scss';
 import OrderRow from './order-row/OrderRow';
+import { useBackend } from '../../contexts';
 
 export default function Manufacturing() {
   const [orders, setOrders] = useState<Orders[]>([]);
+  const { manufacturing } = useBackend();
 
   // Get orders from backend
   const getOrders = async () => {
-    const request = await fetch(API_MAN, {
-      headers: { Authorization: `bearer ${localStorage.token}` }
-    });
-    const response = await request.json();
-    const orders = response.message as Orders[];
+    const orders = await manufacturing.getAllOrders();
     setOrders(orders);
   };
 
@@ -29,6 +26,7 @@ export default function Manufacturing() {
   // Use orders from backend
   useEffect(() => {
     getOrders();
+    //eslint-disable-next-line
   }, []);
 
   return (
