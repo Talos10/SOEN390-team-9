@@ -2,8 +2,6 @@ import { Router, Request, Response } from 'express';
 import MachineService from './machine.service';
 import passport from 'passport';
 import { requireParams, isNotNUllUndefinedEmpty } from '../shared/middleware/paramsChecker';
-import logger from '../shared/Logger';
-import { set_connection } from '../shared/dbConnection';
 
 class Controller {
     public path = '/machine';
