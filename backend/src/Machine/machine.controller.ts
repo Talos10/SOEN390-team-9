@@ -133,6 +133,31 @@ class Controller {
                 res.json(message);
             }
         );
+
+        // Schedule machine
+        this.router.post(
+            '/schedule',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const ids = req.body;
+                const results = await this.machineService.scheduleMachine(
+                    ids.machineId,
+                    ids.orderId
+                );
+                res.json(results);
+            }
+        );
+
+        // Schedule machine
+        this.router.post(
+            '/schedule/complete',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const ids = req.body;
+                const results = await this.machineService.freeMachine(ids.machineId, ids.orderId);
+                res.json(results);
+            }
+        );
     }
 }
 
