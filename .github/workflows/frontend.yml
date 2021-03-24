@@ -34,7 +34,6 @@ jobs:
         excludeTitle: 'true'
 
   linting:
-    needs: naming
     name: Linting check
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
@@ -51,7 +50,6 @@ jobs:
       run: npx prettier --check .
 
   test:
-    needs: linting
     name: Build and test
     runs-on: ubuntu-latest
     steps:
