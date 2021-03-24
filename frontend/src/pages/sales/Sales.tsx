@@ -48,7 +48,7 @@ export default function Sales() {
       <div className="sales__top">
         <h1 className="title">Customer Orders</h1>
         <div className="sales__top__buttons">
-          <Button color="primary" variant="outlined" component={Link} to="/sales/customer">
+          <Button color="primary" variant="outlined" component={Link} to="/sales/customers">
             Customers
           </Button>
           <Button color="primary" variant="contained" component={Link} to="/sales/create-order">
