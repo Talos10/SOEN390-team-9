@@ -27,18 +27,13 @@ class Controller {
         // Create new machine.
         this.router.post(
             '/',
-            requireParams(['status', 'numberOrderCompleted']),
-            isNotNUllUndefinedEmpty(['status', 'numberOrderCompleted']),
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const { status, numberOrderCompleted } = req.body;
                 var message;
 
                 try {
-                    const result = await this.machineService.createNewMachine(
-                        status,
-                        numberOrderCompleted
-                    );
+                    const result = await this.machineService.createNewMachine();
                     message = {
                         id: result,
                         status: true,

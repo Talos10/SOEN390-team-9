@@ -48,7 +48,6 @@ describe('Machine Controller Test', () => {
         const res = await request(app.app)
             .post('/machine/')
             .set('Accept', 'application/json')
-            .send(mockMachine)
             .set('Authorization', 'bearer ' + token);
         expect(res.body.id).to.equal('foo');
         expect(res.status).to.equal(200);

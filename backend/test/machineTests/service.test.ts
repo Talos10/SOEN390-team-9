@@ -33,10 +33,7 @@ describe('Machine Service Test', () => {
     it('Test create new machine', async () => {
         const machineService = new MachineService();
         sandbox.stub(MachineModel, 'addMachine').resolves('foo');
-        const res = await machineService.createNewMachine(
-            mockMachine.status,
-            mockMachine.numberOrderCompleted
-        );
+        const res = await machineService.createNewMachine();
         expect(res).to.equal('foo');
     });
 

@@ -14,13 +14,6 @@
 - Method: **POST**
 - Endpoint: `/machine`
 - Authorization: Bearer token given from login
-- Payload:
-    ```JSON
-    {
-        "status": "free",
-        "numberOrderCompleted": 0
-    }
-    ```
 
 ### Update a machine
 - Method: **PUT**
