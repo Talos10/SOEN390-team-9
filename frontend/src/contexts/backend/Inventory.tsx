@@ -5,6 +5,7 @@ export interface Inventory {
   addGood: (good: FinishedGoodData | SemiFinishedGoodData | RawMaterialData) => Promise<Response>;
   getGood: (id: string | number) => Promise<{ schema: Item }>;
   archiveGood: (id: number | string) => Promise<Response[]>;
+  getFinishedGoods: () => Promise<Item[]>;
 }
 
 interface Response {
@@ -109,5 +110,13 @@ export const inventory = (client: string): Inventory => {
     return responses;
   };
 
-  return { getAllGoods, getGood, addGood, archiveGood };
+  const getFinishedGoods = async () => {
+    const request = await fetch(`${client}/good/type/finished`, {
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    const response = await request.json();
+    return response.message as Item[];
+  };
+
+  return { getAllGoods, getGood, addGood, archiveGood, getFinishedGoods };
 };

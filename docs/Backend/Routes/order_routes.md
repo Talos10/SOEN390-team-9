@@ -21,6 +21,11 @@
         "message": {
             "orderId": 2,
             "customerId": 2,
+            "customer": {
+                "customerID": 2,
+                "name": "Jackie Chan",
+                "email": "chan@hotmail.com"
+            },
             "status": "cancelled",
             "totalPrice": 0,
             "creationDate": "2015-05-10T17:17:17.000Z",

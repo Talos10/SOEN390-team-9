@@ -11,9 +11,12 @@ import Planning from './planning/Planning';
 import AddEvent from './planning/add-event/AddEvent';
 import AddGoal from './planning/add-goal/AddGoal';
 import Admin from './admin/Admin';
-
-export { CreateOrder } from './manufacturing/create-order/CreateOrder';
-export { OrderInfo } from './manufacturing/order-info/OrderInfo';
+import Manufacturing from './manufacturing/Manufacturing';
+import CreateOrder from './manufacturing/create-order/CreateOrder';
+import OrderInfo from './manufacturing/order-info/OrderInfo';
+import Sales from './sales/Sales';
+import SalesOrderInfo from './sales/order-info/OrderInfo';
+import SalesCreateOrder from './sales/create-order/CreateOrder';
 
 export {
   Home,
@@ -28,5 +31,11 @@ export {
   AddEvent,
   AddGoal,
   Admin,
-  ItemInfo
+  ItemInfo,
+  Manufacturing,
+  CreateOrder,
+  OrderInfo,
+  Sales,
+  SalesOrderInfo,
+  SalesCreateOrder
 };

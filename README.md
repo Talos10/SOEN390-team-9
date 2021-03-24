@@ -48,11 +48,11 @@
 
 ## About The Project
 
-**Supreme ERP** is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes.
+**Supreme ERP** is an ERP (enterprise resource planning) web app which is targeted towards a company that is looking to handle the production and sales of bikes
 
 ### Demo
 * Try the live demo for **free** here: https://erp-supreme.web.app/
-* Default credentials: `admin@email.com` for the email and `admin` for the password.
+* Default credentials: `admin@email.com` for the email and `admin` for the password
 
 ### Built With
 * Frontend Framework [React](https://reactjs.org/)
@@ -85,11 +85,11 @@
     ```
     docker-compose up (backend or frontend or database)
     ```
-* Default credentials: `admin@email.com` for the email and `admin` for the password.
+* Default credentials: `admin@email.com` for the email and `admin` for the password
 * Frontend is hosted on http://localhost:3000
 * Backend is hosted on http://localhost:5000
 * Database is hosted on http://localhost:3306
-* To test the app, go to the frontend.
+* To test the app, go to the frontend
 
 ## More Info
 

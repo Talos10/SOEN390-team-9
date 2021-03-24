@@ -85,8 +85,8 @@ export default function AddItem() {
     return {
       name: formData.get('product-name') as string | undefined,
       type: 'finished',
-      cost: Number(formData.get('selling-price') as string | undefined),
-      price: 0,
+      cost: 0,
+      price: Number(formData.get('selling-price') as string | undefined),
       components: getComponents(formData),
       processTime: Number(formData.get('manufacturing-time') as string | undefined),
       properties: getProperties(formData)
