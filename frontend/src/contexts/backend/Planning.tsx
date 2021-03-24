@@ -35,7 +35,7 @@ export interface Planning {
   deleteGoal: (id: string | number) => Promise<Response>;
 }
 
-export const planning = (client: string): Planning => {
+export const planning = (client: string, validateResponse: (response: any) => void): Planning => {
   // ***************************************
   // EVENTS
   // ***************************************
@@ -48,6 +48,7 @@ export const planning = (client: string): Planning => {
     const request = await fetch(`${client}/planning/events`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
+    validateResponse(request);
     const response = await request.json();
     const events = response.message as Event[];
     return events;
@@ -69,7 +70,7 @@ export const planning = (client: string): Planning => {
       },
       body: JSON.stringify({ date, time, title })
     });
-
+    validateResponse(request);
     const response = (await request.json()) as Response;
     return response;
   };
@@ -87,7 +88,7 @@ export const planning = (client: string): Planning => {
         'Content-Type': 'application/json'
       }
     });
-
+    validateResponse(request);
     const response = (await request.json()) as Response;
     return response;
   };
@@ -104,6 +105,7 @@ export const planning = (client: string): Planning => {
     const request = await fetch(`${client}/planning/goals`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
+    validateResponse(request);
     const response = await request.json();
     const goals = response.message as Goal[];
     return goals;
@@ -124,7 +126,7 @@ export const planning = (client: string): Planning => {
       },
       body: JSON.stringify({ title, targetDate })
     });
-
+    validateResponse(request);
     const response = (await request.json()) as Response;
     return response;
   };
@@ -151,6 +153,7 @@ export const planning = (client: string): Planning => {
       },
       body: JSON.stringify({ id, completed, targetDate, title })
     });
+    validateResponse(request);
     const response = (await request.json()) as Response;
     return response;
   };
@@ -168,7 +171,7 @@ export const planning = (client: string): Planning => {
         'Content-Type': 'application/json'
       }
     });
-
+    validateResponse(request);
     const response = (await request.json()) as Response;
     return response;
   };

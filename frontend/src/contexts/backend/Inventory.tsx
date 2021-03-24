@@ -65,11 +65,12 @@ interface RawMaterialData {
   properties?: Property[];
 }
 
-export const inventory = (client: string): Inventory => {
+export const inventory = (client: string, validateResponse: (response: any) => void): Inventory => {
   const getAllGoods = async () => {
     const request = await fetch(`${client}/good/`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
+    validateResponse(request);
     const response = await request.json();
     return response.message as Good[];
   };
@@ -83,7 +84,7 @@ export const inventory = (client: string): Inventory => {
       },
       body: JSON.stringify(good)
     });
-
+    validateResponse(request);
     const response = await request.json();
     return response;
   };
@@ -92,6 +93,7 @@ export const inventory = (client: string): Inventory => {
     const request = await fetch(`${client}/good/id/${id}`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
+    validateResponse(request);
     const response = await request.json();
     return response.message as { schema: Good };
   };
@@ -105,7 +107,7 @@ export const inventory = (client: string): Inventory => {
       },
       body: JSON.stringify([{ id: Number(id), archive: true }])
     });
-
+    validateResponse(request);
     const responses = (await request.json()) as Response[];
     return responses;
   };
@@ -114,6 +116,7 @@ export const inventory = (client: string): Inventory => {
     const request = await fetch(`${client}/good/type/finished`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
+    validateResponse(request);
     const response = await request.json();
     return response.message as Item[];
   };

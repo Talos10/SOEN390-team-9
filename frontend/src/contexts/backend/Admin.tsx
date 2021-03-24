@@ -23,12 +23,13 @@ export interface Admin {
   deleteUser: (userID: { userID: number }) => Promise<Response>;
 }
 
-export const admin = (client: string): Admin => {
+export const admin = (client: string, validateResponse: (response: any) => void): Admin => {
   const getAllUsers = async () => {
     const request = await fetch(`${client}/user/`, {
       method: 'GET',
       headers: { Authorization: `bearer ${localStorage.getItem('token')}` }
     });
+    validateResponse(request);
     const response = (await request.json()) as User[];
     return response;
   };
@@ -56,7 +57,7 @@ export const admin = (client: string): Admin => {
       },
       body: JSON.stringify({ userID, name, email, role })
     });
-
+    validateResponse(request);
     const response = (await request.json()) as Response;
     return response;
   };
@@ -66,7 +67,7 @@ export const admin = (client: string): Admin => {
       method: 'DELETE',
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
-
+    validateResponse(request);
     const response = (await request.json()) as Response;
     return response;
   };

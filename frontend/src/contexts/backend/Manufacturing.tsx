@@ -29,11 +29,15 @@ export interface Manufacturing {
     orders: [id: number]
   ) => Promise<Response[]>;
 }
-export const manufacturing = (client: string): Manufacturing => {
+export const manufacturing = (
+  client: string,
+  validateResponse: (response: any) => void
+): Manufacturing => {
   const getAllOrders = async () => {
     const request = await fetch(`${client}/manufacturing/order`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
+    validateResponse(request);
     const response = await request.json();
     return response.message as Orders[];
   };
@@ -42,6 +46,7 @@ export const manufacturing = (client: string): Manufacturing => {
     const request = await fetch(`${client}/manufacturing/order/id/${id}`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
+    validateResponse(request);
     return ((await request.json()) as any).message as Orders;
   };
 
@@ -54,7 +59,7 @@ export const manufacturing = (client: string): Manufacturing => {
       },
       body: JSON.stringify(orders)
     });
-
+    validateResponse(request);
     const response: Response = await request.json();
     return response;
   };
@@ -71,7 +76,7 @@ export const manufacturing = (client: string): Manufacturing => {
       },
       body: JSON.stringify(orders)
     });
-
+    validateResponse(request);
     const responses: Response[] = await request.json();
     return responses;
   };
