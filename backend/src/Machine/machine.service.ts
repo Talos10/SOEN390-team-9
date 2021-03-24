@@ -2,8 +2,15 @@ import MachineModel from './machine.models';
 
 // Service which allows the creation of machines and their modification.
 class Service {
+    // Return all machines.
     public async getAllMachines(): Promise<MachineModel[]> {
         const allMachines = await MachineModel.getAll();
+        return allMachines;
+    }
+
+    // Return all machines corresponding to the given status (free or busy).
+    public async getAllMachinesByStatus(status: string): Promise<MachineModel[]> {
+        const allMachines = await MachineModel.getAllByStatus(status);
         return allMachines;
     }
 

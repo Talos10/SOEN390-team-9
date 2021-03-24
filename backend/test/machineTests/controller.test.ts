@@ -36,6 +36,44 @@ describe('Machine Controller Test', () => {
         sandbox.restore();
     });
 
+    it('Test get all machines', async () => {
+        const mockMachineService = sandbox.createStubInstance(MachineService);
+        mockMachineService.getAllMachines.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new MachineController(mockMachineService)],
+            middleWares: []
+        });
+
+        app.listen();
+        const res = await request(app.app)
+            .get('/machine/')
+            .set('Accept', 'application/json')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test get all machines by status', async () => {
+        const mockMachineService = sandbox.createStubInstance(MachineService);
+        mockMachineService.getAllMachinesByStatus.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new MachineController(mockMachineService)],
+            middleWares: []
+        });
+
+        app.listen();
+        const res = await request(app.app)
+            .get('/machine/filter/free')
+            .set('Accept', 'application/json')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
     it('Test create new machine route', async () => {
         const mockMachineService = sandbox.createStubInstance(MachineService);
         mockMachineService.createNewMachine.resolves('foo');
@@ -69,61 +107,6 @@ describe('Machine Controller Test', () => {
             .get('/machine/:machineId')
             .set('Authorization', 'bearer ' + token);
         expect(res.body).to.equal('foo');
-        expect(res.status).to.equal(200);
-        app.shutdown();
-    });
-
-    it('Test update machine route', async () => {
-        const mockMachineService = sandbox.createStubInstance(MachineService);
-        mockMachineService.updateMachine.resolves('foo');
-        const app = new App({
-            port: testPort,
-            controllers: [new MachineController(mockMachineService)],
-            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
-        });
-        app.listen();
-        const res = await request(app.app)
-            .put('/machine/:machineId')
-            .set('Accept', 'application/json')
-            .send(mockMachine)
-            .set('Authorization', 'bearer ' + token);
-        expect(res.body).to.equal('foo');
-        expect(res.status).to.equal(200);
-        app.shutdown();
-    });
-
-    it('Test delete machine by ID route', async () => {
-        const mockMachineService = sandbox.createStubInstance(MachineService);
-        mockMachineService.deleteMachine.resolves('foo');
-        const app = new App({
-            port: testPort,
-            controllers: [new MachineController(mockMachineService)],
-            middleWares: []
-        });
-
-        app.listen();
-        const res = await request(app.app)
-            .delete('/machine/1')
-            .set('Authorization', 'bearer ' + token);
-        expect(res.body.id).to.equal('foo');
-        expect(res.status).to.equal(200);
-        app.shutdown();
-    });
-
-    it('Test delete all machines route', async () => {
-        const mockMachineService = sandbox.createStubInstance(MachineService);
-        mockMachineService.deleteAll.resolves('foo');
-        const app = new App({
-            port: testPort,
-            controllers: [new MachineController(mockMachineService)],
-            middleWares: []
-        });
-
-        app.listen();
-        const res = await request(app.app)
-            .delete('/machine/')
-            .set('Authorization', 'bearer ' + token);
-        expect(res.body.id).to.equal('foo');
         expect(res.status).to.equal(200);
         app.shutdown();
     });

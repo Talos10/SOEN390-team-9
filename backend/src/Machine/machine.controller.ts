@@ -24,6 +24,17 @@ class Controller {
             }
         );
 
+        // Retrieve all machines corresponding to the given status.
+        this.router.get(
+            '/filter/:status',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const status = String(req.params.status);
+                const result = await this.machineService.getAllMachinesByStatus(status);
+                res.json(result);
+            }
+        );
+
         // Create new machine.
         this.router.post(
             '/',
@@ -58,74 +69,6 @@ class Controller {
                 const id = Number(req.params.machineId);
                 const result = await this.machineService.findMachineById(id);
                 res.json(result);
-            }
-        );
-
-        // Update a machine with machineId.
-        this.router.put(
-            '/:machineId',
-            passport.authenticate('jwt', { session: false }),
-            async (req: Request, res: Response) => {
-                const id = Number(req.params.machineId);
-                const { status, numberOrderCompleted } = req.body;
-                const result = await this.machineService.updateMachine(
-                    id,
-                    status,
-                    numberOrderCompleted
-                );
-                res.json(result);
-            }
-        );
-
-        // Delete a machine with machineId.
-        this.router.delete(
-            '/:machineId',
-            passport.authenticate('jwt', { session: false }),
-            async (req: Request, res: Response) => {
-                const id = Number(req.params.machineId);
-
-                var message;
-
-                try {
-                    const result = await this.machineService.deleteMachine(id);
-                    message = {
-                        id: result,
-                        status: true,
-                        message: 'Machine was successfully deleted.'
-                    };
-                } catch (e) {
-                    message = {
-                        status: false,
-                        message: e as string
-                    };
-                }
-
-                res.json(message);
-            }
-        );
-
-        // Delete all machines.
-        this.router.delete(
-            '/',
-            passport.authenticate('jwt', { session: false }),
-            async (req: Request, res: Response) => {
-                var message;
-
-                try {
-                    const result = await this.machineService.deleteAll();
-                    message = {
-                        id: result,
-                        status: true,
-                        message: 'All machines were successfully deleted.'
-                    };
-                } catch (e) {
-                    message = {
-                        status: false,
-                        message: e as string
-                    };
-                }
-
-                res.json(message);
             }
         );
     }

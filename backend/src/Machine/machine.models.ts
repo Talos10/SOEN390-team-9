@@ -18,6 +18,13 @@ class Machine {
         return await db()('machine').select('machineId', 'status', 'numberOrderCompleted');
     }
 
+    // Return all machines with a certain status (free or busy).
+    public static async getAllByStatus(status: string): Promise<Machine[]> {
+        return await db()('machine')
+            .select('machineId', 'status', 'numberOrderCompleted')
+            .where('status', status);
+    }
+
     // Add a machine to the database.
     public static async addMachine(machine: Machine): Promise<number> {
         return await db()('machine').insert(machine);
