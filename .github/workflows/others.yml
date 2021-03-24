@@ -10,10 +10,11 @@ on:
 
 jobs:
 
-  naming:
-    name: Naming convention check
+jobs:
+
+  branch:
+    name: Branch naming convention check
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
     - uses: actions/checkout@v2
     - name: Check branch naming convention
@@ -24,6 +25,13 @@ jobs:
         ignore: main
         min_length: 5
         max_length: 100
+
+  commit:
+    name: Commit naming convention check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - uses: actions/checkout@v2
     - name: Check commit message naming convention
       uses: gsactions/commit-message-checker@v1
       with:
