@@ -13,7 +13,7 @@ export default function SemiFinishedGood() {
       <TextField
         required
         type="number"
-        inputProps={{ min: '0' }}
+        inputProps={{ min: '0.01', step: '0.01' }}
         id="manufacturing-time"
         name="manufacturing-time"
         variant="outlined"

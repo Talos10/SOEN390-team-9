@@ -9,7 +9,7 @@ export default function FinishedGood() {
       <label htmlFor="selling-price">Selling Price</label>
       <TextField
         type="number"
-        inputProps={{ min: '0', step: '0.01' }}
+        inputProps={{ min: '0.01', step: '0.01' }}
         id="selling-price"
         name="selling-price"
         variant="outlined"
@@ -26,7 +26,7 @@ export default function FinishedGood() {
       <TextField
         required
         type="number"
-        inputProps={{ min: '0' }}
+        inputProps={{ min: '0.01', step: '0.01' }}
         id="manufacturing-time"
         name="manufacturing-time"
         variant="outlined"

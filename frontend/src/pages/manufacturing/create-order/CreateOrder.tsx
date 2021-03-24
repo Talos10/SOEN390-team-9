@@ -14,7 +14,7 @@ interface Order {
   quantity: number;
 }
 
-export function CreateOrder() {
+export default function CreateOrder() {
   const [goods, setGoods] = useState<Item[]>();
   const [order, setOrder] = useState<Order>({
     good: undefined,

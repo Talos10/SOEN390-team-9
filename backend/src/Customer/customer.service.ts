@@ -7,13 +7,14 @@ class Service {
         return allCustomers;
     }
 
-    public async createNewCustomer(name: string, email: string): Promise<number> {
+    public async createNewCustomer(name: string, email: string): Promise<CustomerModel> {
         const newCustomer = new CustomerModel({
             name: name,
             email: email
         });
         const res = await CustomerModel.addCustomer(newCustomer);
-        return res;
+        newCustomer.customerId = res;
+        return newCustomer;
     }
 
     public async findCustomerById(customerID: number): Promise<CustomerModel> {
