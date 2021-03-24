@@ -13,7 +13,7 @@ interface Info {
   schema: Item;
 }
 
-export function OrderInfo() {
+export default function OrderInfo() {
   const { id } = useParams<{ id: string }>();
   const [info, setInfo] = useState<Info>();
   const { manufacturing, inventory } = useBackend();

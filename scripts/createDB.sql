@@ -347,8 +347,7 @@ VALUES
 
 INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`) 
 VALUES
-(1, "confirmed", '2015-05-10 13:17:17', 1245.99),
-(2, "cancelled", '2015-05-10 13:17:17', 0)
+(1, "confirmed", '2015-05-10 13:17:17', 1245.99)
 ;
 
 INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`, `completionDate`) 
@@ -391,7 +390,7 @@ VALUES
 INSERT `customer_ordered_good` (`orderId`, `compositeId`, `quantity`, `totalPrice`)
 VALUES
 (1, 16, 1, 1245.99),
-(3, 16, 1, 2491.98)
+(2, 16, 1, 2491.98)
 ;
 
 INSERT `machine` (`status`, `numberOrderCompleted`)

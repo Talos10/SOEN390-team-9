@@ -5,6 +5,7 @@ export interface Inventory {
   getAllGoods: () => Promise<Item[]>;
   getGood: (id: string | number) => Promise<{ schema: Item }>;
   archiveGood: (id: number | string) => Promise<Response[]>;
+  getFinishedGoods: () => Promise<Item[]>;
 }
 
 interface Response {
@@ -42,4 +43,12 @@ const archiveGood = async (id: number | string) => {
   return responses;
 };
 
-export const inventory: Inventory = { getAllGoods, getGood, archiveGood };
+const getFinishedGoods = async () => {
+  const request = await fetch(`${api}/good/type/finished`, {
+    headers: { Authorization: `bearer ${localStorage.token}` }
+  });
+  const response = await request.json();
+  return response.message as Item[];
+};
+
+export const inventory: Inventory = { getAllGoods, getGood, archiveGood, getFinishedGoods };

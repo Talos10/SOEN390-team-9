@@ -12,6 +12,12 @@ sinonStubPromise(sinon);
 
 let sandbox: sinon.SinonSandbox;
 
+const mockCustomerModel: CustomerModel = {
+    customerId: 1,
+    name: 'john',
+    email: 'doe'
+};
+
 const mockCustomer = {
     name: 'john',
     email: 'doe'
@@ -45,9 +51,9 @@ describe('Customer Service Test', () => {
 
     it('Test create new customer', async () => {
         const customerService = new CustomerService();
-        sandbox.stub(CustomerModel, 'addCustomer').resolves('foo');
+        sandbox.stub(CustomerModel, 'addCustomer').resolves(1);
         const res = await customerService.createNewCustomer(mockCustomer.name, mockCustomer.email);
-        expect(res).to.equal('foo');
+        expect(res.customerId).to.equal(mockCustomerModel.customerId);
     });
 
     it('Test find customer by ID', async () => {
