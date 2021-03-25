@@ -3,46 +3,32 @@ import { Link, useHistory } from 'react-router-dom';
 
 import Event from '../shared/Event';
 import '../shared/AddForm.scss';
-import { API_ADD_EVENT } from '../../../utils/api';
-import { useSnackbar } from '../../../contexts';
-
-interface newEvent {
-  title?: string;
-  time?: string;
-  date?: string;
-}
+import { useSnackbar, useBackend } from '../../../contexts';
 
 export default function AddEvent() {
   const history = useHistory();
   const snackbar = useSnackbar();
+  const { planning } = useBackend();
 
   const addEvent = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const data = parseEvent(form);
+    const { title, time, date } = parseEvent(form);
 
-    const request = await fetch(API_ADD_EVENT, {
-      method: 'POST',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    const response = await planning.addEvent(date, time, title);
 
-    const response = await request.json();
     if (response.status) {
       history.push('/planning');
-      snackbar.push(`${data?.title} has been saved`);
+      snackbar.push(`${title} has been saved`);
     }
   };
 
-  const parseEvent = (form: HTMLFormElement): newEvent => {
+  const parseEvent = (form: HTMLFormElement) => {
     const data = new FormData(form);
     return {
-      title: data.get('event-title') as string | undefined,
-      date: data.get('event-date') as string | undefined,
-      time: data.get('event-time') as string | undefined
+      title: data.get('event-title') as string,
+      date: data.get('event-date') as string,
+      time: data.get('event-time') as string
     };
   };
 
