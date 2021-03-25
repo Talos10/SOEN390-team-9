@@ -15,15 +15,17 @@ class Customer {
         return await db()('customer').select('customerID', 'name', 'email');
     }
 
-    public static async getTopCustomers(): Promise<Clients[]> {
+    public static async getTop3Customers(): Promise<Clients[]> {
         return await db()
-            // .select('customer_order.customerId', 'customer.name')
-            // .sum({totalPrice: 'customer_order.totalPrice'})
-            // .from('customer_order')
-            // .leftJoin('customer', 'customer_order.customerId', 'customer.customerId')
-            // .groupBy('customer_order.customerId')
-            // .orderBy('customer_order.totalPrice', 'desc')
-            // .limit(3);
+            .select('customer_order.customerId', 'customer.name')
+            .sum({totalSpent: 'customer_order.totalPrice'})
+            .count({numOders: '*'})
+            .from('customer_order')
+            .innerJoin('customer', 'customer_order.customerId', 'customer.customerId')
+            .where('customer_order.status', '!=', 'cancelled')
+            .groupBy('customer_order.customerId')
+            .orderBy('totalSpent', 'desc')
+            .limit(3);
     }
 
     public static async addCustomer(user: Customer): Promise<number> {

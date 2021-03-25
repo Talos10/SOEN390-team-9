@@ -294,7 +294,8 @@ VALUES
 INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`) 
 VALUES
 (1, "confirmed", '2015-05-10 13:17:17', 1245.99),
-(2, "cancelled", '2015-05-10 13:17:17', 0)
+(2, "cancelled", '2015-05-10 13:17:17', 0),
+(2, "confirmed", '2015-05-11 15:18:18', 1020)
 ;
 
 INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`, `completionDate`) 

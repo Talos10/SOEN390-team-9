@@ -66,7 +66,7 @@ class Controller {
         );
 
         /**
-         * Get expenses
+         * Get total income
          */
          this.router.get(
             '/income',
@@ -78,7 +78,7 @@ class Controller {
         );
                     
         /**
-        * Get expenses per month
+        * Get income per month
         */
          this.router.get(
             '/income/month',

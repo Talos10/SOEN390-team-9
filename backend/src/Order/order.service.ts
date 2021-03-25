@@ -27,6 +27,10 @@ class Service {
         }
     }
 
+    /**
+     * Retrieves the income made from sales
+     * @returns total income
+     */
     public async getIncome(): Promise<ReturnMessage> {
         try {
             const orders = await CustomerOrder.getAll();
@@ -41,6 +45,10 @@ class Service {
         }
     }
 
+    /**
+     * Retrieves the monthly income
+     * @returns the income per month
+     */
     public async getIncomePerMonth(): Promise<ReturnMessage> {
         try {
             const orders = await CustomerOrder.getAll();

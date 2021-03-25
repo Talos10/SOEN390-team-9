@@ -8,8 +8,8 @@ class Service {
         return allCustomers;
     }
 
-    public async getTopCustomers(): Promise<Clients[]> {
-        const topCustomers = await CustomerModel.getTopCustomers();
+    public async getTop3Customers(): Promise<Clients[]> {
+        const topCustomers = await CustomerModel.getTop3Customers();
         return topCustomers;
     }
 
