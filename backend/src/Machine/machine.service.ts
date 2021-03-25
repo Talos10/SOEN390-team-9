@@ -43,26 +43,6 @@ class Service {
         const res = await MachineModel.updateById(machineId, newMachine);
         return res;
     }
-
-    // Delete a machine by its id.
-    public async deleteMachine(id: number): Promise<number> {
-        try {
-            return await MachineModel.deleteMachine(id);
-        } catch (e) {
-            return Promise.reject(
-                'The machine you want to delete cannot be deleted as it is currently busy.'
-            );
-        }
-    }
-
-    // Delete all machines.
-    public async deleteAll(): Promise<number> {
-        try {
-            return await MachineModel.deleteAll();
-        } catch (e) {
-            return Promise.reject('All the machines could not be deleted since some are busy.');
-        }
-    }
 }
 
 export default Service;

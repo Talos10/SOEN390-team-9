@@ -47,18 +47,6 @@ class Machine {
             })
             .where('machineId', machineId);
     }
-
-    // Delete a machine by its id in the database.
-    public static async deleteMachine(machineId: number): Promise<number> {
-        return await db()('machine').where('machineId', machineId).del();
-    }
-
-    // Delete all machines in the database.
-    public static async deleteAll(): Promise<number> {
-        const result = await db()('machine').del();
-        await db().raw('ALTER TABLE machine AUTO_INCREMENT = 1');
-        return result;
-    }
 }
 
 export default Machine;
