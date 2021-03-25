@@ -31,13 +31,17 @@ describe('Machine Service Test', () => {
         expect(res).to.equal('foo');
     });
 
+    it('Test get all machines by status', async () => {
+        const machineService = new MachineService();
+        sandbox.stub(MachineModel, 'getAllByStatus').resolves('foo');
+        const res = await machineService.getAllMachinesByStatus('free');
+        expect(res).to.equal('foo');
+    });
+
     it('Test create new machine', async () => {
         const machineService = new MachineService();
         sandbox.stub(MachineModel, 'addMachine').resolves('foo');
-        const res = await machineService.createNewMachine(
-            mockMachine.status,
-            mockMachine.numberOrderCompleted
-        );
+        const res = await machineService.createNewMachine();
         expect(res).to.equal('foo');
     });
 
@@ -56,20 +60,6 @@ describe('Machine Service Test', () => {
             mockMachine.status,
             mockMachine.numberOrderCompleted
         );
-        expect(res).to.equal('foo');
-    });
-
-    it('Test delete machine by ID', async () => {
-        const machineService = new MachineService();
-        sandbox.stub(MachineModel, 'deleteMachine').resolves('foo');
-        const res = await machineService.deleteMachine(1);
-        expect(res).to.equal('foo');
-    });
-
-    it('Test delete all machines', async () => {
-        const machineService = new MachineService();
-        sandbox.stub(MachineModel, 'deleteAll').resolves('foo');
-        const res = await machineService.deleteAll();
         expect(res).to.equal('foo');
     });
 

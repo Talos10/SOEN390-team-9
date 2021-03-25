@@ -13,12 +13,15 @@ import {
   AddGoal,
   Admin,
   CreateOrder,
-  OrderInfo
+  OrderInfo,
+  Manufacturing,
+  Sales,
+  SalesOrderInfo,
+  SalesCreateOrder
 } from '../pages';
 import Guard from './Guard';
 import { Container } from '../components';
 import { useAuth } from '../contexts/Auth';
-import Manufacturing from '../pages/manufacturing/Manufacturing';
 
 export default function Router() {
   const auth = useAuth();
@@ -64,6 +67,20 @@ export default function Router() {
             exact
           />
 
+          {/* Sales */}
+          <Guard path="/sales" component={Sales} allowIf={auth.isLoggedIn} exact />
+          <Guard
+            path="/sales/create-order/"
+            component={SalesCreateOrder}
+            allowIf={auth.isLoggedIn}
+            exact
+          />
+          <Guard
+            path="/sales/order-info/:id"
+            component={SalesOrderInfo}
+            allowIf={auth.isLoggedIn}
+            exact
+          />
           {/* Planning */}
           <Guard path="/planning" component={Planning} allowIf={auth.isLoggedIn} exact />
           <Guard path="/planning/add-event" component={AddEvent} allowIf={auth.isLoggedIn} exact />

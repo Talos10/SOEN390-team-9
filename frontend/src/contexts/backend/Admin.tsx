@@ -1,13 +1,11 @@
-import { api } from '../../utils/api';
-
-export interface User {
+interface User {
   userID: number;
   name: string;
   role: string;
   email: string;
 }
 
-export interface Response {
+interface Response {
   status: boolean;
   message: string;
   error: string;
@@ -25,51 +23,54 @@ export interface Admin {
   deleteUser: (userID: { userID: number }) => Promise<Response>;
 }
 
-const getAllUsers = async () => {
-  const request = await fetch(`${api}/user/`, {
-    method: 'GET',
-    headers: { Authorization: `bearer ${localStorage.getItem('token')}` }
-  });
-  const response = (await request.json()) as User[];
-  return response;
+export const admin = (client: string, validateResponse: (response: any) => void): Admin => {
+  const getAllUsers = async () => {
+    const request = await fetch(`${client}/user/`, {
+      method: 'GET',
+      headers: { Authorization: `bearer ${localStorage.getItem('token')}` }
+    });
+    validateResponse(request);
+    const response = (await request.json()) as User[];
+    return response;
+  };
+
+  const addUser = async (user: { name: string; email: string; role: string; password: string }) => {
+    const request = await fetch(`${client}/user/`, {
+      method: 'POST',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    });
+    const response = (await request.json()) as Response;
+    return response;
+  };
+
+  const changeRole = async (user: User, role: string) => {
+    const { userID, name, email } = user;
+    const request = await fetch(`${client}/user/${userID}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `bearer ${localStorage.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userID, name, email, role })
+    });
+    validateResponse(request);
+    const response = (await request.json()) as Response;
+    return response;
+  };
+
+  const deleteUser = async ({ userID }: { userID: number }) => {
+    const request = await fetch(`${client}/user/${userID}`, {
+      method: 'DELETE',
+      headers: { Authorization: `bearer ${localStorage.token}` }
+    });
+    validateResponse(request);
+    const response = (await request.json()) as Response;
+    return response;
+  };
+
+  return { getAllUsers, addUser, changeRole, deleteUser };
 };
-
-const addUser = async (user: { name: string; email: string; role: string; password: string }) => {
-  const request = await fetch(`${api}/user/`, {
-    method: 'POST',
-    headers: {
-      Authorization: `bearer ${localStorage.token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(user)
-  });
-  const response = (await request.json()) as Response;
-  return response;
-};
-
-const changeRole = async (user: User, role: string) => {
-  const { userID, name, email } = user;
-  const request = await fetch(`${api}/user/${userID}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `bearer ${localStorage.token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ userID, name, email, role })
-  });
-
-  const response = (await request.json()) as Response;
-  return response;
-};
-
-const deleteUser = async ({ userID }: { userID: number }) => {
-  const request = await fetch(`${api}/user/${userID}`, {
-    method: 'DELETE',
-    headers: { Authorization: `bearer ${localStorage.token}` }
-  });
-
-  const response = (await request.json()) as Response;
-  return response;
-};
-
-export const admin: Admin = { getAllUsers, addUser, changeRole, deleteUser };

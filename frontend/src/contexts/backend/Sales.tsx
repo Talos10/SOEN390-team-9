@@ -1,63 +1,60 @@
+import { Order } from '../../interfaces/CustomerOrder';
+import { inventory } from './Inventory';
+
 interface Response {
   status: boolean;
   message: string;
 }
 
-interface Orders {
-  orderId: number;
-  status: 'processing' | 'completed' | 'confirmed';
-  cost: number;
-  creationDate: string;
-  startDate: string;
-  estimatedEndDate: string;
-  completionDate: string;
-  orderedGoods: OrderedGoods[];
-}
-
-interface OrderedGoods {
-  id: number;
-  cost: number;
+interface Good {
+  compositeId: number;
   quantity: number;
 }
 
-export interface Manufacturing {
-  getAllOrders: () => Promise<Orders[]>;
-  getOrder: (id: string | number) => Promise<Orders>;
-  createOrder: (orders: [{ compositeId: number; quantity: number }]) => Promise<Response>;
+export interface Sales {
+  getAllOrders: () => Promise<Order[]>;
+  getOrder: (id: string | number) => Promise<Order>;
+  createOrder: (customerId: number, orders: Good[]) => Promise<Response>;
   updateStatus: (
     status: 'confirmed' | 'cancelled' | 'processing' | 'completed',
     orders: [id: number]
   ) => Promise<Response[]>;
 }
-export const manufacturing = (
-  client: string,
-  validateResponse: (response: any) => void
-): Manufacturing => {
+
+export const sales = (client: string, validateResponse: (response: any) => void) => {
   const getAllOrders = async () => {
-    const request = await fetch(`${client}/manufacturing/order`, {
+    const request = await fetch(`${client}/order`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
     validateResponse(request);
     const response = await request.json();
-    return response.message as Orders[];
+    return response.message as Order[];
   };
 
   const getOrder = async (id: number | string) => {
-    const request = await fetch(`${client}/manufacturing/order/id/${id}`, {
+    const request = await fetch(`${client}/order/id/${id}`, {
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
     validateResponse(request);
-    return ((await request.json()) as any).message as Orders;
+    const order = ((await request.json()) as any).message as Order;
+    const goods = await Promise.all(
+      order.orderedGoods.map(async good => ({
+        ...good,
+        item: (await inventory(client, validateResponse).getGood(good.compositeId)).schema
+      }))
+    );
+    order.orderedGoods = goods;
+    return order;
   };
 
-  const createOrder = async (orders: [{ compositeId: number; quantity: number }]) => {
-    const request = await fetch(`${client}/manufacturing/order/`, {
+  const createOrder = async (customerId: number, orders: Good[]) => {
+    const request = await fetch(`${client}/order/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `bearer ${localStorage.token}`
       },
-      body: JSON.stringify(orders)
+      body: JSON.stringify({ customerId: customerId, orderedGoods: orders })
     });
     validateResponse(request);
     const response: Response = await request.json();
@@ -68,7 +65,7 @@ export const manufacturing = (
     status: 'confirmed' | 'cancelled' | 'processing' | 'completed',
     orders: [id: number]
   ) => {
-    const request = await fetch(`${client}/manufacturing/order/${status}`, {
+    const request = await fetch(`${client}/order/${status}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
