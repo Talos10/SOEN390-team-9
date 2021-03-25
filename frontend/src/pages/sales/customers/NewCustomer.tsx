@@ -32,8 +32,8 @@ export default function NewCustomer() {
   return (
     <div className="container">
       <form className="AddCustomerForm" onSubmit={tryAddNewCustomer} autoComplete="off">
-        <div className="Customers">
-          <div className="customers__top">
+        <div className="NewCustomers">
+          <div className="new__customers__top">
             <div className="top">
               <ReturnButton to="/sales/customers" />
               <h1 className="title">New Customer</h1>
@@ -46,7 +46,7 @@ export default function NewCustomer() {
           </div>
           <Card>
             <p className="label">Provide New Customer Information Below</p>
-            <div className="customer">
+            <div className="new__customer">
               <div className="AddCustomerForm__input">
                 <input
                   name="name"
