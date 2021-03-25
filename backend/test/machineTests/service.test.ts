@@ -61,18 +61,4 @@ describe('Machine Service Test', () => {
         );
         expect(res).to.equal('foo');
     });
-
-    it('Test delete machine by ID', async () => {
-        const machineService = new MachineService();
-        sandbox.stub(MachineModel, 'deleteMachine').resolves('foo');
-        const res = await machineService.deleteMachine(1);
-        expect(res).to.equal('foo');
-    });
-
-    it('Test delete all machines', async () => {
-        const machineService = new MachineService();
-        sandbox.stub(MachineModel, 'deleteAll').resolves('foo');
-        const res = await machineService.deleteAll();
-        expect(res).to.equal('foo');
-    });
 });
