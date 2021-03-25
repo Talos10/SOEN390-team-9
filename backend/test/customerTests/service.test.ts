@@ -43,6 +43,13 @@ describe('Customer Service Test', () => {
         expect(res).to.equal('foo');
     });
 
+    it('Test get top 3 customers', async () => {
+        const customerService = new CustomerService();
+        sandbox.stub(CustomerModel, 'getTop3Customers').resolves('foo');
+        const res = await customerService.getTop3Customers();
+        expect(res).to.equal('foo');
+    });
+
     it('Test create new customer', async () => {
         const customerService = new CustomerService();
         sandbox.stub(CustomerModel, 'addCustomer').resolves('foo');
