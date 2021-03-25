@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 
-import { API_GOOD_SINGLE } from '../../../utils/api';
 import { GeneralInfo, FinishedGood, Properties, SemiFinishedGood, RawMaterial } from '../shared';
-import { useSnackbar } from '../../../contexts';
+import { useBackend, useSnackbar } from '../../../contexts';
 import './AddItem.scss';
 
 interface Property {
@@ -12,7 +11,7 @@ interface Property {
   value: string;
 }
 
-interface Ingredient {
+interface Component {
   id: number;
   quantity: number;
 }
@@ -22,7 +21,7 @@ interface FinishedGoodData {
   type?: 'finished';
   cost?: number;
   price?: number;
-  components?: Ingredient[];
+  components?: Component[];
   processTime?: number;
   properties?: Property[];
 }
@@ -30,7 +29,7 @@ interface FinishedGoodData {
 interface SemiFinishedGoodData {
   name?: string;
   type?: 'semi-finished';
-  components?: Ingredient[];
+  components?: Component[];
   processTime?: number;
   properties?: Property[];
   cost?: number;
@@ -49,25 +48,22 @@ export default function AddItem() {
   const [productType, setProductType] = useState<string>('');
   const history = useHistory();
   const snackbar = useSnackbar();
+  const { inventory } = useBackend();
 
   const tryAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const data = parseForm(form);
+    const good: any | undefined = parseForm(form);
+    // ^ Type "any" was used here because the true type of the payload is a
+    // clusterfuck and even the backend uses "any".
 
-    const request = await fetch(API_GOOD_SINGLE, {
-      method: 'POST',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    if (!good) return;
 
-    const response = await request.json();
+    const response = await inventory.addGood(good);
+
     if (response.status) {
       history.push('/inventory');
-      snackbar.push(`${data?.name} has been saved.`);
+      snackbar.push(`${good.name} has been saved.`);
     }
   };
 
@@ -82,8 +78,6 @@ export default function AddItem() {
         return parseSemi(formData);
       case 'raw':
         return parseRaw(formData);
-      default:
-        return;
     }
   };
 
@@ -129,7 +123,7 @@ export default function AddItem() {
       else frequencyMap[id] = 1;
     });
     return Object.entries(frequencyMap).map(
-      ([id, frequency]) => ({ id: Number(id), quantity: frequency } as Ingredient)
+      ([id, frequency]) => ({ id: Number(id), quantity: frequency } as Component)
     );
   };
 
