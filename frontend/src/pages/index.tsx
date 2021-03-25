@@ -18,6 +18,7 @@ import Sales from './sales/Sales';
 import SalesOrderInfo from './sales/order-info/OrderInfo';
 import SalesCreateOrder from './sales/create-order/CreateOrder';
 import SalesCustomers from './sales/customers/Customers';
+import NewCustomer from './sales/customers/NewCustomer';
 
 export {
   Home,
@@ -39,5 +40,6 @@ export {
   Sales,
   SalesOrderInfo,
   SalesCreateOrder,
-  SalesCustomers
+  SalesCustomers,
+  NewCustomer
 };

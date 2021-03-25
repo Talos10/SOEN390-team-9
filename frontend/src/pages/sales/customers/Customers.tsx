@@ -49,9 +49,9 @@ export default function Customers() {
                     <h1 className="title">Customers</h1>
                 </div>
                 <div className="top__right">
-                    <Button color="primary" variant="contained" component={Link} to="/sales/customers">
+                    <Button color="primary" variant="contained" component={Link} to="/sales/customers/new-customer">
                         New Customer
-                        </Button>
+                    </Button>
                 </div>
             </div>
 
