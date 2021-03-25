@@ -66,6 +66,30 @@ class Controller {
         );
 
         /**
+         * Get expenses
+         */
+        this.router.get(
+            '/expense',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const results = await this.goodService.getExpense();
+                res.json(results);
+            }
+        );
+
+        /**
+         * Get expenses for each month
+         */
+        this.router.get(
+            '/expense/month',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const results = await this.goodService.getExpensesPerMonth();
+                res.json(results);
+            }
+        );
+
+        /**
          * Archive or un archive multiple goods
          */
         this.router.post(

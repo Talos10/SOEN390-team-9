@@ -1,10 +1,16 @@
 import CustomerModel from './customer.models';
 import logger from '../shared/Logger';
+import { Clients } from './customer.interface';
 
 class Service {
     public async getAllCustomers(): Promise<CustomerModel[]> {
         const allCustomers = await CustomerModel.getAll();
         return allCustomers;
+    }
+
+    public async getTopCustomers(): Promise<Clients[]> {
+        const topCustomers = await CustomerModel.getTopCustomers();
+        return topCustomers;
     }
 
     public async createNewCustomer(name: string, email: string): Promise<number> {

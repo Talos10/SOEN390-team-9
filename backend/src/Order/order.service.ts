@@ -27,6 +27,42 @@ class Service {
         }
     }
 
+    public async getIncome(): Promise<ReturnMessage> {
+        try {
+            const orders = await CustomerOrder.getAll();
+            let totalIncome: number = 0;
+            orders.map((order) => {
+                totalIncome += order.totalPrice;
+            });
+            return { status: true, message: totalIncome };
+        } catch (e) {
+            logger.error('Failed to get income', ['orders', 'income', 'total'], e.message);
+            return { status: false, message: 'Failed to get income' };
+        }
+    }
+
+    public async getIncomePerMonth(): Promise<ReturnMessage> {
+        try {
+            const orders = await CustomerOrder.getAll();
+            const num_month: number = 12;
+            let monthlyIncome: Array<number> = [];
+            for (let index = 0; index < num_month; index++) {
+                let monthSum: number = 0;
+                orders.map(obj => {
+                    let month: number = obj.creationDate.getMonth();
+                    if(month == index){
+                        monthSum += obj.totalPrice;
+                    }
+                });
+                monthlyIncome.push(monthSum);
+            }
+            return { status: true, message: monthlyIncome };
+        } catch(e) {
+            logger.error('Failed to get income for every month', ['orders', 'income', 'month'], e.message);
+            return { status: false, message: 'Failed to get income per month' };
+        }
+    }
+
     /**
      * Get single customer order by id
      * @param id the id of the order

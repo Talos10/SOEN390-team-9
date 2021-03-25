@@ -99,6 +99,40 @@ describe('Good Controller Test', () => {
         app.shutdown();
     });
 
+    it('Test get total expenses', async () => {
+        const mockGoodService = sandbox.createStubInstance(GoodService);
+        mockGoodService.getExpense.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new GoodController(mockGoodService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .get('/good/expense')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test get total expense per month', async () => {
+        const mockGoodService = sandbox.createStubInstance(GoodService);
+        mockGoodService.getExpensesPerMonth.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new GoodController(mockGoodService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .get('/good/expense/month')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
     it('Test post archive goods route', async () => {
         const mockGoodService = sandbox.createStubInstance(GoodService);
         mockGoodService.archiveMultipleGoods.resolves('foo');

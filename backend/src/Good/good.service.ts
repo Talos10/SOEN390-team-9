@@ -32,6 +32,50 @@ class Service {
     }
 
     /**
+     * Get total expenses
+     */
+    public async getExpense() {
+        try {
+            const goods = await GoodModel.getAllGoods();
+            let totalExpenses: number = 0;
+            goods.map((good) => {
+                totalExpenses += (good.cost * good.quantity);
+            });
+            return { status: true, message: totalExpenses} as SuccessMessage<number>;
+        } catch (e) {
+            logger.error(`Failed to get expenses`, ['good', 'find', 'expense'], e.message);
+            return { status: false, message: `Failed while getting expenses` } as ErrorMessage;
+        }
+    }
+
+    /**
+     * Get total expense for every month
+     */
+    public async getExpensesPerMonth() {
+        try {
+            const goods = await GoodModel.getAllGoods();
+            const num_month: number = 12;
+            let monthlyExpense: Array<number> = [];
+            for (let index = 0; index < num_month; index++) {
+                let monthSum: number = 0;
+                goods.map(good => {
+                    if(good.uploadDate !== undefined) {
+                        let month: number = good.uploadDate.getMonth();
+                        if(month == index){
+                            monthSum += (good.cost * good.quantity);
+                        }
+                    }
+                });
+                monthlyExpense.push(monthSum);
+            }
+            return { status: true, message: monthlyExpense } as SuccessMessage<number[]>
+        } catch (e) {
+            logger.error(`Failed to get expenses for every month`, ['good', 'expenses', 'month'], e.message);
+            return { status: false, message: `Failed while getting expenses per month` } as ErrorMessage;
+        }
+    }
+
+    /**
      * Gets a good by id
      * @param id The id of the good
      */

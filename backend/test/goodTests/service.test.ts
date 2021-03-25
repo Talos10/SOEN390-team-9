@@ -28,6 +28,44 @@ describe('Good Service Test', () => {
         expect(res.status).to.equal(true);
     });
 
+    it('Test get total expense', async () => {
+        const mockgoods = [
+            {
+                cost: 2.5,
+                quantity: 4
+            },
+            {
+                cost: 1.0,
+                quantity: 10
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'getAllGoods').resolves(mockgoods);
+        const res = await goodService.getExpense();
+        expect(res.message).to.equal(20.0);
+        expect(res.status).to.equal(true);
+    });
+
+    it('Test get total expenses for every month', async () => {
+        const mockgoods = [
+            {
+                cost: 2.5,
+                quantity: 4,
+                uploadDate: new Date("2021-01-02")
+            },
+            {
+                cost: 1.0,
+                quantity: 10,
+                uploadDate: new Date("2021-01-02")
+            }
+        ];
+        const goodService = new GoodService();
+        sandbox.stub(Good, 'getAllGoods').resolves(mockgoods);
+        const res = await goodService.getExpensesPerMonth();
+        expect(res.message).to.eql([20.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        expect(res.status).to.equal(true);
+    });
+
     it('Test get all goods fails', async () => {
         const goodService = new GoodService();
         sandbox.stub(goodService, 'cleanUpMultipleOfGoods').returns(['foo']);

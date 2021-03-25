@@ -1,4 +1,5 @@
 import { get_connection as db } from '../shared/dbConnection';
+import { Clients } from './customer.interface';
 
 class Customer {
     public customerId!: number;
@@ -12,6 +13,17 @@ class Customer {
 
     public static async getAll(): Promise<Customer[]> {
         return await db()('customer').select('customerID', 'name', 'email');
+    }
+
+    public static async getTopCustomers(): Promise<Clients[]> {
+        return await db()
+            // .select('customer_order.customerId', 'customer.name')
+            // .sum({totalPrice: 'customer_order.totalPrice'})
+            // .from('customer_order')
+            // .leftJoin('customer', 'customer_order.customerId', 'customer.customerId')
+            // .groupBy('customer_order.customerId')
+            // .orderBy('customer_order.totalPrice', 'desc')
+            // .limit(3);
     }
 
     public static async addCustomer(user: Customer): Promise<number> {
