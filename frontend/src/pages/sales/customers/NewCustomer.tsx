@@ -1,29 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import React from 'react';
 import {
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Chip,
-  TextField,
-  InputBase
 } from '@material-ui/core';
-import { Card, Progress, ReturnButton } from '../../../components';
+import { Card, ReturnButton } from '../../../components';
 import { useBackend, useSnackbar } from '../../../contexts';
-import { Customer, CustomerResponse } from '../../../contexts/backend/Customers';
-import { Search } from '@material-ui/icons';
 import './NewCustomer.scss';
 
 export default function NewCustomer() {
-  //const [customers, setCustomers] = useState<CustomerResponse[]>();
-
   const snackbar = useSnackbar();
   const { customer } = useBackend();
-  //const history = useHistory();
 
   const tryAddNewCustomer = async (e: React.FormEvent) => {
     e.preventDefault();

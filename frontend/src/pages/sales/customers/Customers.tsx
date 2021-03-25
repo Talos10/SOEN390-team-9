@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
 import {
   Button,
   Table,
@@ -8,13 +7,11 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Chip,
-  TextField,
   InputBase
 } from '@material-ui/core';
 import { Card, Progress, ReturnButton } from '../../../components';
 import { useBackend } from '../../../contexts';
-import { Customer, CustomerResponse } from '../../../contexts/backend/Customers';
+import { CustomerResponse } from '../../../contexts/backend/Customers';
 import './Customers.scss';
 import { Search } from '@material-ui/icons';
 
@@ -31,7 +28,6 @@ export default function Customers() {
   });
 
   const { customer } = useBackend();
-  const history = useHistory();
 
   const getCustomers = useCallback(async () => {
     const customers = await customer.getAllCustomers();
@@ -91,7 +87,6 @@ export default function Customers() {
                   <TableRow
                     key={customer.customerId}
                     className="table-row"
-                    //onClick={() => toOrderInfo(order.orderId)}
                   >
                     <TableCell>{customer.name}</TableCell>
                     <TableCell>{customer.email}</TableCell>
