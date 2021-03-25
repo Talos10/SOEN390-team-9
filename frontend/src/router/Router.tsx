@@ -75,16 +75,16 @@ export default function Router() {
           {/* Sales */}
           <Guard path="/sales" component={Sales} allowIf={auth.isLoggedIn} exact />
           <Guard
-          path="/sales/customers"
-          component={SalesCustomers}
-          allowIf={auth.isLoggedIn}
-          exact
+            path="/sales/customers"
+            component={SalesCustomers}
+            allowIf={auth.isLoggedIn}
+            exact
           />
           <Guard
-          path="/sales/customers/new-customer"
-          component={NewCustomer}
-          allowIf={auth.isLoggedIn}
-          exact
+            path="/sales/customers/new-customer"
+            component={NewCustomer}
+            allowIf={auth.isLoggedIn}
+            exact
           />
           <Guard
             path="/sales/create-order/"
