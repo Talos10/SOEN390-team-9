@@ -75,7 +75,7 @@ export default function Customers() {
 
         <Table size="small" className="table">
           <TableHead>
-            <TableRow className="table__th">
+            <TableRow className="table__tr">
               <TableCell width="50%">Name</TableCell>
               <TableCell width="50%">Email</TableCell>
             </TableRow>
