@@ -75,7 +75,7 @@ export default function Customers() {
 
         <Table size="small" className="table">
           <TableHead>
-            <TableRow className="table__tr">
+            <TableRow className="table__th">
               <TableCell width="50%">Name</TableCell>
               <TableCell width="50%">Email</TableCell>
             </TableRow>
@@ -84,10 +84,7 @@ export default function Customers() {
             {customers.map(
               customer =>
                 applySearch(customer) && (
-                  <TableRow
-                    key={customer.customerId}
-                    className="table-row"
-                  >
+                  <TableRow key={customer.customerId} className="table-row">
                     <TableCell>{customer.name}</TableCell>
                     <TableCell>{customer.email}</TableCell>
                   </TableRow>

@@ -1,4 +1,6 @@
 .Customers {
+  width: 100%;
+
   .customers__top {
     display: flex;
     justify-content: space-between;
@@ -148,6 +150,7 @@
       height: 100%;
       padding: 0 8px;
       width: 0;
+      margin-right: 5%;
 
       &:hover {
         border-color: black;
@@ -168,4 +171,8 @@
       margin-left: -1px;
     }
   }
+}
+
+.container {
+  width: 100%;
 }
