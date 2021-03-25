@@ -1,5 +1,7 @@
 import MachineModel from './machine.models';
 import ScheduleService from '../Schedule/schedule.service';
+
+// Service which allows the creation of machines and their modification.
 class Service {
     public scheduleService: ScheduleService;
 
@@ -7,6 +9,7 @@ class Service {
         this.scheduleService = scheduleService || new ScheduleService();
     }
 
+    // Return all machines.
     public async getAllMachines(): Promise<MachineModel[]> {
         const allMachines = await MachineModel.getAll();
         return allMachines;

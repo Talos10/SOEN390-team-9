@@ -40,8 +40,7 @@ class Controller {
             '/',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
-                const { status, numberOrderCompleted } = req.body;
-                var message;
+                let message;
 
                 try {
                     const result = await this.machineService.createNewMachine();
