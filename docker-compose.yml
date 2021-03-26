@@ -16,7 +16,7 @@ services:
         ports:
             - 3306:3306
         env_file: ./env/database.env
-        volumes: 
+        volumes:
             - ./scripts/createDB.sql:/docker-entrypoint-initdb.d/createDB.sql
         networks:
             - erp-app
@@ -28,6 +28,9 @@ services:
         ports:
             - 3000:3000
         env_file: ./env/frontend.env
+        volumes:
+            - ./frontend/:/app
+            - /app/node_modules/
         networks:
             - erp-app
 
@@ -40,5 +43,7 @@ services:
         ports:
             - 5000:5000
         env_file: ./env/backend.env
+        volumes:
+            - ./backend/:/app
         networks:
             - erp-app
