@@ -2,7 +2,7 @@
     .accounting__top {
       display: flex;
       justify-content: space-between;
-  
+
       h1 {
         margin-right: 45px;
       }
@@ -21,7 +21,68 @@
         margin-right: 8px;
       }
     }
-  
+
+    .overview__card {
+        display: inline-flex;
+        background-color:#FFFFFF;
+        width: 297px; 
+        height: 163px; 
+        margin-Left: 50px;
+        margin-bottom: 50px;
+        filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.5));
+
+        h2 {
+            position: absolute;
+            width: 200px;
+            height: 28px;
+            top: 10px;
+            padding-left: 50px;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        .income {
+            color: #3A89F0;
+        }
+
+        .expense {
+            color: #A61919;
+        }
+
+        .gross__revenue {
+            color: #458E0B;
+        }
+
+        p {
+            position: absolute;
+            font-family: Roboto;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 42px;
+            color: #000000;
+            align-self: center;
+            top: 45%;
+            left: 25%;
+        }
+
+        .line {
+            position: relative;
+            width: 130px;
+            height: 0px;
+            right: 47%;
+            top: 70px;
+            border: 3.5px solid;
+            //box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            transform: rotate(-90deg);
+        }
+    
+    }
+    
     .summary {
       padding: 0;
   
