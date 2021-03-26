@@ -5,6 +5,11 @@
 - Endpoint: `/machine`
 - Authorization: Bearer token given from login
 
+### Get machines by status
+- Method: **GET**
+- Endpoint: `/machine/filter/:status`
+- Authorization: Bearer token given from login
+
 ### Get a single machine by ID
 - Method: **GET**
 - Endpoint: `/machine/:machineId`
@@ -15,24 +20,26 @@
 - Endpoint: `/machine`
 - Authorization: Bearer token given from login
 
-### Update a machine
-- Method: **PUT**
-- Endpoint: `/machine/:machineId`
+### Schedule a machine for a job
+- Method: **POST**
+- Endpoint: `/machine/schedule`
 - Authorization: Bearer token given from login
 - Payload:
     ```JSON
     {
-        "status": "busy",
-        "numberOrderCompleted": 5
+        "machineId": 123,
+        "orderId": 123
     }
     ```
 
-### Delete a machine
-- Method: **DELETE**
-- Endpoint: `/machine/:machineId`
+### Free up machine (complete a job)
+- Method: **POST**
+- Endpoint: `/machine/schedule/complete`
 - Authorization: Bearer token given from login
-
-### Delete **ALL** machines
-- Method: **DELETE**
-- Endpoint: `/machine`
-- Authorization: Bearer token given from login
+- Payload:
+    ```JSON
+    {
+        "machineId": 123,
+        "orderId": 123
+    }
+    ```

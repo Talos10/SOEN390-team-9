@@ -88,7 +88,7 @@ class Controller {
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const { name, email, role, password } = req.body;
-                var message;
+                let message;
 
                 try {
                     const result = await this.userService.createNewUser(
