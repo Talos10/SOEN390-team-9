@@ -1,0 +1,91 @@
+.Accouting {
+    .accounting__top {
+      display: flex;
+      justify-content: space-between;
+  
+      h1 {
+        margin-right: 45px;
+      }
+  
+      button {
+        min-height: 36px;
+        max-height: 36px;
+        margin-right: 8px;
+      }
+  
+      p {
+        align-self: center;
+      }
+  
+      &__buttons > :not(:last-child) {
+        margin-right: 8px;
+      }
+    }
+  
+    .summary {
+      padding: 0;
+  
+      @media (min-width: 768px) {
+        padding: 0 0 8px;
+      }
+  
+      .table {
+        width: 100%;
+        min-width: 100%;
+        font-size: 12px;
+        color: var(--text-faded);
+  
+        @media (min-width: 768px) {
+          font-size: 14px;
+          color: var(--text);
+        }
+  
+        &__search {
+          padding: 12px;
+          display: flex;
+  
+          .search {
+            margin-right: 12px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            min-height: 40px;
+            svg {
+              margin: 0 5px 0 5px;
+            }
+          }
+  
+          &__filter {
+            display: flex;
+            align-items: center;
+  
+            label {
+              padding-right: 10px;
+            }
+          }
+        }
+  
+        &__tr {
+          @media (min-width: 768px) {
+            display: table-row;
+  
+            th {
+              &:first-child {
+                padding-left: 30px;
+              }
+  
+              &:last-child {
+                padding-right: 30px;
+              }
+            }
+          }
+  
+          th {
+            font-weight: 400;
+            color: var(--text-faded);
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+  

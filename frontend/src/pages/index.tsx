@@ -17,6 +17,8 @@ import OrderInfo from './manufacturing/order-info/OrderInfo';
 import Sales from './sales/Sales';
 import SalesOrderInfo from './sales/order-info/OrderInfo';
 import SalesCreateOrder from './sales/create-order/CreateOrder';
+import Accounting from './accounting/Accounting';
+
 
 export {
   Home,
@@ -37,5 +39,6 @@ export {
   OrderInfo,
   Sales,
   SalesOrderInfo,
-  SalesCreateOrder
+  SalesCreateOrder,
+  Accounting
 };
