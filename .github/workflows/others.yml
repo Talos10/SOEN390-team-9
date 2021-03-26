@@ -10,8 +10,6 @@ on:
 
 jobs:
 
-jobs:
-
   branch:
     name: Branch naming convention check
     runs-on: ubuntu-latest
