@@ -298,7 +298,7 @@ VALUES
 
 INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`, `completionDate`) 
 VALUES
-(3, "completed", '2015-05-10 13:17:17', 2491.98, NOW())
+(3, "completed", '2015-05-10 13:17:17', 1245.99, NOW())
 ;
 
 INSERT `composition_of_good` (`compositeId`, `componentId`, `quantity`)
