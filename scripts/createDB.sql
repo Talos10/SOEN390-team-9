@@ -283,7 +283,10 @@ INSERT `customer` (`name`, `email`)
 VALUES
 ("Francois Legault", "legault@govt.qc.ca"),
 ("Jackie Chan", "chan@hotmail.com"),
-("Pauline Marois", "marois@outlook.com")
+("Pauline Marois", "marois@outlook.com"),
+("Mia Khalifa", "mia@email.com"),
+("Bunquisha", "bunquiqui@gmail.com"),
+("Mo Bamba", "momo@yahoo.ca")
 ;
 
 INSERT `inventory_good` (`name`, `type`, `quantity`, `processTime`, `cost`) 
