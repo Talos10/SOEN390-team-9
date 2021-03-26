@@ -229,7 +229,9 @@ INSERT `customer` (`name`, `email`)
 VALUES
 ("Francois Legault", "legault@govt.qc.ca"),
 ("Jackie Chan", "chan@hotmail.com"),
-("Pauline Marois", "marois@outlook.com")
+("Pauline Marois", "marois@outlook.com"),
+("Mike Johnson", "mikej@gmail.com"),
+("Adam Doug", "adam@hotmail.com")
 ;
 
 INSERT `inventory_good` (`name`, `type`, `quantity`, `processTime`, `cost`) 
@@ -295,12 +297,16 @@ INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`)
 VALUES
 (1, "confirmed", '2015-05-10 13:17:17', 1245.99),
 (2, "cancelled", '2015-05-10 13:17:17', 0),
-(2, "confirmed", '2015-05-11 15:18:18', 1020)
+(4, "confirmed", '2015-05-10 13:17:17', 1700.75),
+(5, "confirmed", '2015-05-10 13:17:17', 800),
+(4, "confirmed", '2015-05-11 13:17:17', 600),
+(4, "confirmed", '2015-05-12 13:17:17', 1500),
+(5, "confirmed", '2015-05-15 13:17:17', 700)
 ;
 
 INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`, `completionDate`) 
 VALUES
-(3, "completed", '2015-05-10 13:17:17', 2491.98, NOW())
+(3, "completed", '2015-05-18 13:17:17', 2491.98, NOW())
 ;
 
 INSERT `composition_of_good` (`compositeId`, `componentId`, `quantity`)
@@ -338,7 +344,12 @@ VALUES
 INSERT `customer_ordered_good` (`orderId`, `compositeId`, `quantity`, `totalPrice`)
 VALUES
 (1, 16, 1, 1245.99),
-(3, 16, 1, 2491.98)
+(3, 16, 2, 1700.75),
+(4, 16, 1, 800),
+(5, 16, 1, 600),
+(6, 16, 3, 1500),
+(7, 16, 1, 700),
+(8, 16, 1, 2491.98)
 ;
 
 INSERT `property_of_good` (`compositeId`, `name`, `value`)
