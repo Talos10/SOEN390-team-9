@@ -31,9 +31,15 @@ class Schedule {
      */
     public static async getAllSchedules() {
         const res = await db().raw(`
-            SELECT machineId, schedule.orderId, estimatedEndDate as finishTime
-            FROM schedule, manufacturing_order
-            WHERE schedule.orderId = manufacturing_order.orderId
+            SELECT RES.machineId, RES.orderId, MAN.estimatedEndDate as finishTime, RES.status
+            FROM (
+                SELECT M.machineId, schedule.orderId, M.status
+                FROM schedule
+                RIGHT JOIN machine M
+                ON M.machineId = schedule.machineId
+                ) as RES
+            LEFT JOIN manufacturing_order MAN
+            ON RES.orderId = MAN.orderId
         `);
         return res;
     }
