@@ -29,7 +29,8 @@
         height: 163px; 
         margin-Left: 50px;
         margin-bottom: 50px;
-        filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.5));
+        filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
+        border-radius: 5px;
 
         h2 {
             position: absolute;
@@ -44,15 +45,15 @@
             line-height: 28px;
         }
 
-        .income {
+        .income__title {
             color: #3A89F0;
         }
 
-        .expense {
+        .expense__title {
             color: #A61919;
         }
 
-        .gross__revenue {
+        .gross__revenue__title {
             color: #458E0B;
         }
 
@@ -80,72 +81,52 @@
             border-radius: 10px;
             transform: rotate(-90deg);
         }
-    
+
+        .line__income {
+          color: #3A89F0;
+          background-color: #3A89F0;
+        }
+
+        .line__expense {
+          color: #A61919;
+          background-color: #A61919;
+        }
+
+        .line__gross__revenue {
+          color: #458E0B;
+          background-color: #458E0B;
+        }
     }
+
+    .customer__card {
+      display: inline-flex;
+      margin-Left: 50px;  
+      width: 310px;
+      height: 200px;
     
-    .summary {
-      padding: 0;
-  
-      @media (min-width: 768px) {
-        padding: 0 0 8px;
+      .thumbnail {
+        float: left;
       }
-  
-      .table {
-        width: 100%;
-        min-width: 100%;
-        font-size: 12px;
-        color: var(--text-faded);
-  
-        @media (min-width: 768px) {
-          font-size: 14px;
-          color: var(--text);
-        }
-  
-        &__search {
-          padding: 12px;
-          display: flex;
-  
-          .search {
-            margin-right: 12px;
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            min-height: 40px;
-            svg {
-              margin: 0 5px 0 5px;
-            }
-          }
-  
-          &__filter {
-            display: flex;
-            align-items: center;
-  
-            label {
-              padding-right: 10px;
-            }
-          }
-        }
-  
-        &__tr {
-          @media (min-width: 768px) {
-            display: table-row;
-  
-            th {
-              &:first-child {
-                padding-left: 30px;
-              }
-  
-              &:last-child {
-                padding-right: 30px;
-              }
-            }
-          }
-  
-          th {
-            font-weight: 400;
-            color: var(--text-faded);
-            text-align: left;
-          }
-        }
+
+      .thumbnail img {
+        width: 100px;
+        height: 100px;
+        margin-top: 25px;
+      }
+
+      .content {
+        margin-left: 110px;
+      }
+
+      .card__title {
+        font-weight: bold;
+        font-size: 120%;
+      }
+
+      .email {
+        margin-top: -40px;
+        font-weight: 400;
+        color: grey;
       }
     }
   }
