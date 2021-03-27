@@ -406,7 +406,7 @@ VALUES
 INSERT `schedule` (`machineId`, `orderId`)
 VALUES
 (2, 1),
-(2, 2)
+(3, 2)
 ;
 
 INSERT `property_of_good` (`compositeId`, `name`, `value`)
