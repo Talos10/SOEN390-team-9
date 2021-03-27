@@ -19,6 +19,7 @@ import SalesOrderInfo from './sales/order-info/OrderInfo';
 import SalesCreateOrder from './sales/create-order/CreateOrder';
 import SalesCustomers from './sales/customers/Customers';
 import NewCustomer from './sales/customers/NewCustomer';
+import Scheduling from './scheduling/Scheduling'
 
 export {
   Home,
@@ -41,5 +42,6 @@ export {
   SalesOrderInfo,
   SalesCreateOrder,
   SalesCustomers,
-  NewCustomer
+  NewCustomer,
+  Scheduling
 };

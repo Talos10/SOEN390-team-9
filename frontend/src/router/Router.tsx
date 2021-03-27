@@ -19,7 +19,8 @@ import {
   SalesOrderInfo,
   SalesCreateOrder,
   SalesCustomers,
-  NewCustomer
+  NewCustomer,
+  Scheduling
 } from '../pages';
 import Guard from './Guard';
 import { Container } from '../components';
@@ -102,6 +103,9 @@ export default function Router() {
           <Guard path="/planning" component={Planning} allowIf={auth.isLoggedIn} exact />
           <Guard path="/planning/add-event" component={AddEvent} allowIf={auth.isLoggedIn} exact />
           <Guard path="/planning/add-goal" component={AddGoal} allowIf={auth.isLoggedIn} exact />
+
+          {/* Scheduling */}
+          <Guard path="/scheduling" component={Scheduling} allowIf={auth.isLoggedIn} exact />
         </Container>
       </>
       <Route component={NotFound} />

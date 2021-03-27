@@ -6,6 +6,7 @@ import { planning, Planning } from './Planning';
 import { sales, Sales } from './Sales';
 import { customer, Customers } from './Customers';
 import { useAuth } from '../Auth';
+import { machine, Machines } from './Machines';
 
 interface Backend {
   inventory: Inventory;
@@ -14,6 +15,7 @@ interface Backend {
   planning: Planning;
   sales: Sales;
   customer: Customers;
+  machine: Machines
 }
 
 const BackendContext = createContext<Backend | undefined>(undefined);
@@ -41,7 +43,8 @@ export const BackendProvider = ({ client, children }: Props) => {
     manufacturing: manufacturing(client, validateResponse),
     planning: planning(client, validateResponse),
     sales: sales(client, validateResponse),
-    customer: customer(client, validateResponse)
+    customer: customer(client, validateResponse),
+    machine: machine(client, validateResponse)
   };
 
   return <BackendContext.Provider value={backend}>{children}</BackendContext.Provider>;
