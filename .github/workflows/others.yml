@@ -9,7 +9,6 @@ on:
   workflow_dispatch:
 
 jobs:
-
   branch:
     name: Branch naming convention check
     runs-on: ubuntu-latest

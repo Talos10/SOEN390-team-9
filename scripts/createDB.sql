@@ -223,13 +223,70 @@ CREATE TABLE `soen_390_db`.`customer_ordered_good` (
     
 	collate = utf8mb4_unicode_ci;
 
+-- Table to store the different machines that will be used to execute the orders.
+CREATE TABLE `soen_390_db`.`machine` (
+  `machineId` INT NOT NULL AUTO_INCREMENT,
+  `status` VARCHAR(45) NOT NULL,
+  `numberOrderCompleted` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`machineId`),
+  CONSTRAINT `validMachineStatus`
+  CHECK (`status` IN ("free", "busy")))
+  
+  collate = utf8mb4_unicode_ci;
+
+-- Table where we store the order on which a machine is working on.
+CREATE TABLE `soen_390_db`.`schedule` (
+  `machineId` INT NOT NULL,
+  `orderId` INT NOT NULL,
+  PRIMARY KEY (`machineId`, `orderId`),
+  CONSTRAINT `scheduleMachineIdForeignKey`
+    FOREIGN KEY (`machineId`)
+    REFERENCES `soen_390_db`.`machine` (`machineId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `scheduleManufacturingOrderIdForeignKey`
+    FOREIGN KEY (`orderId`)
+    REFERENCES `soen_390_db`.`manufacturing_order` (`orderId`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+  
+  collate = utf8mb4_unicode_ci;
+
+-- Triggers beginning
+
+DELIMITER $$
+
+CREATE TRIGGER before_machine_delete
+BEFORE DELETE
+ON machine FOR EACH ROW
+BEGIN
+    declare matches integer;
+    set matches = (
+		SELECT COUNT(*)
+        FROM schedule as s
+        WHERE s.machineId = OLD.machineId
+        );
+    
+    IF matches > 0 THEN
+    SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'Cannot delete machine because it is currently busy with executing an order.';
+	end if;
+END$$    
+
+DELIMITER ;
+
+-- Triggers end
+
 -- date is of the format yyyy-mm-dd and the price can be given with a maximum of two digits after the dot.
 
 INSERT `customer` (`name`, `email`) 
 VALUES
 ("Francois Legault", "legault@govt.qc.ca"),
 ("Jackie Chan", "chan@hotmail.com"),
-("Pauline Marois", "marois@outlook.com")
+("Pauline Marois", "marois@outlook.com"),
+("Mia Khalifa", "mia@email.com"),
+("Bunquisha", "bunquiqui@gmail.com"),
+("Mo Bamba", "momo@yahoo.ca")
 ;
 
 INSERT `inventory_good` (`name`, `type`, `quantity`, `processTime`, `cost`) 
@@ -337,6 +394,19 @@ INSERT `customer_ordered_good` (`orderId`, `compositeId`, `quantity`, `totalPric
 VALUES
 (1, 16, 1, 1245.99),
 (2, 16, 1, 2491.98)
+;
+
+INSERT `machine` (`status`, `numberOrderCompleted`)
+VALUES
+("free", 5),
+("busy", 10),
+("busy", 2)
+;
+
+INSERT `schedule` (`machineId`, `orderId`)
+VALUES
+(2, 1),
+(2, 2)
 ;
 
 INSERT `property_of_good` (`compositeId`, `name`, `value`)
