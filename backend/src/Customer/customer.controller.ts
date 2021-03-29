@@ -91,7 +91,7 @@ class Controller {
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const archivedNum = Number(req.params.archived);
-                var archived;
+                let archived;
 
                 if (archivedNum == 0) {
                     archived = false;

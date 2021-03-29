@@ -15,12 +15,12 @@ import {
 import { Search } from '@material-ui/icons/';
 
 import { Card, Progress } from '../../components';
-import { API_GOOD } from '../../utils/api';
 import ImportButton from './csv-impex/csv-import';
 import ExportButton from './csv-impex/csv-export';
 import { Item } from '../../interfaces/Items';
 import ItemRow from './item-row/ItemRow';
 import './Inventory.scss';
+import { useBackend } from '../../contexts';
 
 interface TableState {
   allOpen: boolean;
@@ -47,15 +47,12 @@ export default function Inventory() {
     typeFilter: 0,
     search: ''
   });
+  const { inventory } = useBackend();
 
   const filters = ['None', 'Raw', 'Semi-finished', 'Finished'];
 
   const getItems = async () => {
-    const request = await fetch(API_GOOD, {
-      headers: { Authorization: `bearer ${localStorage.token}` }
-    });
-    const response = await request.json();
-    const items = response.message as Item[];
+    const items = await inventory.getAllGoods();
     setItems(items.sort(sortItemsByType));
   };
 
@@ -74,6 +71,7 @@ export default function Inventory() {
 
   useEffect(() => {
     getItems();
+    //eslint-disable-next-line
   }, []);
 
   return items === undefined ? (
