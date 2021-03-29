@@ -68,21 +68,21 @@ class Controller {
         /**
          * Get total income
          */
-         this.router.get(
+        this.router.get(
             '/income',
-            passport.authenticate('jwt', {session: false}),
+            passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const results = await this.orderService.getIncome();
                 res.json(results);
             }
         );
-                    
+
         /**
-        * Get income per month
-        */
-         this.router.get(
+         * Get income per month
+         */
+        this.router.get(
             '/income/month',
-            passport.authenticate('jwt', {session: false}),
+            passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
                 const results = await this.orderService.getIncomePerMonth();
                 res.json(results);

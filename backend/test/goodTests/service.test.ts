@@ -51,12 +51,12 @@ describe('Good Service Test', () => {
             {
                 cost: 2.5,
                 quantity: 4,
-                uploadDate: new Date("2021-01-02")
+                uploadDate: new Date('2021-01-02')
             },
             {
                 cost: 1.0,
                 quantity: 10,
-                uploadDate: new Date("2021-01-02")
+                uploadDate: new Date('2021-01-02')
             }
         ];
         const goodService = new GoodService();

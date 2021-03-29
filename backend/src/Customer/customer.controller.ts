@@ -32,7 +32,7 @@ class Controller {
                 const result = await this.customerService.getTop3Customers();
                 res.json(result);
             }
-        )
+        );
 
         // Create new customer.
         this.router.post(

@@ -35,7 +35,7 @@ class Service {
         try {
             const orders = await CustomerOrder.getAll();
             let totalIncome: number = 0;
-            orders.map((order) => {
+            orders.map(order => {
                 totalIncome += order.totalPrice;
             });
             return { status: true, message: totalIncome };
@@ -58,15 +58,19 @@ class Service {
                 let monthSum: number = 0;
                 orders.map(obj => {
                     let month: number = obj.creationDate.getMonth();
-                    if(month == index){
+                    if (month == index) {
                         monthSum += obj.totalPrice;
                     }
                 });
                 monthlyIncome.push(monthSum);
             }
             return { status: true, message: monthlyIncome };
-        } catch(e) {
-            logger.error('Failed to get income for every month', ['orders', 'income', 'month'], e.message);
+        } catch (e) {
+            logger.error(
+                'Failed to get income for every month',
+                ['orders', 'income', 'month'],
+                e.message
+            );
             return { status: false, message: 'Failed to get income per month' };
         }
     }

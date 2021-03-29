@@ -1,7 +1,7 @@
 interface Clients {
-    customerId: number,
-    name: string,
-    totalSpent: number,
-    numOrders: number
+    customerId: number;
+    name: string;
+    totalSpent: number;
+    numOrders: number;
 }
-export {Clients};
+export { Clients };
