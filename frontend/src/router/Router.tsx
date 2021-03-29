@@ -17,7 +17,9 @@ import {
   Manufacturing,
   Sales,
   SalesOrderInfo,
-  SalesCreateOrder
+  SalesCreateOrder,
+  SalesCustomers,
+  NewCustomer
 } from '../pages';
 import Guard from './Guard';
 import { Container } from '../components';
@@ -33,7 +35,10 @@ export default function Router() {
       <Route path="/reset/:token" component={ResetPassword} exact />
       <>
         <Container>
+          {/* Home */}
           <Guard path="/home" component={Home} allowIf={auth.isLoggedIn} exact />
+
+          {/* Admin */}
           <Guard path="/admin" component={Admin} allowIf={auth.getRole() === 'admin'} exact />
 
           {/* Inventory */}
@@ -69,6 +74,18 @@ export default function Router() {
 
           {/* Sales */}
           <Guard path="/sales" component={Sales} allowIf={auth.isLoggedIn} exact />
+          <Guard
+            path="/sales/customers"
+            component={SalesCustomers}
+            allowIf={auth.isLoggedIn}
+            exact
+          />
+          <Guard
+            path="/sales/customers/new-customer"
+            component={NewCustomer}
+            allowIf={auth.isLoggedIn}
+            exact
+          />
           <Guard
             path="/sales/create-order/"
             component={SalesCreateOrder}
