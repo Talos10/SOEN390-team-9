@@ -13,6 +13,7 @@ jobs:
   naming:
     name: Naming convention check
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
     - uses: actions/checkout@v2
     - name: Check branch naming convention
@@ -33,7 +34,6 @@ jobs:
         excludeTitle: 'true'
 
   linting:
-    needs: naming
     name: Linting check
     runs-on: ubuntu-latest
     steps:

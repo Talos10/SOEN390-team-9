@@ -5,15 +5,9 @@ import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { IconButton } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import {
-  API_DELETE_EVENT,
-  API_EVENTS,
-  API_GOALS,
-  API_DELETE_GOAL,
-  API_UPDATE_GOAL
-} from '../../utils/api';
+import { useBackend } from '../../contexts';
 
 interface Event {
   id: number;
@@ -32,13 +26,11 @@ interface Goal {
 export default function Planning() {
   const [events, setEvents] = useState<Event[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
+  const { planning } = useBackend();
 
   const getEvents = async () => {
-    const request = await fetch(API_EVENTS, {
-      headers: { Authorization: `bearer ${localStorage.token}` }
-    });
-    const response = await request.json();
-    const events = response.message as Event[];
+    const events = await planning.getAllEvents();
+
     if (Array.isArray(events)) {
       events.forEach(function (event) {
         event.date = event.date.substring(0, 10);
@@ -48,11 +40,8 @@ export default function Planning() {
   };
 
   const getGoals = async () => {
-    const request = await fetch(API_GOALS, {
-      headers: { Authorization: `bearer ${localStorage.token}` }
-    });
-    const response = await request.json();
-    const goals = response.message as Goal[];
+    const goals = await planning.getAllGoals();
+
     if (Array.isArray(goals)) {
       goals.forEach(goal => {
         goal.targetDate = goal.targetDate.substring(0, 10);
@@ -64,46 +53,28 @@ export default function Planning() {
 
   const handleCheckboxTick = async (id: number) => {
     const goal = goals.find(goal => goal.id === id);
-    const payload = { ...goal, completed: goal ? !goal.completed : false };
-    const request = await fetch(API_UPDATE_GOAL + id, {
-      method: 'PUT',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-    const response = (await request.json()) as Response;
+    if (!goal) return;
+
+    const { completed, targetDate, title } = {
+      ...goal,
+      completed: goal ? !goal.completed : false
+    };
+
+    const response = await planning.updateGoal(id, completed, targetDate, title);
     if (response.status) {
       getGoals();
     }
   };
 
   const deleteEvent = async (id: number) => {
-    const request = await fetch(API_DELETE_EVENT + id, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const response = (await request.json()) as Response;
+    const response = await planning.deleteEvent(id);
     if (response.status) {
       getEvents();
     }
   };
 
   const deleteGoal = async (id: number) => {
-    const request = await fetch(API_DELETE_GOAL + id, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `bearer ${localStorage.token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const response = (await request.json()) as Response;
+    const response = await planning.deleteGoal(id);
     if (response.status) {
       getGoals();
     }
@@ -112,6 +83,7 @@ export default function Planning() {
   useEffect(() => {
     getGoals();
     getEvents();
+    // eslint-disable-next-line
   }, []);
 
   return (

@@ -24,13 +24,14 @@ class Service {
      * @param name the name of the customer
      * @param email the email of the customer
      */
-    public async createNewCustomer(name: string, email: string): Promise<number> {
+    public async createNewCustomer(name: string, email: string): Promise<CustomerModel> {
         const newCustomer = new CustomerModel({
             name: name,
             email: email
         });
         const res = await CustomerModel.addCustomer(newCustomer);
-        return res;
+        newCustomer.customerId = res;
+        return newCustomer;
     }
 
     /**

@@ -15,7 +15,7 @@ class Customer {
      * Returns a list of all customers
      */
     public static async getAll(): Promise<Customer[]> {
-        return await db()('customer').select('customerID', 'name', 'email');
+        return await db()('customer').select('customerId', 'name', 'email');
     }
 
     /**
@@ -49,7 +49,7 @@ class Customer {
     public static async findById(customerID: number): Promise<Customer> {
         return await db()('customer')
             .select('customerId', 'name', 'email')
-            .where('customerID', customerID)
+            .where('customerId', customerID)
             .first();
     }
 
@@ -64,7 +64,7 @@ class Customer {
                 name: customer.name,
                 email: customer.email
             })
-            .where('customerID', customerID);
+            .where('customerId', customerID);
     }
 
     /**
@@ -77,7 +77,7 @@ class Customer {
             .update({
                 archived: archive ? 1 : 0
             })
-            .where('customerID', '=', customerID);
+            .where('customerId', '=', customerID);
     }
 
     /**
