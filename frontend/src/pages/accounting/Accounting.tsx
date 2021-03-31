@@ -1,3 +1,5 @@
+import { Line } from 'react-chartjs-2';
+
 import './Accounting.scss';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -28,10 +30,40 @@ return (
             <p>+$7 000</p>
         </div>
         <div className='accounting__top'>
-            <h1 className='title'>Chart</h1>
+            <h1 className='title'>Income vs Expense</h1>
         </div>
         <div>
-            <p>Insert Chart</p>
+            <Line
+                data={{
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: [12, 19, 3, 5, 0, 25, 54, 32, 76, 44, 12, 32],
+                            borderColor: [
+                                'rgba(65, 105, 225, 0.5)',
+                            ],
+                            fill: false,
+                            lineTension: 0,
+                        },
+                        {
+                            label: 'Expense',
+                            data: [47, 52, 67, 58, 9, 50, 36, 21, 57, 24, 21, 12],
+                            borderColor: [
+                                'rgba(255, 99, 132, 0.5)',
+                            ],
+                            lineTension: 0,
+                            fill: false,
+                        }
+                    ],
+                }}
+                height={400}
+                width={600}
+                options={{
+                    maintainAspectRatio: false,
+                    responsive: true,
+                }}
+            />
         </div>
         <div className='accounting__top'>
             <h1 className='title'>Top 3 clients</h1>
