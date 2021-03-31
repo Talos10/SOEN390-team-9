@@ -17,6 +17,8 @@ import OrderInfo from './manufacturing/order-info/OrderInfo';
 import Sales from './sales/Sales';
 import SalesOrderInfo from './sales/order-info/OrderInfo';
 import SalesCreateOrder from './sales/create-order/CreateOrder';
+import SalesCustomers from './sales/customers/Customers';
+import NewCustomer from './sales/customers/NewCustomer';
 
 export {
   Home,
@@ -37,5 +39,7 @@ export {
   OrderInfo,
   Sales,
   SalesOrderInfo,
-  SalesCreateOrder
+  SalesCreateOrder,
+  SalesCustomers,
+  NewCustomer
 };

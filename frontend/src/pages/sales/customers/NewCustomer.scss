@@ -1,0 +1,101 @@
+.NewCustomers {
+  width: 100%;
+
+  .new__customers__top {
+    display: flex;
+    justify-content: space-between;
+
+    &__search {
+      @media (min-width: 768px) {
+        display: flex;
+      }
+
+      h1 {
+        margin-right: 45px;
+      }
+
+      button {
+        min-height: 36px;
+        max-height: 36px;
+        margin-right: 10px;
+      }
+
+      p {
+        align-self: center;
+      }
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .title {
+        margin-bottom: 0;
+      }
+
+      &__left,
+      &__right {
+        align-items: center;
+        display: flex;
+      }
+    }
+  }
+  .new__customers__top__buttons > :not(:last-child) {
+    margin-right: 10px;
+  }
+
+  .summary {
+    padding: 0;
+
+    @media (min-width: 768px) {
+      padding: 0 0 8px;
+    }
+  }
+}
+
+.AddCustomerForm {
+  display: flex;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+
+  &__input {
+    height: 36.5px;
+    margin-right: 8px;
+    display: flex;
+    flex-grow: 1;
+
+    &__email,
+    &__name {
+      flex-grow: 1;
+      border: 1px solid var(--border);
+      height: 100%;
+      padding: 0 8px;
+      width: 0;
+      margin-right: 5%;
+
+      &:hover {
+        border-color: black;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 1px var(--primary);
+        border-color: var(--primary);
+      }
+    }
+
+    &__email {
+      border-radius: 4px 0 0 4px;
+    }
+
+    &__name {
+      margin-left: -1px;
+    }
+  }
+}
+
+.container {
+  width: 100%;
+}
