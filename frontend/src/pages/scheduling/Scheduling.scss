@@ -106,17 +106,14 @@
         }
   
         .busy .MuiChip-root {
-          text-transform: capitalize;
           background-color: var(--yellow);
         }
   
         .free .MuiChip-root {
-          text-transform: capitalize;
           background-color: var(--green);
         }
   
         .confirmed .MuiChip-root {
-          text-transform: capitalize;
           background-color: var(--blue);
         }
       }

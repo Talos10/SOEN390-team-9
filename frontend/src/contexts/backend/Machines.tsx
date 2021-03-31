@@ -1,6 +1,6 @@
 export interface Machine {
-    machineId: number
-    numberOrderCompleted: number
+    machineId: number;
+    numberOrderCompleted: number;
     status: string;
   }
   
@@ -25,14 +25,14 @@ export interface Machine {
       return response;
     };
   
-    const addMachine = async (customer: { status: string; numberOrderCompleted: number }) => {
+    const addMachine = async (machine: { status: string; numberOrderCompleted: number }) => {
       const request = await fetch(`${client}/machine`, {
         method: 'POST',
         headers: {
           Authorization: `bearer ${localStorage.token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(customer)
+        body: JSON.stringify(machine)
       });
       validateResponse(request);
       const response = (await request.json()) as Machine;

@@ -4,20 +4,20 @@ import { useHistory } from 'react-router';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, Chip } from '@material-ui/core';
 import { Card, Progress } from '../../components';
 import { useBackend } from '../../contexts';
-import { Machine } from '../../contexts/backend/Machines';
+import { Schedule } from '../../contexts/backend/Schedules';
 
 export default function Scheduling() {
 
-  const [machines, setMachines] = useState<Machine[]>();
+  const [schedules, setSchedules] = useState<Schedule[]>();
 
-  const { machine } = useBackend();
+  const { schedule } = useBackend();
   const history = useHistory();
 
 
-  const getMachines = useCallback(async () => {
-    const machines = await machine.getAllMachines();
-    setMachines(machines);
-  }, [machine]);
+  const getSchedules = useCallback(async () => {
+    const schedules = await schedule.getAllSchedules();
+    setSchedules(schedules);
+  }, [schedule]);
 
   const formatDate = (dateStr: string) => {
     if (dateStr === null || dateStr === '') {
@@ -34,11 +34,27 @@ export default function Scheduling() {
     }
   };
 
-  useEffect(() => {
-    getMachines();
-  }, [getMachines]);
+  const displayOrders = (schedule: Schedule) =>{
+      if(schedule.orderId === null || schedule.orderId === undefined){
+        return "N/A";
+      } else{
+        return "#"+schedule.orderId;
+      }
+  };
 
-  return machines === undefined ? (
+  const displayDate = (schedule: Schedule) =>{
+    if(schedule.finishTime === null || schedule.finishTime === undefined){
+      return "N/A";
+    } else{
+      return schedule.finishTime;
+    }
+};
+
+  useEffect(() => {
+    getSchedules();
+  }, [getSchedules]);
+
+  return schedules === undefined ? (
     <Progress />
   ) : (
     <div>
@@ -54,17 +70,17 @@ export default function Scheduling() {
             </TableRow>
           </TableHead>
           <TableBody>
-          {machines.map(machine => (
+          {schedules.map(schedule => (
               <TableRow
-                key={machine.machineId}
+                key={schedule.machineId}
                 className="table-row">
-                <TableCell>#{machine.machineId}</TableCell>
-                <TableCell>{machine.numberOrderCompleted}</TableCell>
-                <TableCell>{0}</TableCell>
-                <TableCell>{0}</TableCell>
+                <TableCell>#{schedule.machineId}</TableCell>
+                <TableCell>{displayOrders(schedule)}</TableCell>
+                <TableCell>{displayDate(schedule)}</TableCell>
+                <TableCell>N/A</TableCell>
                 <TableCell>
-                  <span className={machine.status}>
-                    <Chip size="small" label={machine.status} />
+                  <span className={schedule.status}>
+                    <Chip size="small" label={schedule.status} />
                   </span>
                 </TableCell>
               </TableRow>
