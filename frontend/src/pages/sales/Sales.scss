@@ -46,13 +46,11 @@
       }
 
       &__search {
-        th {
-          padding-top: 10px;
-          padding-bottom: 0px;
-          border-bottom: none;
-        }
+        padding: 12px;
+        display: flex;
 
         .search {
+          margin-right: 12px;
           border: 1px solid var(--border);
           border-radius: 5px;
           min-height: 40px;
@@ -63,7 +61,6 @@
 
         &__filter {
           display: flex;
-          justify-content: flex-start;
           align-items: center;
 
           label {
@@ -88,11 +85,13 @@
         }
 
         th {
-          padding-top: 20px;
-          padding-bottom: 20px;
           font-weight: 400;
           color: var(--text-faded);
           text-align: left;
+          cursor: pointer;
+          div {
+            display: flex;
+          }
         }
       }
       tbody tr {

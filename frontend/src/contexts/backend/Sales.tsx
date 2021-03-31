@@ -16,7 +16,7 @@ export interface Sales {
   getOrder: (id: string | number) => Promise<Order>;
   createOrder: (customerId: number, orders: Good[]) => Promise<Response>;
   updateStatus: (
-    status: 'confirmed' | 'cancelled' | 'processing' | 'completed',
+    status: 'confirmed' | 'cancelled' | 'completed',
     orders: [id: number]
   ) => Promise<Response[]>;
 }
@@ -62,7 +62,7 @@ export const sales = (client: string, validateResponse: (response: any) => void)
   };
 
   const updateStatus = async (
-    status: 'confirmed' | 'cancelled' | 'processing' | 'completed',
+    status: 'confirmed' | 'cancelled' | 'completed',
     orders: [id: number]
   ) => {
     const request = await fetch(`${client}/order/${status}`, {

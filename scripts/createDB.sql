@@ -297,7 +297,7 @@ VALUES
 ("leather", "raw", 5, 720, 20.5),
 ("titanum dioxide", "raw", 5, 800, 30.5),
 ("ethylene glycol", "raw", 5, 30, 40.5),
-("alkyd", "raw", 7, 5, 50.5),
+("paint concentrate", "raw", 7, 5, 50.5),
 ("paint", "semi-finished", 4, 10, 55.5),
 ("bike seat", "semi-finished", 2, 60, 32.23),
 ("carbon frame", "semi-finished", 3, 24, 34.43),
@@ -355,7 +355,7 @@ VALUES
 
 INSERT `customer_order` (`customerId`, `status`, `creationDate`, `totalPrice`, `completionDate`) 
 VALUES
-(3, "completed", '2015-05-10 13:17:17', 2491.98, NOW())
+(3, "completed", '2015-05-10 13:17:17', 1245.99, NOW())
 ;
 
 INSERT `composition_of_good` (`compositeId`, `componentId`, `quantity`)
