@@ -20,7 +20,8 @@ import {
   SalesCreateOrder,
   SalesCustomers,
   NewCustomer,
-  Scheduling
+  Scheduling,
+  ScheduleMachine
 } from '../pages';
 import Guard from './Guard';
 import { Container } from '../components';
@@ -106,6 +107,7 @@ export default function Router() {
 
           {/* Scheduling */}
           <Guard path="/scheduling" component={Scheduling} allowIf={auth.isLoggedIn} exact />
+          <Guard path="/scheduling/schedule-machine" component={ScheduleMachine} allowIf={auth.isLoggedIn} exact />
         </Container>
       </>
       <Route component={NotFound} />

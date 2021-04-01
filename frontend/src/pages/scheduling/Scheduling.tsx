@@ -1,16 +1,32 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, Chip } from '@material-ui/core';
-import { Card, Progress } from '../../components';
+import { Card, Progress, ReturnButton } from '../../components';
 import { useBackend } from '../../contexts';
 import { Schedule } from '../../contexts/backend/Schedules';
+import { Machine } from '../../contexts/backend/Machines';
+import './Scheduling.scss';
+import CanvasJSReact from '../../assets/graphs/canvasjs.react.js';
+var CanvasJS = CanvasJSReact.CanvasJS;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+
+export interface MachineDataPoints {
+  label: string;
+  y: number
+}
 
 export default function Scheduling() {
 
-  const [schedules, setSchedules] = useState<Schedule[]>();
 
+
+  const [schedules, setSchedules] = useState<Schedule[]>();
   const { schedule } = useBackend();
+
+  const [machines, setMachines] = useState<Machine[]>();
+  const { machine } = useBackend();
+
   const history = useHistory();
 
 
@@ -18,6 +34,11 @@ export default function Scheduling() {
     const schedules = await schedule.getAllSchedules();
     setSchedules(schedules);
   }, [schedule]);
+
+  const getMachines = useCallback(async () => {
+    const machines = await machine.getAllMachines();
+    setMachines(machines);
+  }, [machine]);
 
   const formatDate = (dateStr: string) => {
     if (dateStr === null || dateStr === '') {
@@ -34,30 +55,72 @@ export default function Scheduling() {
     }
   };
 
-  const displayOrders = (schedule: Schedule) =>{
-      if(schedule.orderId === null || schedule.orderId === undefined){
-        return "N/A";
-      } else{
-        return "#"+schedule.orderId;
-      }
+  const displayOrders = (schedule: Schedule) => {
+    if (schedule.orderId === null || schedule.orderId === undefined) {
+      return "N/A";
+    } else {
+      return "#" + schedule.orderId;
+    }
   };
 
-  const displayDate = (schedule: Schedule) =>{
-    if(schedule.finishTime === null || schedule.finishTime === undefined){
+  const displayDate = (schedule: Schedule) => {
+    if (schedule.finishTime === null || schedule.finishTime === undefined) {
       return "N/A";
-    } else{
+    } else {
       return schedule.finishTime;
     }
-};
+  };
 
   useEffect(() => {
     getSchedules();
-  }, [getSchedules]);
+    getMachines();
+  }, [getSchedules, getMachines]);
 
-  return schedules === undefined ? (
+  console.log(machines)
+
+
+
+  var machineDataPoints: Array<MachineDataPoints> = [];
+
+  const buildDataPoints = async (machineDataPoints: Array<MachineDataPoints>) => {
+    for (var i = 0; i < machines!.length; i++) {
+      machineDataPoints[i] = { label: "Machine #" + machines![i].machineId, y: machines![i].numberOrderCompleted }
+    }
+
+  };
+
+  if(machines !== undefined)
+  buildDataPoints(machineDataPoints);
+
+  const options = {
+    title: {
+      text: "Orders Completed Today"
+    },
+    data: [{
+      type: "column",
+      dataPoints: machineDataPoints
+    }]
+  }
+
+  return schedules === undefined || machines === undefined ? (
     <Progress />
   ) : (
-    <div>
+    <div className="Scheduling">
+      <div className="scheduling__top">
+        <div className="top">
+          <h1 className="title">Scheduling</h1>
+        </div>
+        <div className="top__right">
+          <Button
+            color="primary"
+            variant="contained"
+            component={Link}
+            to="/scheduling/schedule-machine">
+            Schedule Machine
+          </Button>
+        </div>
+      </div>
+
       <Card className="summary">
         <Table size="small" className="table">
           <TableHead>
@@ -70,7 +133,7 @@ export default function Scheduling() {
             </TableRow>
           </TableHead>
           <TableBody>
-          {schedules.map(schedule => (
+            {schedules.map(schedule => (
               <TableRow
                 key={schedule.machineId}
                 className="table-row">
@@ -88,6 +151,13 @@ export default function Scheduling() {
           </TableBody>
         </Table>
       </Card>
+
+      <div>
+        <CanvasJSChart options={options}
+        />
+      </div>
+
+
     </div>
   );
 }
