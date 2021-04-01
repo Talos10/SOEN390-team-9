@@ -13,7 +13,6 @@ interface GoodInterface {
     name: string;
     type: string;
     quantity: number;
-    uploadDate?: Date;
     processTime: number;
     cost: number;
     properties?: Property[];

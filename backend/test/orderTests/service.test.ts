@@ -41,10 +41,12 @@ describe('Customer Order Service Test', () => {
     it('Test get total income', async () => {
         const mockOrder = [
             {
-                totalPrice: 6.0
+                totalPrice: 6.0,
+                status: "completed",
             },
             {
-                totalPrice: 4.0
+                totalPrice: 4.0,
+                status: "completed",
             }
         ];
         const orderService = new OrderService();
@@ -58,11 +60,13 @@ describe('Customer Order Service Test', () => {
         const mockOrder = [
             {
                 totalPrice: 6.0,
-                creationDate: new Date('2021-01-02')
+                creationDate: new Date('2021-01-02'),
+                status: "completed",
             },
             {
                 totalPrice: 4.0,
-                creationDate: new Date('2021-01-02')
+                creationDate: new Date('2021-01-02'),
+                status: "completed",
             }
         ];
         const orderService = new OrderService();

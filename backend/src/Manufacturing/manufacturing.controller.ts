@@ -53,6 +53,30 @@ class Controller {
         );
 
         /**
+         * Get expenses
+         */
+        this.router.get(
+            '/expense',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const results = await this.manufacturingService.getExpense();
+                res.json(results);
+            }
+        );
+
+        /**
+         * Get expenses for each month
+         */
+        this.router.get(
+            '/expense/month',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const results = await this.manufacturingService.getExpensesPerMonth();
+                res.json(results);
+            }
+        );
+
+        /**
          * Create new manufacturing order
          */
         this.router.post(

@@ -80,6 +80,44 @@ describe('Manufacturing Service Test', () => {
         expect(res.status).to.equal(false);
     });
 
+    it('Test get total expense', async () => {
+        const mockOrders = [
+            {
+                totalCost: 2.0,
+                status: "completed",
+            },
+            {
+                totalCost: 3.0,
+                status: "completed",
+            }
+        ];
+        const manufacturingService = new ManufacturingService();
+        sandbox.stub(ManufacturingOrder, 'getAll').resolves(mockOrders);
+        const res = await manufacturingService.getExpense();
+        expect(res.message).to.equal(5.0);
+        expect(res.status).to.equal(true);
+    });
+
+    it('Test get total expenses for every month', async () => {
+        const mockOrders = [
+            {
+                totalCost: 2.0,
+                status: "completed",
+                completionDate: new Date('2021-01-02')
+            },
+            {
+                totalCost: 3.0,
+                status: "completed",
+                completionDate: new Date('2021-01-02')
+            }
+        ];
+        const manufacturingService = new ManufacturingService();
+        sandbox.stub(ManufacturingOrder, 'getAll').resolves(mockOrders);
+        const res = await manufacturingService.getExpensesPerMonth();
+        expect(res.message).to.eql([5.0,0,0,0,0,0,0,0,0,0,0,0]);
+        expect(res.status).to.equal(true);
+    });
+
     it('Test create new manufacturing order fail to validate', async () => {
         const mockGoodService = sandbox.createStubInstance(GoodService);
         const manufacturingService = new ManufacturingService(mockGoodService);

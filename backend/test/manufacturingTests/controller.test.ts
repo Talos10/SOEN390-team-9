@@ -82,6 +82,40 @@ describe('Manufacturing Controller Test', () => {
         app.shutdown();
     });
 
+    it('Test get total expenses', async () => {
+        const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
+        mockManufacturingService.getExpense.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new ManufacturingController(mockManufacturingService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .get('/manufacturing/expense')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test get total expense per month', async () => {
+        const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
+        mockManufacturingService.getExpensesPerMonth.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new ManufacturingController(mockManufacturingService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .get('/manufacturing/expense/month')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
     it('Test create all orders from id route', async () => {
         const mockManufacturingService = sandbox.createStubInstance(ManufacturingService);
         mockManufacturingService.createNewOrder.resolves('foo');
