@@ -36,7 +36,7 @@ class Service {
             const orders = await CustomerOrder.getAll();
             let totalIncome: number = 0;
             orders.map(order => {
-                if(order.status == "completed"){
+                if (order.status == 'completed') {
                     totalIncome += order.totalPrice;
                 }
             });
@@ -59,7 +59,7 @@ class Service {
             for (let index = 0; index < num_month; index++) {
                 let monthSum: number = 0;
                 orders.map(obj => {
-                    if(obj.status == "completed"){
+                    if (obj.status == 'completed') {
                         let month: number = obj.creationDate.getMonth();
                         if (month == index) {
                             monthSum += obj.totalPrice;

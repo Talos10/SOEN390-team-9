@@ -70,18 +70,18 @@ class Service {
      * @returns total expense from all manufacturing orders
      */
     public async getExpense(): Promise<ReturnMessage> {
-        try{
+        try {
             const orders = await OrderModel.getAll();
             let totalExpenses: number = 0;
             orders.map(order => {
-                if(order.status == "completed"){
+                if (order.status == 'completed') {
                     totalExpenses += order.totalCost;
                 }
             });
             return { status: true, message: totalExpenses };
         } catch (e) {
             logger.error(`Failed to get expenses`, ['order', 'find', 'expense'], e.message);
-            return { status: false, message: `Failed white getting expenses` }
+            return { status: false, message: `Failed white getting expenses` };
         }
     }
 
@@ -94,22 +94,26 @@ class Service {
             const orders = await OrderModel.getAll();
             const num_month: number = 12;
             let monthlyExpense: Array<number> = [];
-            for(let index = 0; index < num_month; index++) {
+            for (let index = 0; index < num_month; index++) {
                 let monthSum: number = 0;
                 orders.map(order => {
-                    if(order.completionDate !== undefined && order.status == "completed") {
+                    if (order.completionDate !== undefined && order.status == 'completed') {
                         let month: number = order.completionDate.getMonth();
-                        if(month == index) {
+                        if (month == index) {
                             monthSum += order.totalCost;
                         }
                     }
                 });
                 monthlyExpense.push(monthSum);
             }
-            return { status: true, message: monthlyExpense }
+            return { status: true, message: monthlyExpense };
         } catch (e) {
-            logger.error(`Failed to get expenses for every month`, ['order', 'expense', 'month'], e.message);
-            return { status: false, message: `Failed white getting expenses per month` }
+            logger.error(
+                `Failed to get expenses for every month`,
+                ['order', 'expense', 'month'],
+                e.message
+            );
+            return { status: false, message: `Failed white getting expenses per month` };
         }
     }
 

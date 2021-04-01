@@ -84,11 +84,11 @@ describe('Manufacturing Service Test', () => {
         const mockOrders = [
             {
                 totalCost: 2.0,
-                status: "completed",
+                status: 'completed'
             },
             {
                 totalCost: 3.0,
-                status: "completed",
+                status: 'completed'
             }
         ];
         const manufacturingService = new ManufacturingService();
@@ -102,19 +102,19 @@ describe('Manufacturing Service Test', () => {
         const mockOrders = [
             {
                 totalCost: 2.0,
-                status: "completed",
+                status: 'completed',
                 completionDate: new Date('2021-01-02')
             },
             {
                 totalCost: 3.0,
-                status: "completed",
+                status: 'completed',
                 completionDate: new Date('2021-01-02')
             }
         ];
         const manufacturingService = new ManufacturingService();
         sandbox.stub(ManufacturingOrder, 'getAll').resolves(mockOrders);
         const res = await manufacturingService.getExpensesPerMonth();
-        expect(res.message).to.eql([5.0,0,0,0,0,0,0,0,0,0,0,0]);
+        expect(res.message).to.eql([5.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         expect(res.status).to.equal(true);
     });
 
