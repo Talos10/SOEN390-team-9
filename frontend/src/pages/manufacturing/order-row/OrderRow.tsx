@@ -39,7 +39,7 @@ export default function OrderRow({ props }: Props) {
     <TableRow className="table-row" onClick={toOrderInfo}>
       <TableCell>#{props.orderId}</TableCell>
       <TableCell>{formatdate(props.creationDate)}</TableCell>
-      <TableCell>{formatdate(props.estimatedEndDate)}</TableCell>
+      <TableCell>{formatdate(props.completionDate)}</TableCell>
       <TableCell>{props.orderedGoods.length}</TableCell>
       <TableCell>
         <span className={props.status}>
