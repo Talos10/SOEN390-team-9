@@ -1,152 +1,151 @@
 .Accouting {
-    .accounting__top {
-      display: flex;
-      justify-content: space-between;
+  .accounting__top {
+    display: flex;
+    justify-content: space-between;
 
-      h1 {
-        margin-right: 45px;
-      }
-  
-      button {
-        min-height: 36px;
-        max-height: 36px;
-        margin-right: 8px;
-      }
-  
-      p {
-        align-self: center;
-      }
-  
-      &__buttons > :not(:last-child) {
-        margin-right: 8px;
-      }
+    h1 {
+      margin-right: 45px;
     }
 
-    .overview__card {
-        display: inline-flex;
-        background-color:#FFFFFF;
-        width: 297px; 
-        height: 163px; 
-        margin-Left: 50px;
-        margin-bottom: 50px;
-        filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
-        border-radius: 5px;
-
-        h2 {
-            position: absolute;
-            width: 200px;
-            height: 28px;
-            top: 10px;
-            padding-left: 50px;
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 24px;
-            line-height: 28px;
-        }
-
-        .income__title {
-            color: #3A89F0;
-        }
-
-        .expense__title {
-            color: #A61919;
-        }
-
-        .gross__revenue__title {
-            color: #458E0B;
-        }
-
-        p {
-            position: absolute;
-            font-family: Roboto;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 36px;
-            line-height: 42px;
-            color: #000000;
-            align-self: center;
-            top: 45%;
-            left: 25%;
-        }
-
-        .line {
-            position: relative;
-            width: 130px;
-            height: 0px;
-            right: 47%;
-            top: 70px;
-            border: 3.5px solid;
-            border-radius: 10px;
-            transform: rotate(-90deg);
-        }
-
-        .line__income {
-          color: #3A89F0;
-          background-color: #3A89F0;
-        }
-
-        .line__expense {
-          color: #A61919;
-          background-color: #A61919;
-        }
-
-        .line__gross__revenue {
-          color: #458E0B;
-          background-color: #458E0B;
-        }
+    button {
+      min-height: 36px;
+      max-height: 36px;
+      margin-right: 8px;
     }
 
-    .customer__card {
-      display: inline-flex;
-      margin-Left: 50px;  
-      width: 310px;
-      height: 200px;
-    
-      .thumbnail {
-        float: left;
-      }
-
-      .thumbnail img {
-        width: 100px;
-        height: 100px;
-        margin-top: 25px;
-      }
-
-      .content {
-        margin-left: 110px;
-      }
-
-      .card__title {
-        font-weight: bold;
-        font-size: 120%;
-      }
-
-      .email {
-        margin-top: -40px;
-        font-weight: 400;
-        color: grey;
-      }
+    p {
+      align-self: center;
     }
 
-    .line__chart {
-      display: inline-flex;
-      background-color: #FFFFFF; 
-      margin-left: 30px;
-      margin-bottom: 30px;
-      width: 800px;
-
-      .toggle {
-        position: absolute;
-      }
-    }
-
-    .pie__chart {
-      display: inline-flex;
-      vertical-align: top;
-      background-color: #FFFFFF;
-      width: 250px;
-      margin-left: 60px;
+    &__buttons > :not(:last-child) {
+      margin-right: 8px;
     }
   }
-  
+
+  .overview__card {
+    display: inline-flex;
+    background-color: #ffffff;
+    width: 297px;
+    height: 163px;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
+    border-radius: 5px;
+
+    h2 {
+      position: absolute;
+      width: 200px;
+      height: 28px;
+      top: 10px;
+      padding-left: 50px;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 28px;
+    }
+
+    .income__title {
+      color: #3a89f0;
+    }
+
+    .expense__title {
+      color: #a61919;
+    }
+
+    .gross__revenue__title {
+      color: #458e0b;
+    }
+
+    p {
+      position: absolute;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 36px;
+      line-height: 42px;
+      color: #000000;
+      align-self: center;
+      top: 45%;
+      left: 25%;
+    }
+
+    .line {
+      position: relative;
+      width: 130px;
+      height: 0px;
+      right: 47%;
+      top: 70px;
+      border: 3.5px solid;
+      border-radius: 10px;
+      transform: rotate(-90deg);
+    }
+
+    .line__income {
+      color: #3a89f0;
+      background-color: #3a89f0;
+    }
+
+    .line__expense {
+      color: #a61919;
+      background-color: #a61919;
+    }
+
+    .line__gross__revenue {
+      color: #458e0b;
+      background-color: #458e0b;
+    }
+  }
+
+  .customer__card {
+    display: inline-flex;
+    margin-left: 50px;
+    width: 310px;
+    height: 200px;
+
+    .thumbnail {
+      float: left;
+    }
+
+    .thumbnail img {
+      width: 100px;
+      height: 100px;
+      margin-top: 25px;
+    }
+
+    .content {
+      margin-left: 110px;
+    }
+
+    .card__title {
+      font-weight: bold;
+      font-size: 120%;
+    }
+
+    .email {
+      margin-top: -40px;
+      font-weight: 400;
+      color: grey;
+    }
+  }
+
+  .line__chart {
+    display: inline-flex;
+    background-color: #ffffff;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    width: 800px;
+
+    .toggle {
+      position: absolute;
+    }
+  }
+
+  .pie__chart {
+    display: inline-flex;
+    vertical-align: top;
+    background-color: #ffffff;
+    width: 250px;
+    margin-left: 60px;
+  }
+}

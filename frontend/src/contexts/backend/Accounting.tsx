@@ -1,7 +1,7 @@
 interface Client {
   customerId: number;
-  name: string,
-  email: string,
+  name: string;
+  email: string;
   totalSpent: number;
   numOrders: number;
 }
@@ -17,8 +17,10 @@ export interface Accounting {
   getTop3Customers: () => Promise<Client[]>;
 }
 
-export const accounting = (client: string, validateResponse: (response: any) => void): Accounting => {
-
+export const accounting = (
+  client: string,
+  validateResponse: (response: any) => void
+): Accounting => {
   const getIncome = async () => {
     const request = await fetch(`${client}/order/income`, {
       method: 'GET',
@@ -69,7 +71,7 @@ export const accounting = (client: string, validateResponse: (response: any) => 
       headers: { Authorization: `bearer ${localStorage.getItem('token')}` }
     });
     validateResponse(request);
-    const topClients = await request.json() as Client[];
+    const topClients = (await request.json()) as Client[];
     return topClients;
   };
 
@@ -80,5 +82,4 @@ export const accounting = (client: string, validateResponse: (response: any) => 
     getExpensePerMonth,
     getTop3Customers
   };
-
-}
+};

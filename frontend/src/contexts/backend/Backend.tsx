@@ -15,7 +15,7 @@ interface Backend {
   planning: Planning;
   sales: Sales;
   customer: Customers;
-  accounting: Accounting
+  accounting: Accounting;
 }
 
 const BackendContext = createContext<Backend | undefined>(undefined);
