@@ -8,6 +8,10 @@ import silverMedal from '../../assets/accounting/silver-medal.png';
 import bronzeMedal from '../../assets/accounting/bronze-medal.png';
 import { useEffect, useState } from 'react';
 import { useBackend } from '../../contexts';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 interface Client {
     customerId: number;
@@ -25,6 +29,40 @@ export default function Accounting() {
      const [topClients, setTopClients] = useState<Client[]>([]);
      const { accounting } = useBackend();
 
+     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+     const quarters = ["Q1", "Q2", "Q3", "Q4"];
+     const [x_axis, setX_axis] = useState<string[]>(months);
+     const [quarterlyIncome, setQuartelyIncome] = useState<number[]>([]);
+     const [quarterlyExpense, setQuartelyExpense] = useState<number[]>([]);
+     const [chartDisplay, setChartDisplay] = useState<string>("month");
+
+
+    const calculateQuartelyIncome = () => {
+        const quarterlyIncome = [];
+        let quarterIncome = 0;
+        for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+            quarterIncome += monthlyIncome[monthIndex];
+            if (monthIndex === 2 || monthIndex === 5 || monthIndex === 8 || monthIndex === 11) {
+                quarterlyIncome.push(quarterIncome);
+                quarterIncome = 0;
+            }
+        }
+        setQuartelyIncome(quarterlyIncome);
+    }
+
+    const calculateQuartelyExpense = () => {
+        const quarterlyExpense = [];
+        let quarterExpense = 0;
+        for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+            quarterExpense += monthlyExpense[monthIndex];
+            if (monthIndex === 2 || monthIndex === 5 || monthIndex === 8 || monthIndex === 11) {
+                quarterlyExpense.push(quarterExpense);
+                quarterExpense = 0;
+            }
+        }
+        setQuartelyExpense(quarterlyExpense);
+    }
+
      useEffect(() => {
         const getIncome = async () => {
             const income = await accounting.getIncome();
@@ -41,6 +79,7 @@ export default function Accounting() {
        
            if (Array.isArray(monthlyIncome)) {
                setMonthlyIncome(monthlyIncome);
+               calculateQuartelyIncome();
            }
          };
    
@@ -49,6 +88,7 @@ export default function Accounting() {
        
            if (Array.isArray(monthlyExpense)) {
                setMonthlyExpense(monthlyExpense);
+               calculateQuartelyExpense();
            }
          };
    
@@ -67,6 +107,10 @@ export default function Accounting() {
          //eslint-disable-next-line
        }, []);
 
+       useEffect(() => {
+        chartDisplay === "month" ?  setX_axis(months) : setX_axis(quarters);
+         //eslint-disable-next-line
+       }, [chartDisplay]);
 
 return (
     <main className="Accouting">
@@ -91,26 +135,28 @@ return (
         <div className='accounting__top'>
             <h1 className='title'>Chart</h1>
         </div>
-        <div>
+        <div style={{width: 600, backgroundColor: "#FFFFFF"}}>
+            <FormControl component="fieldset">
+                <RadioGroup row aria-label="chart" name="chart" value={chartDisplay}>
+                    <FormControlLabel value="month" control={<Radio />} label="month" onClick={() => setChartDisplay("month")}/>
+                    <FormControlLabel value="quarter" control={<Radio />} label="quarter" onClick={() => setChartDisplay("quarter")}/>
+                </RadioGroup>
+            </FormControl>
             <Line
                 data={{
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    labels: x_axis,
                     datasets: [
                         {
                             label: 'Income',
-                            data: monthlyIncome,
-                            borderColor: [
-                                'rgba(65, 105, 225, 0.5)',
-                            ],
+                            data: x_axis.length === 12 ? monthlyIncome : quarterlyIncome,
+                            borderColor: ['rgba(65, 105, 225, 0.5)'],
                             fill: false,
                             lineTension: 0,
                         },
                         {
                             label: 'Expense',
-                            data: monthlyExpense,
-                            borderColor: [
-                                'rgba(255, 99, 132, 0.5)',
-                            ],
+                            data: x_axis.length === 12 ? monthlyExpense : quarterlyExpense,
+                            borderColor: ['rgba(255, 99, 132, 0.5)'],
                             lineTension: 0,
                             fill: false,
                         }
