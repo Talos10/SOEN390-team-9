@@ -135,8 +135,8 @@ return (
         <div className='accounting__top'>
             <h1 className='title'>Chart</h1>
         </div>
-        <div style={{width: 600, backgroundColor: "#FFFFFF"}}>
-            <FormControl component="fieldset">
+        <div className='line__chart'>
+            <FormControl component="fieldset" className='toggle'>
                 <RadioGroup row aria-label="chart" name="chart" value={chartDisplay}>
                     <FormControlLabel value="month" control={<Radio />} label="month" onClick={() => setChartDisplay("month")}/>
                     <FormControlLabel value="quarter" control={<Radio />} label="quarter" onClick={() => setChartDisplay("quarter")}/>
@@ -149,51 +149,57 @@ return (
                         {
                             label: 'Income',
                             data: x_axis.length === 12 ? monthlyIncome : quarterlyIncome,
-                            borderColor: ['rgba(65, 105, 225, 0.5)'],
+                            borderColor: ['#3A89F0'],
+                            pointBackgroundColor: "#FFFFFF",
+                            pointBorderColor: "black",
                             fill: false,
                             lineTension: 0,
                         },
                         {
                             label: 'Expense',
                             data: x_axis.length === 12 ? monthlyExpense : quarterlyExpense,
-                            borderColor: ['rgba(255, 99, 132, 0.5)'],
+                            borderColor: ['#A61919'],
+                            pointBackgroundColor: "#FFFFFF",
+                            pointBorderColor: "black",
                             lineTension: 0,
                             fill: false,
                         }
                     ],
                 }}
-                height={400}
+                height={350}
                 width={600}
                 options={{
                     maintainAspectRatio: false,
                     responsive: true,
+                    title:{
+                        display: true
+                    }
                 }}
             />
         </div>
-        <div className='accounting__top'>
-            <h1 className='title'>Income vs Expense</h1>
-        </div>
-        <div>
+        <div className='pie__chart'>
             <Pie 
                 data={{
+                    labels: ["Income", "Expense"],
                     datasets: [
                         {
-                            labels: [
-                                'Income',
-                                'Expense'
-                            ],
-                            data: [1,2],
+                            data: [monthlyIncome[(new Date().getMonth())], monthlyExpense[(new Date().getMonth())]],
                             backgroundColor: [
-                                'rgba(65, 105, 225, 0.5)',
-                                'rgba(255, 99, 132, 0.5)',
+                                '#3A89F0',
+                                '#A61919',
                             ]
                         }
                     ]
                 }}
-                height={400}
+                height={350}
                 width={600}
                 options={{
                     maintainAspectRatio: false,
+                    title: {
+                        display: true,
+                        text: `Income vs Expense ${new Date().toLocaleString("default", { month: "long" })} 2021`,
+                        fontSize: 18
+                    }
                 }}
             />
         </div>
