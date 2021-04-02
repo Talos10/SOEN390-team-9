@@ -3,6 +3,7 @@ import sinonStubPromise from 'sinon-stub-promise';
 import { expect } from 'chai';
 import 'mocha';
 import MachineService from '../../src/Machine/machine.service';
+import ScheduleService from '../../src/Schedule/schedule.service';
 import MachineModel from '../../src/Machine/machine.models';
 
 sinonStubPromise(sinon);
@@ -60,5 +61,99 @@ describe('Machine Service Test', () => {
             mockMachine.numberOrderCompleted
         );
         expect(res).to.equal('foo');
+    });
+
+    it('Test create new schedule machine is busy', async () => {
+        const mockScheduleService = sandbox.createStubInstance(ScheduleService);
+        const machineService = new MachineService(mockScheduleService);
+        sandbox
+            .stub(machineService, 'findMachineById')
+            .resolves({ status: 'busy', machineId: 1, numberOrderCompleted: 1 });
+        const res = await machineService.scheduleMachine(1, 1);
+        expect(res.message).to.equal('Machine does not exist or is not available');
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test create new schedule machine is not found', async () => {
+        const mockScheduleService = sandbox.createStubInstance(ScheduleService);
+        const machineService = new MachineService(mockScheduleService);
+        sandbox.stub(machineService, 'findMachineById').resolves(null);
+        const res = await machineService.scheduleMachine(1, 1);
+        expect(res.message).to.equal('Machine does not exist or is not available');
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test create new schedule machine schedule fails', async () => {
+        const mockScheduleService = sandbox.createStubInstance(ScheduleService);
+        const machineService = new MachineService(mockScheduleService);
+        sandbox
+            .stub(machineService, 'findMachineById')
+            .resolves({ status: 'free', machineId: 1, numberOrderCompleted: 1 });
+        mockScheduleService.createNewSchedule.resolves({ status: false, message: 'foo' });
+        const res = await machineService.scheduleMachine(1, 1);
+        expect(res.message).to.equal('foo');
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test create new schedule machine schedule fails', async () => {
+        const mockScheduleService = sandbox.createStubInstance(ScheduleService);
+        const machineService = new MachineService(mockScheduleService);
+        sandbox
+            .stub(machineService, 'findMachineById')
+            .resolves({ status: 'free', machineId: 1, numberOrderCompleted: 1 });
+        sandbox
+            .stub(machineService, 'updateMachine')
+            .resolves({ status: 'free', machineId: 1, numberOrderCompleted: 1 });
+        mockScheduleService.createNewSchedule.resolves({ status: true, message: 'foo' });
+        const res = await machineService.scheduleMachine(1, 1);
+        expect(res.message).to.equal('foo');
+        expect(res.status).to.equal(true);
+    });
+
+    it('Test complete schedule machine is free', async () => {
+        const mockScheduleService = sandbox.createStubInstance(ScheduleService);
+        const machineService = new MachineService(mockScheduleService);
+        sandbox
+            .stub(machineService, 'findMachineById')
+            .resolves({ status: 'free', machineId: 1, numberOrderCompleted: 1 });
+        const res = await machineService.freeMachine(1, 1);
+        expect(res.message).to.equal('Machine does not exist or is already free');
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test complete schedule machine is not found', async () => {
+        const mockScheduleService = sandbox.createStubInstance(ScheduleService);
+        const machineService = new MachineService(mockScheduleService);
+        sandbox.stub(machineService, 'findMachineById').resolves(null);
+        const res = await machineService.freeMachine(1, 1);
+        expect(res.message).to.equal('Machine does not exist or is already free');
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test complete schedule machine schedule fails', async () => {
+        const mockScheduleService = sandbox.createStubInstance(ScheduleService);
+        const machineService = new MachineService(mockScheduleService);
+        sandbox
+            .stub(machineService, 'findMachineById')
+            .resolves({ status: 'busy', machineId: 1, numberOrderCompleted: 1 });
+        mockScheduleService.completeSchedule.resolves({ status: false, message: 'foo' });
+        const res = await machineService.freeMachine(1, 1);
+        expect(res.message).to.equal('foo');
+        expect(res.status).to.equal(false);
+    });
+
+    it('Test complete schedule machine', async () => {
+        const mockScheduleService = sandbox.createStubInstance(ScheduleService);
+        const machineService = new MachineService(mockScheduleService);
+        sandbox
+            .stub(machineService, 'findMachineById')
+            .resolves({ status: 'busy', machineId: 1, numberOrderCompleted: 1 });
+        sandbox
+            .stub(machineService, 'updateMachine')
+            .resolves({ status: 'free', machineId: 1, numberOrderCompleted: 1 });
+        mockScheduleService.completeSchedule.resolves({ status: true, message: 'foo' });
+        const res = await machineService.freeMachine(1, 1);
+        expect(res.message).to.equal('foo');
+        expect(res.status).to.equal(true);
     });
 });

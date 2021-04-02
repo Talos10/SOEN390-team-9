@@ -24,7 +24,7 @@ import { useBackend } from '../../contexts';
 
 interface TableState {
   allOpen: boolean;
-  typeFilter: number;
+  typeFilter: '' | 'raw' | 'semi-finished' | 'finished';
   search: string;
 }
 
@@ -44,12 +44,10 @@ export default function Inventory() {
   const [items, setItems] = useState<Item[]>();
   const [table, setTable] = useState<TableState>({
     allOpen: false,
-    typeFilter: 0,
+    typeFilter: '',
     search: ''
   });
   const { inventory } = useBackend();
-
-  const filters = ['None', 'Raw', 'Semi-finished', 'Finished'];
 
   const getItems = async () => {
     const items = await inventory.getAllGoods();
@@ -57,13 +55,16 @@ export default function Inventory() {
   };
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setTable({ ...table, typeFilter: event.target.value as number });
+    setTable({
+      ...table,
+      typeFilter: event.target.value as '' | 'raw' | 'semi-finished' | 'finished'
+    });
   };
 
   const applyFilter = (item: Item) => {
     if (
       item.name.toLowerCase().includes(table.search.toLowerCase()) &&
-      (table.typeFilter === 0 || item.type === filters[table.typeFilter].toLowerCase())
+      item.type.includes(table.typeFilter)
     )
       return true;
     return false;
@@ -99,12 +100,11 @@ export default function Inventory() {
           />
           <div className="table__search__filter">
             <InputLabel>Filter by type:</InputLabel>
-            <Select value={table.typeFilter} onChange={handleChange}>
-              {filters.map((filter, i) => (
-                <MenuItem key={i} value={i}>
-                  {filter}
-                </MenuItem>
-              ))}
+            <Select onChange={handleChange}>
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="raw">Raw</MenuItem>
+              <MenuItem value="semi-finished">Semi-finished</MenuItem>
+              <MenuItem value="finished">Finished</MenuItem>
             </Select>
           </div>
         </div>

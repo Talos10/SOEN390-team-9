@@ -1,7 +1,14 @@
 import MachineModel from './machine.models';
+import ScheduleService from '../Schedule/schedule.service';
 
 // Service which allows the creation of machines and their modification.
 class Service {
+    public scheduleService: ScheduleService;
+
+    constructor(scheduleService?: ScheduleService) {
+        this.scheduleService = scheduleService || new ScheduleService();
+    }
+
     // Return all machines.
     public async getAllMachines(): Promise<MachineModel[]> {
         const allMachines = await MachineModel.getAll();
@@ -41,6 +48,42 @@ class Service {
             numberOrderCompleted: numberOrderCompleted
         });
         const res = await MachineModel.updateById(machineId, newMachine);
+        return res;
+    }
+
+    /**
+     * Schedule the machine for an order
+     * @param machineId the id of a machine
+     * @param orderId the id of an order
+     * @returns a return message
+     */
+    public async scheduleMachine(machineId: number, orderId: number): Promise<any> {
+        const machine = await this.findMachineById(machineId);
+        if (!machine || machine.status === 'busy')
+            return { status: false, message: 'Machine does not exist or is not available' };
+
+        const res = await this.scheduleService.createNewSchedule(machineId, orderId);
+        if (!res.status) return res;
+
+        this.updateMachine(machineId, 'busy', machine.numberOrderCompleted);
+        return res;
+    }
+
+    /**
+     * Complete a schedule and free machine
+     * @param machineId the id of a machine
+     * @param orderId the id of an order
+     * @returns a return message
+     */
+    public async freeMachine(machineId: number, orderId: number): Promise<any> {
+        const machine = await this.findMachineById(machineId);
+        if (!machine || machine.status === 'free')
+            return { status: false, message: 'Machine does not exist or is already free' };
+
+        const res = await this.scheduleService.completeSchedule(machineId, orderId);
+        if (!res.status) return res;
+
+        this.updateMachine(machineId, 'free', machine.numberOrderCompleted + 1);
         return res;
     }
 }

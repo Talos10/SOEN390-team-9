@@ -110,4 +110,42 @@ describe('Machine Controller Test', () => {
         expect(res.status).to.equal(200);
         app.shutdown();
     });
+
+    it('Test create schedule route', async () => {
+        const mockMachineService = sandbox.createStubInstance(MachineService);
+        mockMachineService.scheduleMachine.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new MachineController(mockMachineService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+
+        app.listen();
+        const res = await request(app.app)
+            .post('/machine/schedule')
+            .send({ machineId: 1, orderId: 1 })
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test complete schedule route', async () => {
+        const mockMachineService = sandbox.createStubInstance(MachineService);
+        mockMachineService.freeMachine.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new MachineController(mockMachineService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+
+        app.listen();
+        const res = await request(app.app)
+            .post('/machine/schedule/complete')
+            .send({ machineId: 1, orderId: 1 })
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
 });

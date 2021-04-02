@@ -38,6 +38,44 @@ describe('Customer Order Service Test', () => {
         expect(res.status).to.equal(false);
     });
 
+    it('Test get total income', async () => {
+        const mockOrder = [
+            {
+                totalPrice: 6.0,
+                status: 'completed'
+            },
+            {
+                totalPrice: 4.0,
+                status: 'completed'
+            }
+        ];
+        const orderService = new OrderService();
+        sandbox.stub(CustomerOrder, 'getAll').resolves(mockOrder);
+        const res = await orderService.getIncome();
+        expect(res.message).to.equal(10);
+        expect(res.status).to.equal(true);
+    });
+
+    it('Test get total income per month', async () => {
+        const mockOrder = [
+            {
+                totalPrice: 6.0,
+                creationDate: new Date('2021-01-02'),
+                status: 'completed'
+            },
+            {
+                totalPrice: 4.0,
+                creationDate: new Date('2021-01-02'),
+                status: 'completed'
+            }
+        ];
+        const orderService = new OrderService();
+        sandbox.stub(CustomerOrder, 'getAll').resolves(mockOrder);
+        const res = await orderService.getIncomePerMonth();
+        expect(res.message).to.eql([10.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        expect(res.status).to.equal(true);
+    });
+
     it('Test get customer orders by id', async () => {
         const mockGoodService = sandbox.createStubInstance(GoodService);
         const mockOrderService = new OrderService(mockGoodService);

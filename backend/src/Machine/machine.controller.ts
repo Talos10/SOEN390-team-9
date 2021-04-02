@@ -40,8 +40,7 @@ class Controller {
             '/',
             passport.authenticate('jwt', { session: false }),
             async (req: Request, res: Response) => {
-                const { status, numberOrderCompleted } = req.body;
-                var message;
+                let message;
 
                 try {
                     const result = await this.machineService.createNewMachine();
@@ -69,6 +68,31 @@ class Controller {
                 const id = Number(req.params.machineId);
                 const result = await this.machineService.findMachineById(id);
                 res.json(result);
+            }
+        );
+
+        // Schedule machine
+        this.router.post(
+            '/schedule',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const ids = req.body;
+                const results = await this.machineService.scheduleMachine(
+                    ids.machineId,
+                    ids.orderId
+                );
+                res.json(results);
+            }
+        );
+
+        // Schedule machine
+        this.router.post(
+            '/schedule/complete',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const ids = req.body;
+                const results = await this.machineService.freeMachine(ids.machineId, ids.orderId);
+                res.json(results);
             }
         );
     }

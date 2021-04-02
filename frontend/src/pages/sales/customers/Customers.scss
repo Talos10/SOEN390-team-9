@@ -1,5 +1,5 @@
-.Sales {
-  .sales__top {
+.Customers {
+  .customers__top {
     display: flex;
     justify-content: space-between;
 
@@ -22,8 +22,25 @@
         align-self: center;
       }
     }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .title {
+        margin-bottom: 0;
+      }
+
+      &__left,
+      &__right {
+        align-items: center;
+        display: flex;
+      }
+    }
   }
-  .sales__top__buttons > :not(:last-child) {
+  .customers__top__buttons > :not(:last-child) {
     margin-right: 10px;
   }
 
@@ -46,14 +63,21 @@
       }
 
       &__search {
-        padding: 12px;
-        display: flex;
+        th {
+          padding-top: 10px;
+          padding-bottom: 0px;
+          border-bottom: none;
+        }
 
         .search {
-          margin-right: 12px;
           border: 1px solid var(--border);
           border-radius: 5px;
           min-height: 40px;
+          width: 50%;
+          margin-top: 1%;
+          margin-left: 1%;
+          margin-bottom: 2%;
+
           svg {
             margin: 0 5px 0 5px;
           }
@@ -61,6 +85,7 @@
 
         &__filter {
           display: flex;
+          justify-content: flex-start;
           align-items: center;
 
           label {
@@ -85,38 +110,14 @@
         }
 
         th {
+          padding-bottom: 20px;
           font-weight: 400;
           color: var(--text-faded);
           text-align: left;
-          cursor: pointer;
-          div {
-            display: flex;
-          }
         }
       }
       tbody tr {
         height: 50px;
-
-        &:hover {
-          cursor: pointer;
-          background-color: #f5f5f5;
-          transition: var(--bg-transition);
-        }
-      }
-
-      .cancelled .MuiChip-root {
-        text-transform: capitalize;
-        background-color: var(--red);
-      }
-
-      .completed .MuiChip-root {
-        text-transform: capitalize;
-        background-color: var(--green);
-      }
-
-      .confirmed .MuiChip-root {
-        text-transform: capitalize;
-        background-color: var(--blue);
       }
     }
   }

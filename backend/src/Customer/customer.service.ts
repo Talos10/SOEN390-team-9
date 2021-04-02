@@ -1,12 +1,29 @@
 import CustomerModel from './customer.models';
 import logger from '../shared/Logger';
+import { Clients } from './customer.interface';
 
 class Service {
+    /**
+     * Get all customers in the database
+     */
     public async getAllCustomers(): Promise<CustomerModel[]> {
         const allCustomers = await CustomerModel.getAll();
         return allCustomers;
     }
 
+    /**
+     * Get the top 3 customers based on the money spent
+     */
+    public async getTop3Customers(): Promise<Clients[]> {
+        const topCustomers = await CustomerModel.getTop3Customers();
+        return topCustomers;
+    }
+
+    /**
+     * Creates a new customer
+     * @param name the name of the customer
+     * @param email the email of the customer
+     */
     public async createNewCustomer(name: string, email: string): Promise<CustomerModel> {
         const newCustomer = new CustomerModel({
             name: name,
@@ -17,11 +34,21 @@ class Service {
         return newCustomer;
     }
 
+    /**
+     * Finds a specific customer
+     * @param customerID the id of the customer
+     */
     public async findCustomerById(customerID: number): Promise<CustomerModel> {
         const customer = await CustomerModel.findById(customerID);
         return customer;
     }
 
+    /**
+     * Updates the name and email of an existing customer
+     * @param customerID the id of the customer
+     * @param name the name of the customer
+     * @param email the email of the customer
+     */
     public async updateCustomer(customerID: number, name: string, email: string): Promise<number> {
         const newCustomer = new CustomerModel({
             name: name,
