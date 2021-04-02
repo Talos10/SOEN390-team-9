@@ -32,7 +32,6 @@ export default function Accounting() {
      const [topClients, setTopClients] = useState<Client[]>([]);
      const { accounting } = useBackend();
 
-
      useEffect(() => {
         const getIncome = async () => {
             const income = await accounting.getIncome();
@@ -83,17 +82,17 @@ return (
         <div className='overview__card'>
             <hr className='line line__income'></hr>
             <h2 className='income__title'>Income</h2>
-            <p>${income}</p>
+            <p>${income === undefined ? null : income.toLocaleString()}</p>
         </div>
         <div className='overview__card'>
             <hr className='line line__expense'></hr>
             <h2 className='expense__title'>Expenses</h2>
-            <p>${expense}</p>
+            <p>${expense === undefined ? null : expense.toLocaleString()}</p>
         </div>
         <div className='overview__card'>
             <hr className='line line__gross__revenue'></hr>
             <h2 className='gross__revenue__title'>Gross Revenue</h2>
-            <p>{income === undefined || expense === undefined ? null : (income-expense).toFixed(2)}</p>
+            <p>{income === undefined || expense === undefined ? null : "$" + (income-expense).toLocaleString()}</p>
         </div>
         <div className='accounting__top'>
             <h1 className='title'>Chart</h1>
@@ -166,12 +165,12 @@ return (
                 <Card className='customer__card' key={client.customerId}> 
                     <CardContent>
                         <div className="thumbnail">
-                            <img src={goldMedal} alt='gold medal' />
+                            <img src={topClients.indexOf(client) === 0 ? goldMedal : topClients.indexOf(client) === 1 ? silverMedal : bronzeMedal} alt='medal' />
                         </div>
                         <div className="content">
                             <h3 className="card__title">{client.name}</h3>
                             <p className='email'>{client.email}</p>
-                            <p>Revenue: {client.totalSpent}</p>
+                            <p>Revenue: ${client.totalSpent.toLocaleString()}</p>
                             <p>Number of Orders: {client.numOrders}</p>
                         </div>
                     </CardContent>
