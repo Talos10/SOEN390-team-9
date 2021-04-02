@@ -24,6 +24,16 @@ class Controller {
             }
         );
 
+        // Retrieve top 3 customers that generate the most revenue
+        this.router.get(
+            '/top3',
+            passport.authenticate('jwt', { session: false }),
+            async (req: Request, res: Response) => {
+                const result = await this.customerService.getTop3Customers();
+                res.json(result);
+            }
+        );
+
         // Create new customer.
         this.router.post(
             '/',

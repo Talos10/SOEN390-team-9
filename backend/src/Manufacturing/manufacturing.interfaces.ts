@@ -10,6 +10,7 @@ interface ManufacturingOrderInterface {
     totalCost: number;
     startDate: Date;
     estimatedEndDate: Date;
+    completionDate?: Date;
 }
 
 interface ReturnMessage {

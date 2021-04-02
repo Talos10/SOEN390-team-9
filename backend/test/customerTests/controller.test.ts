@@ -68,6 +68,24 @@ describe('Customer Controller Test', () => {
         app.shutdown();
     });
 
+    it('Test get top 3 customers', async () => {
+        const mockCustomerService = sandbox.createStubInstance(CustomerService);
+        mockCustomerService.getTop3Customers.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new CustomerController(mockCustomerService)],
+            middleWares: []
+        });
+        app.listen();
+        const res = await request(app.app)
+            .get('/customer/top3')
+            .set('Accept', 'application/json')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
     it('Test create new customer route', async () => {
         const mockCustomerService = sandbox.createStubInstance(CustomerService);
         mockCustomerService.createNewCustomer.resolves('foo');

@@ -66,6 +66,58 @@ class Service {
     }
 
     /**
+     * Get total expense
+     * @returns total expense from all manufacturing orders
+     */
+    public async getExpense(): Promise<ReturnMessage> {
+        try {
+            const orders = await OrderModel.getAll();
+            let totalExpenses: number = 0;
+            orders.map(order => {
+                if (order.status == 'completed') {
+                    totalExpenses += order.totalCost;
+                }
+            });
+            return { status: true, message: totalExpenses };
+        } catch (e) {
+            logger.error(`Failed to get expenses`, ['order', 'find', 'expense'], e.message);
+            return { status: false, message: `Failed white getting expenses` };
+        }
+    }
+
+    /**
+     * Get the total expenses for each month
+     * @returns an array of 12 expenses, each one for each month respectively
+     */
+    public async getExpensesPerMonth(): Promise<ReturnMessage> {
+        try {
+            const orders = await OrderModel.getAll();
+            const num_month: number = 12;
+            let monthlyExpense: Array<number> = [];
+            for (let index = 0; index < num_month; index++) {
+                let monthSum: number = 0;
+                orders.map(order => {
+                    if (order.completionDate !== undefined && order.status == 'completed') {
+                        let month: number = order.completionDate.getMonth();
+                        if (month == index) {
+                            monthSum += order.totalCost;
+                        }
+                    }
+                });
+                monthlyExpense.push(monthSum);
+            }
+            return { status: true, message: monthlyExpense };
+        } catch (e) {
+            logger.error(
+                `Failed to get expenses for every month`,
+                ['order', 'expense', 'month'],
+                e.message
+            );
+            return { status: false, message: `Failed white getting expenses per month` };
+        }
+    }
+
+    /**
      * Creates a new order
      * @param orderedGoods the goods to order
      */
