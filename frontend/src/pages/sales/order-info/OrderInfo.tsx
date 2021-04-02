@@ -75,7 +75,7 @@ export default function OrderInfo() {
               </td>
             </tr>
             <tr>
-              <td>Creation Date</td>
+              <td>Creation Date (M/D/Y)</td>
               <td>{formatDate(info.creationDate)}</td>
             </tr>
             <tr>
