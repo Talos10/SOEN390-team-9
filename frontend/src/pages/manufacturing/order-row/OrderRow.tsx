@@ -17,9 +17,9 @@ export default function OrderRow({ props }: Props) {
     } else {
       const date = new Date(props);
       return (
-        date.getDate().toString() +
+        (date.getMonth() + 1).toString() +
         '/' +
-        date.getMonth().toString() +
+        date.getDate().toString() +
         '/' +
         date.getFullYear().toString()
       );

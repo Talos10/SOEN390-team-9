@@ -20,10 +20,15 @@ interface OrderedGoods {
   quantity: number;
 }
 
+interface Good{
+  compositeId: number;
+  quantity: number;
+}
+
 export interface Manufacturing {
   getAllOrders: () => Promise<Orders[]>;
   getOrder: (id: string | number) => Promise<Orders>;
-  createOrder: (orders: [{ compositeId: number; quantity: number }]) => Promise<Response>;
+  createOrder: (orders: Good[]) => Promise<Response>;
   updateStatus: (
     status: 'confirmed' | 'cancelled' | 'processing' | 'completed',
     orders: [id: number]
@@ -50,7 +55,7 @@ export const manufacturing = (
     return ((await request.json()) as any).message as Orders;
   };
 
-  const createOrder = async (orders: [{ compositeId: number; quantity: number }]) => {
+  const createOrder = async (orders: Good[]) => {
     const request = await fetch(`${client}/manufacturing/order/`, {
       method: 'POST',
       headers: {
