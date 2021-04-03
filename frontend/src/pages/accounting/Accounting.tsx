@@ -136,7 +136,7 @@ export default function Accounting() {
       </div>
       <div className="overview__card">
         <hr className="line line__expense"></hr>
-        <h2 className="expense__title">Expenses</h2>
+        <h2 className="expense__title">Expense</h2>
         <p>${expense === undefined ? null : expense.toLocaleString()}</p>
       </div>
       <div className="overview__card">
