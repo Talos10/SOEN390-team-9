@@ -99,6 +99,40 @@ describe('Customer Order Controller Test', () => {
         app.shutdown();
     });
 
+    it('Test get total income', async () => {
+        const mockOrderService = sandbox.createStubInstance(OrderService);
+        mockOrderService.getIncome.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new OrderController(mockOrderService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .get('/order/income')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
+    it('Test get total income per month', async () => {
+        const mockOrderService = sandbox.createStubInstance(OrderService);
+        mockOrderService.getIncomePerMonth.resolves('foo');
+        const app = new App({
+            port: testPort,
+            controllers: [new OrderController(mockOrderService)],
+            middleWares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })]
+        });
+        app.listen();
+        const res = await request(app.app)
+            .get('/order/income/month')
+            .set('Authorization', 'bearer ' + token);
+        expect(res.body).to.equal('foo');
+        expect(res.status).to.equal(200);
+        app.shutdown();
+    });
+
     it('Test create order route', async () => {
         const mockOrderService = sandbox.createStubInstance(OrderService);
         mockOrderService.createNewOrder.resolves('foo');

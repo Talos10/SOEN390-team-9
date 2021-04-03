@@ -49,7 +49,7 @@ export default function Manufacturing() {
             <TableRow className="table__tr">
               <TableCell width="10%">Order</TableCell>
               <TableCell width="20%">Creation Date</TableCell>
-              <TableCell width="20%">Due Date</TableCell>
+              <TableCell width="20%">Completion Date</TableCell>
               <TableCell width="20%">Quantity</TableCell>
               <TableCell width="20%">Status</TableCell>
             </TableRow>
