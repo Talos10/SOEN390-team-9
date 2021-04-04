@@ -46,6 +46,9 @@
       }
 
       &__search {
+        padding: 12px;
+        display: flex;
+
         th {
           padding-top: 10px;
           padding-bottom: 0px;
@@ -53,6 +56,7 @@
         }
 
         .search {
+          margin-right: 12px;
           border: 1px solid var(--border);
           border-radius: 5px;
           min-height: 40px;
@@ -63,7 +67,6 @@
 
         &__filter {
           display: flex;
-          justify-content: flex-start;
           align-items: center;
 
           label {
@@ -93,7 +96,35 @@
           font-weight: 400;
           color: var(--text-faded);
           text-align: left;
+          div{
+            display: flex;
+          }
         }
+      }
+
+      tbody tr {
+        height: 50px;
+
+        &:hover {
+          cursor: pointer;
+          background-color: #f5f5f5;
+          transition: var(--bg-transition);
+        }
+      }
+
+      .cancelled .MuiChip-root {
+        text-transform: capitalize;
+        background-color: var(--red);
+      }
+
+      .completed .MuiChip-root {
+        text-transform: capitalize;
+        background-color: var(--green);
+      }
+
+      .confirmed .MuiChip-root {
+        text-transform: capitalize;
+        background-color: var(--blue);
       }
     }
   }
