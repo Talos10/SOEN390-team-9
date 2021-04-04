@@ -19,7 +19,7 @@ import { useBackend } from '../../contexts';
 import { Search, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
 interface Filter {
-  id: number;
+  id: string;
   status: '' | 'completed' | 'confirmed' | 'processing';
 }
 
@@ -30,7 +30,7 @@ interface Sort {
 
 export default function Manufacturing() {
   const [orders, setOrders] = useState<Orders[]>([]);
-  const [filter, setFilter] = useState<Filter>({ id: NaN, status: '' });
+  const [filter, setFilter] = useState<Filter>({ id: '', status: '' });
   const [sort, setSort] = useState<Sort>({ column: 'id', order: true });
   const { manufacturing } = useBackend();
 
@@ -42,6 +42,7 @@ export default function Manufacturing() {
 
   const applyFilters = (order: Orders) => {
     if (
+      order.orderId.toString().includes(filter.id) &&
       order.status.includes(filter.status)
     )
       return true;
@@ -86,12 +87,6 @@ export default function Manufacturing() {
     return sort.column === column ? <>{sort.order ? <ArrowDropDown /> : <ArrowDropUp />}</> : <></>;
   }
 
-  // Check all orders when clicked
-
-  // const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-  //     setState({ ...state, [event.target.name]: event.target.checked });
-  //   };
-
   // Use orders from backend
   useEffect(() => {
     getOrders();
@@ -118,7 +113,7 @@ export default function Manufacturing() {
             className="search"
             placeholder={'Search order'}
             startAdornment={<Search />}
-            onChange={e => setFilter({ ...filter, id: parseInt(e.target.value) })}
+            onChange={e => setFilter({ ...filter, id: e.target.value })}
           />
           <div className="table__search__filter">
             <InputLabel>Filter by status:</InputLabel>
