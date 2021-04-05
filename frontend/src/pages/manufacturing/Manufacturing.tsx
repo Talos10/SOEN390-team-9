@@ -20,7 +20,7 @@ import { Search, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
 interface Filter {
   id: string;
-  status: '' | 'completed' | 'confirmed' | 'processing';
+  status: '' | 'completed' | 'confirmed' | 'processing' | 'cancelled';
 }
 
 interface Sort {
@@ -121,13 +121,14 @@ export default function Manufacturing() {
               onChange={e =>
                 setFilter({
                   ...filter,
-                  status: e.target.value as '' | 'completed' | 'confirmed' | 'processing'
+                  status: e.target.value as '' | 'completed' | 'confirmed' | 'processing' | 'cancelled'
                 })
               }>
               <MenuItem value="">None</MenuItem>
               <MenuItem value="confirmed">Confirmed</MenuItem>
               <MenuItem value="processing">Processing</MenuItem>
               <MenuItem value="completed">Completed</MenuItem>
+              <MenuItem value="cancelled">Cancelled</MenuItem>
             </Select>
           </div>
         </div>

@@ -1,3 +1,7 @@
+import { inventory } from './Inventory';
+import { Order } from '../../interfaces/Order'
+import { ContactSupportOutlined } from '@material-ui/icons';
+
 interface Response {
   status: boolean;
   message: string;
@@ -27,7 +31,7 @@ interface Good{
 
 export interface Manufacturing {
   getAllOrders: () => Promise<Orders[]>;
-  getOrder: (id: string | number) => Promise<Orders>;
+  getOrder: (id: string | number) => Promise<Order>;
   createOrder: (orders: Good[]) => Promise<Response>;
   updateStatus: (
     status: 'confirmed' | 'cancelled' | 'processing' | 'completed',
@@ -52,7 +56,15 @@ export const manufacturing = (
       headers: { Authorization: `bearer ${localStorage.token}` }
     });
     validateResponse(request);
-    return ((await request.json()) as any).message as Orders;
+    const order = ((await request.json()) as any).message as Order;
+    const goods = await Promise.all(
+      order.orderedGoods.map(async good => ({
+        ...good,
+        item: (await inventory(client, validateResponse).getGood(good.compositeId)).schema
+      }))
+    );
+    order.orderedGoods = goods;
+    return order;
   };
 
   const createOrder = async (orders: Good[]) => {
