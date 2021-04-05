@@ -58,9 +58,9 @@ export default function Manufacturing() {
         return xor(order1.orderId < order2.orderId, sort.order) ? 1 : -1;
       case 'status':
         return xor(
-          (order1.status === 'confirmed' && order2.status === 'completed') ||
-            (order1.status === 'confirmed' && order2.status === 'processing') ||
-            (order1.status === 'completed' && order2.status === 'processing'),
+          (order1.status === 'confirmed' && ['processing', 'completed', 'cancelled'].includes(order2.status)) ||
+          (order1.status === 'processing' && ['completed', 'cancelled'].includes(order2.status)) ||
+          (order1.status === 'completed' && ['cancelled'].includes(order2.status)),
           sort.order
         )
           ? 1

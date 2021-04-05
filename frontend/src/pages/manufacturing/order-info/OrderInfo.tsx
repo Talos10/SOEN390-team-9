@@ -26,9 +26,9 @@ export default function OrderInfo() {
     } else {
       const date = new Date(dateStr);
       return (
-        date.getDate().toString() +
+        (date.getMonth() + 1).toString() +
         '/' +
-        date.getMonth().toString() +
+        date.getDate().toString() +
         '/' +
         date.getFullYear().toString()
       );

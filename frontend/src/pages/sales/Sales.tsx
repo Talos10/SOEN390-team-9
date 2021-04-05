@@ -79,9 +79,8 @@ export default function Sales() {
         return xor(order1.customer.name < order2.customer.name, sort.order) ? 1 : -1;
       case 'status':
         return xor(
-          (order1.status === 'confirmed' && order2.status === 'completed') ||
-            (order1.status === 'confirmed' && order2.status === 'cancelled') ||
-            (order1.status === 'completed' && order2.status === 'cancelled'),
+          (order1.status === 'confirmed' && ['completed', 'cancelled'].includes(order2.status)) ||
+          (order1.status === 'completed' && ['cancelled'].includes(order2.status)),
           sort.order
         )
           ? 1
