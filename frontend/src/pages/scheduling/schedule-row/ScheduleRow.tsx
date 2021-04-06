@@ -75,8 +75,7 @@ export default function ScheduleRow({ props }: Props) {
 
     return (
         <TableRow
-            className="table-row"
-            onClick={toOrderInfo}>
+            className="table-row">
             <TableCell>#{props.machineId}</TableCell>
             <TableCell>{displayOrders(props.orderId)}</TableCell>
             <TableCell>{formatDate(props.finishTime)}</TableCell>
@@ -86,10 +85,10 @@ export default function ScheduleRow({ props }: Props) {
                     <Chip size="small" label={formatstatus(props.status)} />
                 </span>
             </TableCell>
-            {props.status == 'busy' ? (
+            {props.status == 'busy' && (
                 <TableCell>
                     <Button onClick={freeMachine}>Mark as Complete</Button>
-                </TableCell>) : (<div></div>)}
+                </TableCell>)}
         </TableRow>
     );
 }

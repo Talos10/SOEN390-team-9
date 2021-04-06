@@ -338,12 +338,12 @@ VALUES
 
 INSERT `manufacturing_order` (`status`, `creationDate`, `estimatedEndDate`, `totalCost`) 
 VALUES
-("processing", '2021-05-10 13:17:17', '2021-05-11 13:17:17', 55.55)
+("processing", '2021-05-10 13:17:17', '2021-05-11 13:17:17', 55.55),
+("processing", '2021-01-10 13:17:17', '2021-01-11 13:17:17', 1245.99)
 ;
 
 INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`, `completionDate`) 
 VALUES
-("completed", '2021-01-10 13:17:17', 1245.99, '2021-01-11 13:17:17'),
 ("completed", '2021-02-10 13:17:17', 31, '2021-02-11 13:17:17'),
 ("completed", '2021-03-10 13:17:17', 1245.99, '2021-03-11 13:17:17'),
 ("completed", '2021-04-10 13:17:17', 20.50, '2021-04-11 13:17:17'),

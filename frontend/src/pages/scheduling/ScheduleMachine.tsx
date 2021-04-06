@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, Chip, TextField, FormControl, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
 import { Card, Progress, ReturnButton } from '../../components';
 import { useBackend, useSnackbar } from '../../contexts';
@@ -96,8 +95,10 @@ export default function ScheduleMachine() {
     const response = await schedule.scheduleMachine({machineId, orderId});
 
     if (response.status) {
-    history.push('/scheduling/schedule-machine');
-    snackbar.push(`Machine #${machineId} has been scheduled`);
+    history.push('/scheduling');
+    snackbar.push(`Machine #${machineId} has been scheduled.`);
+    }else{
+      snackbar.push(`There was a problem scheduling your order.`);
     }
   };
 
@@ -123,7 +124,7 @@ export default function ScheduleMachine() {
         <div className="schedule_machine__top">
           <div className="top">
             <ReturnButton to="/scheduling" />
-            <h1 className="title">Schedule Machines</h1>
+            <h1 className="title">Schedule Machine</h1>
           </div>
           <div className="top__right">
             <Button
