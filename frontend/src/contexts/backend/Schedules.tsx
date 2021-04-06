@@ -13,7 +13,8 @@ export interface Schedule {
   
   export interface Schedules {
     getAllSchedules: () => Promise<Schedule[]>;
-    addSchedule: (schedule: { machineID: number; orderID: number }) => Promise<Response>;
+    scheduleMachine: (schedule: { machineId: number; orderId: number }) => Promise<Response>;
+    freeMachine: (schedule: { machineId: number; orderId: number }) => Promise<Response>;
   }
   
   export const schedule = (client: string, validateResponse: (response: any) => void): Schedules => {
@@ -27,8 +28,8 @@ export interface Schedule {
       return response.message as unknown as Schedule[];
     };
   
-    const addSchedule = async (schedule: { machineID: number; orderID: number }) => {
-      const request = await fetch(`${client}/schedule`, {
+    const scheduleMachine = async (schedule: { machineId: number; orderId: number }) => {
+      const request = await fetch(`${client}/machine/schedule`, {
         method: 'POST',
         headers: {
           Authorization: `bearer ${localStorage.token}`,
@@ -41,6 +42,20 @@ export interface Schedule {
       return response;
     };
   
-    return { getAllSchedules, addSchedule};
+    const freeMachine = async (schedule: { machineId: number; orderId: number }) => {
+      const request = await fetch(`${client}/machine/schedule/complete`, {
+        method: 'POST',
+        headers: {
+          Authorization: `bearer ${localStorage.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(schedule)
+      });
+      validateResponse(request);
+      const response = (await request.json()) as Response;
+      return response;
+    };
+
+    return { getAllSchedules, scheduleMachine, freeMachine};
   };
   

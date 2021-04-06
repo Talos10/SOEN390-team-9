@@ -336,9 +336,9 @@ VALUES
 (16, 1245.99)
 ;
 
-INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`) 
+INSERT `manufacturing_order` (`status`, `creationDate`, `estimatedEndDate`, `totalCost`) 
 VALUES
-("processing", '2021-05-10 13:17:17', 55.55)
+("processing", '2021-05-10 13:17:17', '2021-05-11 13:17:17', 55.55)
 ;
 
 INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`, `completionDate`) 

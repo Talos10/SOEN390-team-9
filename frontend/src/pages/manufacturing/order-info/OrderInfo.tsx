@@ -71,6 +71,7 @@ export default function OrderInfo() {
                 Cancel
               </Button>
               <Button
+                disabled
                 variant="contained"
                 color="primary"
                 onClick={() => changeStatus('processing')}>
@@ -82,7 +83,7 @@ export default function OrderInfo() {
           )}
 
           {info.order.status === 'processing' ? (
-            <Button variant="contained" color="primary" onClick={() => changeStatus('completed')}>
+            <Button disabled variant="contained" color="primary" onClick={() => changeStatus('completed')}>
               Mark as completed
             </Button>
           ) : (

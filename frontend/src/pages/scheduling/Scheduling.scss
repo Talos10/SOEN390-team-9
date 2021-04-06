@@ -116,6 +116,15 @@
         height: 50px;
 
       }
+      tbody tr {
+        height: 50px;
+
+        &:hover {
+          cursor: pointer;
+          background-color: #f5f5f5;
+          transition: var(--bg-transition);
+        }
+      }
 
       .busy .MuiChip-root {
         background-color: var(--red);

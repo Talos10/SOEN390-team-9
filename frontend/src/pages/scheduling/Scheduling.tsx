@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow, Chip } from '@material-ui/core';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow, Chip, IconButton } from '@material-ui/core';
 import { Card, Progress, ReturnButton } from '../../components';
 import { useBackend } from '../../contexts';
 import { Schedule } from '../../contexts/backend/Schedules';
 import { Machine } from '../../contexts/backend/Machines';
 import './Scheduling.scss';
 import CanvasJSReact from '../../assets/graphs/canvasjs.react.js';
+import { RefreshOutlined } from '@material-ui/icons';
+import ScheduleRow from './schedule-row/ScheduleRow';
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -40,36 +42,6 @@ export default function Scheduling() {
     setMachines(machines);
   }, [machine]);
 
-  const formatDate = (dateStr: string) => {
-    if (dateStr === null || dateStr === '') {
-      return 'N/A';
-    } else {
-      const date = new Date(dateStr);
-      return (
-        date.getDate().toString() +
-        '/' +
-        date.getMonth().toString() +
-        '/' +
-        date.getFullYear().toString()
-      );
-    }
-  };
-
-  const displayOrders = (schedule: Schedule) => {
-    if (schedule.orderId === null || schedule.orderId === undefined) {
-      return "N/A";
-    } else {
-      return "#" + schedule.orderId;
-    }
-  };
-
-  const displayDate = (schedule: Schedule) => {
-    if (schedule.finishTime === null || schedule.finishTime === undefined) {
-      return "N/A";
-    } else {
-      return schedule.finishTime;
-    }
-  };
 
   useEffect(() => {
     getSchedules();
@@ -89,18 +61,22 @@ export default function Scheduling() {
 
   };
 
-  if(machines !== undefined)
-  buildDataPoints(machineDataPoints);
+  if (machines !== undefined)
+    buildDataPoints(machineDataPoints);
 
   const options = {
     title: {
-      text: "Orders Completed Today"
+      text: "Orders Completed per Machine"
     },
     data: [{
       type: "column",
       dataPoints: machineDataPoints
     }]
   }
+
+  const toOrderInfo = (schedule: Schedule) => {
+    history.push('/manufacturing/order-info/' + schedule.orderId);
+  };
 
   return schedules === undefined || machines === undefined ? (
     <Progress />
@@ -122,6 +98,11 @@ export default function Scheduling() {
       </div>
 
       <Card className="summary">
+        <IconButton
+          color="primary"
+          onClick={() => window.location.reload(false)}>
+          <RefreshOutlined/>
+        </IconButton>
         <Table size="small" className="table">
           <TableHead>
             <TableRow className="table__tr">
@@ -134,19 +115,7 @@ export default function Scheduling() {
           </TableHead>
           <TableBody>
             {schedules.map(schedule => (
-              <TableRow
-                key={schedule.machineId}
-                className="table-row">
-                <TableCell>#{schedule.machineId}</TableCell>
-                <TableCell>{displayOrders(schedule)}</TableCell>
-                <TableCell>{displayDate(schedule)}</TableCell>
-                <TableCell>N/A</TableCell>
-                <TableCell>
-                  <span className={schedule.status}>
-                    <Chip size="small" label={schedule.status} />
-                  </span>
-                </TableCell>
-              </TableRow>
+              <ScheduleRow key={schedule.machineId} props={schedule} />
             ))}
           </TableBody>
         </Table>

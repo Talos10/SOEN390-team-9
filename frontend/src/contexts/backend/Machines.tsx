@@ -38,6 +38,7 @@ export interface Machine {
       const response = (await request.json()) as Machine;
       return response;
     };
+    
   
     return { getAllMachines, addMachine };
   };
