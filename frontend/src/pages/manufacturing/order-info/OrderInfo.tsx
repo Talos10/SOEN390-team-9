@@ -5,25 +5,35 @@ import { useBackend, useSnackbar } from '../../../contexts';
 import { Card, Progress, ReturnButton } from '../../../components';
 
 import './OrderInfo.scss';
-import { Orders } from '../../../interfaces/Orders';
-import { Item } from '../../../interfaces/Items';
+import { Order } from '../../../interfaces/Order';
 
-interface Info {
-  order: Orders;
-  schema: Item;
-}
+
 
 export default function OrderInfo() {
   const { id } = useParams<{ id: string }>();
-  const [info, setInfo] = useState<Info>();
+  const [info, setInfo] = useState<Order>();
   const { manufacturing, inventory } = useBackend();
   const snackbar = useSnackbar();
 
   const getInfo = useCallback(async () => {
     const order = await manufacturing.getOrder(id);
-    const good = await inventory.getGood((order.orderedGoods[0] as any).compositeId);
-    setInfo({ order, schema: good.schema });
-  }, [id, manufacturing, inventory]);
+    setInfo(order);
+  }, [id, manufacturing]);
+
+  const formatDate = (dateStr: string) => {
+    if (dateStr === null || dateStr === '') {
+      return 'N/A';
+    } else {
+      const date = new Date(dateStr);
+      return (
+        (date.getMonth() + 1).toString() +
+        '/' +
+        date.getDate().toString() +
+        '/' +
+        date.getFullYear().toString()
+      );
+    }
+  };
 
   useEffect(() => {
     getInfo();
@@ -47,22 +57,61 @@ export default function OrderInfo() {
         </div>
       </div>
 
-      <Card className="info">
-        <p className={`label ${info.order.status}`}>
-          {info.schema.name} {info.order.orderedGoods[0].quantity}× ({info.order.status})
+      <Card>
+        <p className="label">General Information</p>
+
+        <table className="general-info">
+          <tbody>
+            <tr>
+              <td>Status</td>
+              <td className="status">{info.status.charAt(0).toUpperCase() + info.status.slice(1)}</td>
+            </tr>
+            <tr>
+              <td>Creation Date (M/D/Y)</td>
+              <td>{formatDate(info.creationDate)}</td>
+            </tr>
+            <tr>
+              <td>Completion Date</td>
+              <td>{formatDate(info.completionDate)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </Card>
+      { info.orderedGoods.map(good => (
+        <Card className="info">
+        <p className={`label ${info.status}`}>
+          {good.item.name} {good.quantity}× ({info.status})
         </p>
         <div className="summary">
-          {info.schema.components.map(component => (
+          {good.item.components.map(component => (
             <div className="summary__line-item" key={component.id}>
               <span>{component.name}</span>
-              <span>{component.quantity * info.order.orderedGoods[0].quantity}×</span>
+              <span>{component.quantity * good.quantity}×</span>
             </div>
           ))}
           <div className="summary__total">
-            <span>{info.schema.name}</span>
-            <span>{info.order.orderedGoods[0].quantity}×</span>
+            <span>{good.item.name}</span>
+            <span>{good.quantity}×</span>
           </div>
         </div>
+      </Card>
+      ))}
+      <div className="confirmation">
+        {info.status === 'confirmed' ? (
+          <>
+            <Button variant="outlined" onClick={() => changeStatus('cancelled')}>
+              Cancel Order
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => changeStatus('processing')}>
+              Start Production
+            </Button>
+          </>
+        ) : (
+          <></>
+        )}
 
         <div className="confirmation">
           {info.order.status === 'confirmed' ? (

@@ -35,9 +35,9 @@ export default function OrderInfo() {
     } else {
       const date = new Date(dateStr);
       return (
-        date.getDate().toString() +
+        (date.getMonth() + 1).toString() +
         '/' +
-        date.getMonth().toString() +
+        date.getDate().toString() +
         '/' +
         date.getFullYear().toString()
       );
@@ -75,7 +75,7 @@ export default function OrderInfo() {
               </td>
             </tr>
             <tr>
-              <td>Creation Date</td>
+              <td>Creation Date (M/D/Y)</td>
               <td>{formatDate(info.creationDate)}</td>
             </tr>
             <tr>

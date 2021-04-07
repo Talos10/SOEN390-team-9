@@ -55,6 +55,37 @@
     }
   }
 
+  .general-info {
+    border-collapse: collapse;
+    width: 100%;
+
+    tr {
+      height: 50px;
+    }
+
+    tr:not(:last-child) td {
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding-top: 12px;
+      padding-bottom: 12px;
+
+      &:first-child {
+        font-size: 0.75rem;
+        letter-spacing: 0.07272727em;
+        font-weight: 500;
+        width: 175px;
+        color: var(--text-faded);
+        text-transform: uppercase;
+      }
+
+      &:last-child {
+        padding-right: 30px;
+      }
+    }
+  }
+
   .summary {
     line-height: 28px;
 

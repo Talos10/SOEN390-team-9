@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
-import { Link } from 'react-router-dom';
 import { Button, Chip } from '@material-ui/core';
 import { useSnackbar, useBackend } from '../../contexts';
 import { Card, Progress, ReturnButton } from '../../components';
@@ -57,13 +56,6 @@ export default function ItemInfo() {
           <ReturnButton to="/inventory" />
           <h1 className="title">{info.schema.name}</h1>
         </div>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to={`/manufacturing/create-order/${id}`}>
-          Order item
-        </Button>
       </div>
 
       <Card className="info">
