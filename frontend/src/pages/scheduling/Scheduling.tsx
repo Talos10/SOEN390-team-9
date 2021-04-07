@@ -171,7 +171,7 @@ export default function Scheduling() {
             {schedules.map(schedule => (
               <TableRow key={schedule.machineId} className="table-row">
                 <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>
-                  #{schedule.machineId}{' '}
+                  #{schedule.machineId}
                 </TableCell>
                 <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>
                   {displayOrders(schedule.orderId)}
