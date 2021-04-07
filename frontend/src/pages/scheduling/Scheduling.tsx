@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import {
   Button,
@@ -15,9 +15,8 @@ import { useBackend, useSnackbar } from '../../contexts';
 import { Schedule } from '../../contexts/backend/Schedules';
 import { Machine } from '../../contexts/backend/Machines';
 import './Scheduling.scss';
-import CanvasJSReact from '../../assets/graphs/canvasjs.react.js';
 import { RefreshOutlined } from '@material-ui/icons';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+import { Bar } from 'react-chartjs-2';
 
 export interface MachineDataPoints {
   label: string;
@@ -100,27 +99,39 @@ export default function Scheduling() {
     return props.charAt(0).toUpperCase() + props.slice(1);
   };
 
-  var machineDataPoints: Array<MachineDataPoints> = [];
+  var machineLabels: Array<string> = [];
 
-  const buildDataPoints = async (machineDataPoints: Array<MachineDataPoints>) => {
+  const buildLabels = async (machineLabels: Array<string>) => {
     for (var i = 0; i < machines!.length; i++) {
-      machineDataPoints[i] = {
-        label: 'Machine #' + machines![i].machineId,
-        y: machines![i].numberOrderCompleted
-      };
+      machineLabels[i] = 'Machine #' + machines![i].machineId;
     }
   };
 
-  if (machines !== undefined) buildDataPoints(machineDataPoints);
+  var machineData: Array<number> = [];
 
-  const options = {
-    title: {
-      text: 'Orders Completed per Machine'
-    },
-    data: [
+  const buildData = async (machineData: Array<number>) => {
+    for (var i = 0; i < machines!.length; i++) {
+      machineData[i] = machines![i].numberOrderCompleted;
+    }
+  };
+
+  if (machines !== undefined) {
+    buildLabels(machineLabels);
+    buildData(machineData);
+
+    console.log(machineLabels);
+    console.log(machineData);
+  }
+
+  const state = {
+    labels: machineLabels,
+    datasets: [
       {
-        type: 'column',
-        dataPoints: machineDataPoints
+        label: 'Number of orders completed',
+        backgroundColor: 'rgba(75,192,192,1)',
+        borderColor: 'rgba(0,0,0,1)',
+        borderWidth: 2,
+        data: machineData
       }
     ]
   };
@@ -204,7 +215,29 @@ export default function Scheduling() {
       </Card>
 
       <div>
-        <CanvasJSChart options={options} />
+        <Bar
+          data={state}
+          options={{
+            title: {
+              display: true,
+              text: 'Orders Completed per Machine',
+              fontSize: 20
+            },
+            legend: {
+              display: true,
+              position: 'right'
+            },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }
+              ]
+            }
+          }}
+        />
       </div>
     </div>
   );
