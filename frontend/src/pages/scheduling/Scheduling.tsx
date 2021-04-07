@@ -47,10 +47,8 @@ export default function Scheduling() {
 
   const freeMachine = async (machineId: number, orderId: number) => {
     const response = await schedule.freeMachine({ machineId, orderId });
-    if(response.status)
-      snackbar.push(`Successfully finished order ${orderId}`);
-    else
-      snackbar.push(response.message);
+    if (response.status) snackbar.push(`Successfully finished order ${orderId}`);
+    else snackbar.push(response.message);
     getMachines();
     getSchedules();
   };

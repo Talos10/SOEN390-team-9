@@ -18,5 +18,4 @@ interface ItemInfo {
   quantity: number;
 }
 
-
-export type { Order, ItemInfo }
+export type { Order, ItemInfo };

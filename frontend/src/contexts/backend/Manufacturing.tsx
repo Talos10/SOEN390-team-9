@@ -1,6 +1,5 @@
 import { inventory } from './Inventory';
-import { Order } from '../../interfaces/Order'
-import { ContactSupportOutlined } from '@material-ui/icons';
+import { Order } from '../../interfaces/Order';
 
 interface Response {
   status: boolean;
@@ -24,7 +23,7 @@ interface OrderedGoods {
   quantity: number;
 }
 
-interface Good{
+interface Good {
   compositeId: number;
   quantity: number;
 }

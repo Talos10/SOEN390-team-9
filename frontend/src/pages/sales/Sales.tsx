@@ -80,7 +80,7 @@ export default function Sales() {
       case 'status':
         return xor(
           (order1.status === 'confirmed' && ['completed', 'cancelled'].includes(order2.status)) ||
-          (order1.status === 'completed' && ['cancelled'].includes(order2.status)),
+            (order1.status === 'completed' && ['cancelled'].includes(order2.status)),
           sort.order
         )
           ? 1

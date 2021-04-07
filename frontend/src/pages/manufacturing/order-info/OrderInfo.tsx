@@ -7,12 +7,10 @@ import { Card, Progress, ReturnButton } from '../../../components';
 import './OrderInfo.scss';
 import { Order } from '../../../interfaces/Order';
 
-
-
 export default function OrderInfo() {
   const { id } = useParams<{ id: string }>();
   const [info, setInfo] = useState<Order>();
-  const { manufacturing, inventory } = useBackend();
+  const { manufacturing } = useBackend();
   const snackbar = useSnackbar();
 
   const getInfo = useCallback(async () => {
@@ -64,7 +62,9 @@ export default function OrderInfo() {
           <tbody>
             <tr>
               <td>Status</td>
-              <td className="status">{info.status.charAt(0).toUpperCase() + info.status.slice(1)}</td>
+              <td className="status">
+                {info.status.charAt(0).toUpperCase() + info.status.slice(1)}
+              </td>
             </tr>
             <tr>
               <td>Creation Date (M/D/Y)</td>
@@ -77,32 +77,33 @@ export default function OrderInfo() {
           </tbody>
         </table>
       </Card>
-      { info.orderedGoods.map(good => (
+      {info.orderedGoods.map(good => (
         <Card className="info">
-        <p className={`label ${info.status}`}>
-          {good.item.name} {good.quantity}× ({info.status})
-        </p>
-        <div className="summary">
-          {good.item.components.map(component => (
-            <div className="summary__line-item" key={component.id}>
-              <span>{component.name}</span>
-              <span>{component.quantity * good.quantity}×</span>
+          <p className={`label ${info.status}`}>
+            {good.item.name} {good.quantity}× ({info.status})
+          </p>
+          <div className="summary">
+            {good.item.components.map(component => (
+              <div className="summary__line-item" key={component.id}>
+                <span>{component.name}</span>
+                <span>{component.quantity * good.quantity}×</span>
+              </div>
+            ))}
+            <div className="summary__total">
+              <span>{good.item.name}</span>
+              <span>{good.quantity}×</span>
             </div>
-          ))}
-          <div className="summary__total">
-            <span>{good.item.name}</span>
-            <span>{good.quantity}×</span>
           </div>
-        </div>
-      </Card>
+        </Card>
       ))}
       <div className="confirmation">
         {info.status === 'confirmed' ? (
           <>
             <Button variant="outlined" onClick={() => changeStatus('cancelled')}>
-              Cancel Order
+              Cancel
             </Button>
             <Button
+              disabled
               variant="contained"
               color="primary"
               onClick={() => changeStatus('processing')}>
@@ -113,37 +114,18 @@ export default function OrderInfo() {
           <></>
         )}
 
-        <div className="confirmation">
-          {info.order.status === 'confirmed' ? (
-            <>
-              <Button variant="outlined" onClick={() => changeStatus('cancelled')}>
-                Cancel
-              </Button>
-              <Button
-                disabled
-                variant="contained"
-                color="primary"
-                onClick={() => changeStatus('processing')}>
-                Start Production
-              </Button>
-            </>
-          ) : (
-            <></>
-          )}
-
-          {info.order.status === 'processing' ? (
-            <Button
-              disabled
-              variant="contained"
-              color="primary"
-              onClick={() => changeStatus('completed')}>
-              Mark as completed
-            </Button>
-          ) : (
-            <></>
-          )}
-        </div>
-      </Card>
+        {info.status === 'processing' ? (
+          <Button
+            disabled
+            variant="contained"
+            color="primary"
+            onClick={() => changeStatus('completed')}>
+            Mark as completed
+          </Button>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }

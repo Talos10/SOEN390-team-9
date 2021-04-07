@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Button,
+import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -41,10 +42,7 @@ export default function Manufacturing() {
   };
 
   const applyFilters = (order: Orders) => {
-    if (
-      order.orderId.toString().includes(filter.id) &&
-      order.status.includes(filter.status)
-    )
+    if (order.orderId.toString().includes(filter.id) && order.status.includes(filter.status))
       return true;
     return false;
   };
@@ -58,9 +56,11 @@ export default function Manufacturing() {
         return xor(order1.orderId < order2.orderId, sort.order) ? 1 : -1;
       case 'status':
         return xor(
-          (order1.status === 'confirmed' && ['processing', 'completed', 'cancelled'].includes(order2.status)) ||
-          (order1.status === 'processing' && ['completed', 'cancelled'].includes(order2.status)) ||
-          (order1.status === 'completed' && ['cancelled'].includes(order2.status)),
+          (order1.status === 'confirmed' &&
+            ['processing', 'completed', 'cancelled'].includes(order2.status)) ||
+            (order1.status === 'processing' &&
+              ['completed', 'cancelled'].includes(order2.status)) ||
+            (order1.status === 'completed' && ['cancelled'].includes(order2.status)),
           sort.order
         )
           ? 1
@@ -121,7 +121,12 @@ export default function Manufacturing() {
               onChange={e =>
                 setFilter({
                   ...filter,
-                  status: e.target.value as '' | 'completed' | 'confirmed' | 'processing' | 'cancelled'
+                  status: e.target.value as
+                    | ''
+                    | 'completed'
+                    | 'confirmed'
+                    | 'processing'
+                    | 'cancelled'
                 })
               }>
               <MenuItem value="">None</MenuItem>
@@ -135,47 +140,52 @@ export default function Manufacturing() {
         <Table size="small" className="table">
           <TableHead>
             <TableRow className="table__tr">
-              <TableCell width="10%"
+              <TableCell
+                width="10%"
                 onClick={() =>
                   setSort({ column: 'id', order: sort.column === 'id' ? !sort.order : true })
                 }>
-                  <div>Order{SortIcon('id', sort)}</div>
-                </TableCell>
-              <TableCell width="18%"
+                <div>Order{SortIcon('id', sort)}</div>
+              </TableCell>
+              <TableCell
+                width="18%"
                 onClick={() =>
                   setSort({
                     column: 'creationDate',
                     order: sort.column === 'creationDate' ? !sort.order : true
                   })
                 }>
-                  <div>Creation Date (M/D/Y){SortIcon('creationDate', sort)}</div>
+                <div>Creation Date (M/D/Y){SortIcon('creationDate', sort)}</div>
               </TableCell>
-              <TableCell width="18%"
+              <TableCell
+                width="18%"
                 onClick={() =>
                   setSort({
                     column: 'completionDate',
                     order: sort.column === 'completionDate' ? !sort.order : true
                   })
                 }>
-                  <div>Completion Date{SortIcon('completionDate', sort)}</div>
+                <div>Completion Date{SortIcon('completionDate', sort)}</div>
               </TableCell>
-              <TableCell width="18%"
+              <TableCell
+                width="18%"
                 onClick={() =>
                   setSort({
                     column: 'quantity',
                     order: sort.column === 'quantity' ? !sort.order : true
                   })
                 }>
-                  <div>Quantity{SortIcon('quantity', sort)}</div>
+                <div>Quantity{SortIcon('quantity', sort)}</div>
               </TableCell>
-              <TableCell width="18%"
+              <TableCell
+                width="18%"
                 onClick={() =>
                   setSort({
                     column: 'status',
                     order: sort.column === 'status' ? !sort.order : true
                   })
                 }>
-                  <div>Status{SortIcon('status', sort)}</div>
+                <div>Status{SortIcon('status', sort)}</div>
               </TableCell>
             </TableRow>
           </TableHead>

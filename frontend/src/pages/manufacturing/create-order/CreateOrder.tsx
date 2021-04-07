@@ -149,61 +149,60 @@ export default function CreateOrder() {
               startAdornment: <InputAdornment position="start">×</InputAdornment>
             }}
           />
-          <Button color ="primary" variant="outlined" onClick={addGoodToOrder}>Add Item</Button>
+          <Button color="primary" variant="outlined" onClick={addGoodToOrder}>
+            Add Item
+          </Button>
         </div>
         <table className="order-info">
-            <thead>
-                <tr>
-                <td style={{ width: '35%' }}>Item</td>
-                <td style={{ width: '15%' }}>Unit Cost</td>
-                <td style={{ width: '15%' }}>Quantity</td>
-                <td style={{ width: '10%' }}>Cost</td>
-                <td style={{ width: '5%' }}></td>
-                </tr>
-            </thead>
-            <tbody>
-              {order.map(element =>(
-                <tr key={element.compositeId}>
-                  <td>
-                    {element.name}
-                  </td>
-                  <td>
-                    $ {format(element.cost)}
-                  </td>
-                  <td>
-                    <InputBase
-                      className="quantity"
-                      key={element.compositeId}
-                      onChange={event =>
-                        changeQuantity(event as React.ChangeEvent<HTMLInputElement>, element.compositeId)
-                      }
-                      type="number"
-                      inputProps={{ 'aria-label': 'naked', min: '1', step: '1' }}
-                      defaultValue={element.quantity}
-                    />
-                  </td>
-                  <td>
-                    $ {format(element.cost * element.quantity)}
-                  </td>
-                  <td>
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => removeGoodFromOrder(element.compositeId)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </td>
-                </tr>
-              ))}
-              <tr className="total">
-                <td colSpan={3}>Total</td>
+          <thead>
+            <tr>
+              <td style={{ width: '35%' }}>Item</td>
+              <td style={{ width: '15%' }}>Unit Cost</td>
+              <td style={{ width: '15%' }}>Quantity</td>
+              <td style={{ width: '10%' }}>Cost</td>
+              <td style={{ width: '5%' }}></td>
+            </tr>
+          </thead>
+          <tbody>
+            {order.map(element => (
+              <tr key={element.compositeId}>
+                <td>{element.name}</td>
+                <td>$ {format(element.cost)}</td>
                 <td>
-                  $
-                  {order.length > 0
-                    ? format(order.map(g => g.cost * g.quantity).reduce((a, b) => a + b))
-                    : 0}
+                  <InputBase
+                    className="quantity"
+                    key={element.compositeId}
+                    onChange={event =>
+                      changeQuantity(
+                        event as React.ChangeEvent<HTMLInputElement>,
+                        element.compositeId
+                      )
+                    }
+                    type="number"
+                    inputProps={{ 'aria-label': 'naked', min: '1', step: '1' }}
+                    defaultValue={element.quantity}
+                  />
+                </td>
+                <td>$ {format(element.cost * element.quantity)}</td>
+                <td>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => removeGoodFromOrder(element.compositeId)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </td>
               </tr>
-            </tbody>
+            ))}
+            <tr className="total">
+              <td colSpan={3}>Total</td>
+              <td>
+                $
+                {order.length > 0
+                  ? format(order.map(g => g.cost * g.quantity).reduce((a, b) => a + b))
+                  : 0}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </Card>
     </form>
