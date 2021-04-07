@@ -1,77 +1,39 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow, Chip, TextField, FormControl, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
+import {
+  Button,
+  TextField,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio
+} from '@material-ui/core';
 import { Card, Progress, ReturnButton } from '../../components';
 import { useBackend, useSnackbar } from '../../contexts';
-import { Schedule } from '../../contexts/backend/Schedules';
 import './ScheduleMachine.scss';
 import { Autocomplete } from '@material-ui/lab';
 import { Machine } from '../../contexts/backend/Machines';
 import { Orders } from '../../interfaces/Orders';
 
 export default function ScheduleMachine() {
-
   const history = useHistory();
   const snackbar = useSnackbar();
 
-  const [schedules, setSchedules] = useState<Schedule[]>();
-  const { schedule } = useBackend();
-
-  const [selectedMachine, setSelectedMachine] = useState<Machine>();
-  const [selectedOrder, setSelectedOrder] = useState<Orders>();
-
   const [schedulingType, setSchedulingType] = useState<string>('now');
-
   const [machines, setMachines] = useState<Machine[]>();
-  const { machine } = useBackend();
-
   const [orders, setOrders] = useState<Orders[]>();
-  const { manufacturing } = useBackend();
 
+  const { schedule, machine, manufacturing } = useBackend();
 
   const getMachines = useCallback(async () => {
     const machines = await machine.getAllMachines();
     setMachines(machines);
   }, [machine]);
 
-  const getOrders = async () => {
+  const getOrders = useCallback(async () => {
     const orders = await manufacturing.getAllOrders();
     setOrders(orders);
-  };
-
-  const selectMachine = (_: unknown, value: Machine) => {
-    setSelectedMachine(value);
-  };
-
-  const selectOrder = (_: unknown, value: Orders) => {
-    setSelectedOrder(value);
-  };
-
-  const filterMachines = (machines: Machine[]) => {
-    var filteredArray: Machine[] = [];
-
-    machines.forEach(machine => {
-      if (machine.status == 'free') {
-        filteredArray.push(machine);
-      }
-    });
-
-    return filteredArray;
-
-  };
-
-  const filterOrders = (orders: Orders[]) => {
-    var filteredArray: Orders[] = [];
-
-    orders.forEach(order => {
-      if (order.status == 'confirmed' && order.orderedGoods) {
-        filteredArray.push(order);
-      }
-    });
-
-    return filteredArray;
-
-  };
+  }, [manufacturing]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSchedulingType(event.target.value);
@@ -79,26 +41,21 @@ export default function ScheduleMachine() {
 
   useEffect(() => {
     getMachines();
-  }, [getMachines]);
-
-  useEffect(() => {
     getOrders();
-  }, []);
+  }, [getMachines, getOrders]);
 
   const addSchedule = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const { machineId, orderId, time, date } = parseSchedule(form);
+    const { machineId, orderId } = parseSchedule(form);
 
-    console.log({ machineId, orderId, time, date });
-
-    const response = await schedule.scheduleMachine({machineId, orderId});
+    const response = await schedule.scheduleMachine({ machineId, orderId });
 
     if (response.status) {
-    history.push('/scheduling');
-    snackbar.push(`Machine #${machineId} has been scheduled.`);
-    }else{
-      snackbar.push(`There was a problem scheduling your order.`);
+      history.push('/scheduling');
+      snackbar.push(`Machine #${machineId} has been scheduled.`);
+    } else {
+      snackbar.push('Missing components before starting that order.');
     }
   };
 
@@ -109,49 +66,35 @@ export default function ScheduleMachine() {
     var unfilteredOrderID = data.get('order-number') as string;
 
     return {
-      machineId: (unfilteredMachineID.split("#")[1]) as unknown as number,
-      orderId: unfilteredOrderID.split("#")[1] as unknown as number,
+      machineId: (unfilteredMachineID.split('#')[1] as unknown) as number,
+      orderId: (unfilteredOrderID.split('#')[1] as unknown) as number,
       date: data.get('schedule-date') as string,
       time: data.get('schedule-time') as string
     };
   };
 
-  return machines === undefined || orders == undefined ? (
+  return machines === undefined || orders === undefined ? (
     <Progress />
   ) : (
     <div className="ScheduleMachine">
       <form onSubmit={addSchedule}>
-        <div className="schedule_machine__top">
+        <div className="schedule__machine__top">
           <div className="top">
             <ReturnButton to="/scheduling" />
             <h1 className="title">Schedule Machine</h1>
           </div>
-          <div className="top__right">
-            <Button
-              color="primary"
-              variant="contained"
-              type="submit">
-              Execute
+          <Button color="primary" variant="contained" type="submit">
+            Execute
           </Button>
-          </div>
         </div>
 
         <Card>
-          <div className="input-field">
-          </div>
-          <input
-            key=""
-            name="existing-customer"
-            type="hidden"
-            value=""
-          />
           <div className="schedule_machine">
-            <div>
+            <div className="machine">
               <label htmlFor="machine-name">Machine's Name</label>
               <Autocomplete
-                onChange={selectMachine}
                 disableClearable={true}
-                options={filterMachines(machines)}
+                options={machines.filter(machine => machine.status === 'free')}
                 getOptionLabel={machine => `Machine #${machine.machineId}`}
                 getOptionSelected={(option, value) => option.machineId === value.machineId}
                 renderInput={params => (
@@ -167,13 +110,12 @@ export default function ScheduleMachine() {
                 )}
               />
             </div>
-            <div>
+            <div className="machine">
               <label htmlFor="order-number">Order Number</label>
               <Autocomplete
-                onChange={selectOrder}
                 disableClearable={true}
-                options={filterOrders(orders)}
-                getOptionLabel={order => (`Order #${order.orderId}`)}
+                options={orders.filter(order => order.status === 'confirmed' && order.orderedGoods)}
+                getOptionLabel={order => `Order #${order.orderId}`}
                 getOptionSelected={(option, value) => option.orderId === value.orderId}
                 renderInput={params => (
                   <TextField
@@ -189,15 +131,11 @@ export default function ScheduleMachine() {
               />
             </div>
 
-            <div className="input-field">
+            <div className="machine">
               <label htmlFor="order-number">Schedule order for:</label>
               <FormControl component="fieldset">
                 <RadioGroup row value={schedulingType} onChange={handleChange}>
-                  <FormControlLabel
-                    value={'now'}
-                    control={<Radio color="primary" />}
-                    label="Now"
-                  />
+                  <FormControlLabel value={'now'} control={<Radio color="primary" />} label="Now" />
                   <FormControlLabel
                     disabled
                     value={'later'}
@@ -208,10 +146,8 @@ export default function ScheduleMachine() {
               </FormControl>
             </div>
 
-            {schedulingType == "now" ? (
-              <div>
-
-              </div>
+            {schedulingType === 'now' ? (
+              <div></div>
             ) : (
               <div>
                 <div>
@@ -238,8 +174,6 @@ export default function ScheduleMachine() {
                 </div>
               </div>
             )}
-
-
           </div>
         </Card>
       </form>

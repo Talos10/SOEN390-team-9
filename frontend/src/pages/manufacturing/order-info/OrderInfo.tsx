@@ -83,7 +83,11 @@ export default function OrderInfo() {
           )}
 
           {info.order.status === 'processing' ? (
-            <Button disabled variant="contained" color="primary" onClick={() => changeStatus('completed')}>
+            <Button
+              disabled
+              variant="contained"
+              color="primary"
+              onClick={() => changeStatus('completed')}>
               Mark as completed
             </Button>
           ) : (

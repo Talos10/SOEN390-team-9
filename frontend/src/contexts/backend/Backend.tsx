@@ -9,7 +9,6 @@ import { useAuth } from '../Auth';
 import { machine, Machines } from './Machines';
 import { schedule, Schedules } from './Schedules';
 
-
 interface Backend {
   inventory: Inventory;
   manufacturing: Manufacturing;
