@@ -18,6 +18,7 @@ import {
   Sales,
   SalesOrderInfo,
   SalesCreateOrder,
+  Accounting,
   SalesCustomers,
   NewCustomer
 } from '../pages';
@@ -102,6 +103,8 @@ export default function Router() {
           <Guard path="/planning" component={Planning} allowIf={auth.isLoggedIn} exact />
           <Guard path="/planning/add-event" component={AddEvent} allowIf={auth.isLoggedIn} exact />
           <Guard path="/planning/add-goal" component={AddGoal} allowIf={auth.isLoggedIn} exact />
+          {/* Accounting */}
+          <Guard path="/accounting" component={Accounting} allowIf={auth.isLoggedIn} exact />
         </Container>
       </>
       <Route component={NotFound} />

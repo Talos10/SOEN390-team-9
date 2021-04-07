@@ -23,9 +23,9 @@ class Customer {
      */
     public static async getTop3Customers(): Promise<Clients[]> {
         return await db()
-            .select('customer_order.customerId', 'customer.name')
+            .select('customer_order.customerId', 'customer.name', 'customer.email')
             .sum({ totalSpent: 'customer_order.totalPrice' })
-            .count({ numOders: '*' })
+            .count({ numOrders: '*' })
             .from('customer_order')
             .innerJoin('customer', 'customer_order.customerId', 'customer.customerId')
             .where('customer_order.status', '!=', 'cancelled')
