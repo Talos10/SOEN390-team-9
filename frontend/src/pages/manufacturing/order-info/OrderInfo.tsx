@@ -97,9 +97,7 @@ export default function OrderInfo() {
           <tbody>
             {info.orderedGoods.map(good => (
               <tr key={good.compositeId}>
-                <td>
-                  {good.item.name}
-                </td>
+                <td>{good.item.name}</td>
                 <td>$ {good.item.cost}</td>
                 <td>{good.quantity}</td>
                 <td>$ {good.totalCost}</td>
@@ -138,10 +136,7 @@ export default function OrderInfo() {
             <Button variant="outlined" onClick={() => changeStatus('cancelled')}>
               Cancel
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={toScheduling}>
+            <Button variant="contained" color="primary" onClick={toScheduling}>
               Schedule Order
             </Button>
           </>
@@ -150,10 +145,7 @@ export default function OrderInfo() {
         )}
 
         {info.status === 'processing' ? (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={toScheduling}>
+          <Button variant="contained" color="primary" onClick={toScheduling}>
             See in Scheduling tab
           </Button>
         ) : (

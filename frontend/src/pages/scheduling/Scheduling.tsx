@@ -126,9 +126,8 @@ export default function Scheduling() {
   };
 
   const toManufacturingOrderInfo = (orderId: number) => {
-    if (orderId)
-      history.push('/manufacturing/order-info/' + orderId);
-  }
+    if (orderId) history.push('/manufacturing/order-info/' + orderId);
+  };
 
   return schedules === undefined || machines === undefined ? (
     <Progress />
@@ -171,10 +170,18 @@ export default function Scheduling() {
           <TableBody>
             {schedules.map(schedule => (
               <TableRow key={schedule.machineId} className="table-row">
-                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>#{schedule.machineId} </TableCell>
-                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>{displayOrders(schedule.orderId)}</TableCell>
-                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>{formatDate(schedule.finishTime)}</TableCell>
-                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>{formatTime(schedule.finishTime)}</TableCell>
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>
+                  #{schedule.machineId}{' '}
+                </TableCell>
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>
+                  {displayOrders(schedule.orderId)}
+                </TableCell>
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>
+                  {formatDate(schedule.finishTime)}
+                </TableCell>
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>
+                  {formatTime(schedule.finishTime)}
+                </TableCell>
                 <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>
                   <span className={schedule.status}>
                     <Chip size="small" label={formatstatus(schedule.status)} />
