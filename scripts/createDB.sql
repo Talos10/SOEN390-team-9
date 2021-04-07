@@ -305,7 +305,7 @@ VALUES
 ("steel bike handles", "semi-finished", 2, 40, 26.25),
 ("bike gears", "semi-finished", 3, 400, 24.52),
 ("steel breaks", "semi-finished", 2, 100, 251.21),
-("le sebastien", "finished", 20, 2000, 1245.99)
+("le sebastien", "finished", 20, 2000, 300)
 ;
 
 INSERT `raw_good` (`id`, `vendor`) 
@@ -336,20 +336,20 @@ VALUES
 (16, 1245.99)
 ;
 
-INSERT `manufacturing_order` (`status`, `creationDate`, `estimatedEndDate`, `totalCost`) 
+INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`) 
 VALUES
-("processing", '2021-05-10 13:17:17', '2021-05-11 13:17:17', 55.55),
-("processing", '2021-01-10 13:17:17', '2021-01-11 13:17:17', 1245.99)
+("processing", '2021-05-10 13:17:17', 55.55)
 ;
 
 INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`, `completionDate`) 
 VALUES
+("completed", '2021-01-10 13:17:17', 300, '2021-01-11 13:17:17'),
 ("completed", '2021-02-10 13:17:17', 31, '2021-02-11 13:17:17'),
-("completed", '2021-03-10 13:17:17', 1245.99, '2021-03-11 13:17:17'),
+("completed", '2021-03-10 13:17:17', 300, '2021-03-11 13:17:17'),
 ("completed", '2021-04-10 13:17:17', 20.50, '2021-04-11 13:17:17'),
 ("completed", '2021-05-10 13:17:17', 51.50, '2021-05-11 13:17:17'),
-("completed", '2021-06-10 13:17:17', 1245.99, '2021-06-11 13:17:17'),
-("completed", '2021-07-10 13:17:17', 1278.22, '2021-07-11 13:17:17'),
+("completed", '2021-06-10 13:17:17', 300, '2021-06-11 13:17:17'),
+("completed", '2021-07-10 13:17:17', 332.23, '2021-07-11 13:17:17'),
 ("completed", '2021-08-10 13:17:17', 40.50, '2021-08-11 13:17:17'),
 ("completed", '2021-09-10 13:17:17', 55.50, '2021-09-11 13:17:17'),
 ("completed", '2021-10-10 13:17:17', 34.43, '2021-10-11 13:17:17'),
@@ -413,17 +413,17 @@ VALUES
 
 INSERT `manufacturing_ordered_good` (`orderId`, `compositeId`, `quantity`, `totalCost`)
 VALUES
-(1, 16, 1, 1245.99),
-(2, 16, 1, 1245.99),
+(1, 16, 1, 300),
+(2, 16, 1, 300),
 (3, 1, 1, 5.00),
 (3, 2, 1, 10.50),
 (3, 3, 1, 15.50),
-(4, 16, 1, 1245.99),
+(4, 16, 1, 300),
 (5, 4, 1, 20.50),
 (6, 12, 1, 25.25),
 (6, 13, 1, 26.25),
-(7, 16, 1, 1245.99),
-(8, 16, 1, 1245.99),
+(7, 16, 1, 300),
+(8, 16, 1, 300),
 (8, 9, 1, 32.23),
 (9, 6, 1, 40.50),
 (10, 8, 1, 55.50),
@@ -469,7 +469,7 @@ VALUES
 INSERT `schedule` (`machineId`, `orderId`)
 VALUES
 (2, 1),
-(3, 2)
+(2, 2)
 ;
 
 INSERT `property_of_good` (`compositeId`, `name`, `value`)
