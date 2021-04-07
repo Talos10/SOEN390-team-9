@@ -4,6 +4,7 @@ interface Order {
   orderId: number;
   status: 'processing' | 'completed' | 'confirmed';
   cost: number;
+  totalCost: number;
   creationDate: string;
   startDate: string;
   estimatedEndDate: string;
@@ -16,6 +17,7 @@ interface ItemInfo {
   item: Item;
   cost: number;
   quantity: number;
+  totalCost: number;
 }
 
 export type { Order, ItemInfo };

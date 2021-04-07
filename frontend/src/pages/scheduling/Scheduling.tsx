@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   Button,
   Table,
@@ -29,6 +29,7 @@ export default function Scheduling() {
   const [machines, setMachines] = useState<Machine[]>();
   const { schedule, machine } = useBackend();
   const snackbar = useSnackbar();
+  const history = useHistory();
 
   const getSchedules = useCallback(async () => {
     const schedules = await schedule.getAllSchedules();
@@ -124,6 +125,11 @@ export default function Scheduling() {
     ]
   };
 
+  const toManufacturingOrderInfo = (orderId: number) => {
+    if (orderId)
+      history.push('/manufacturing/order-info/' + orderId);
+  }
+
   return schedules === undefined || machines === undefined ? (
     <Progress />
   ) : (
@@ -164,12 +170,12 @@ export default function Scheduling() {
           </TableHead>
           <TableBody>
             {schedules.map(schedule => (
-              <TableRow className="table-row">
-                <TableCell>#{schedule.machineId}</TableCell>
-                <TableCell>{displayOrders(schedule.orderId)}</TableCell>
-                <TableCell>{formatDate(schedule.finishTime)}</TableCell>
-                <TableCell>{formatTime(schedule.finishTime)}</TableCell>
-                <TableCell>
+              <TableRow key={schedule.machineId} className="table-row">
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>#{schedule.machineId} </TableCell>
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>{displayOrders(schedule.orderId)}</TableCell>
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>{formatDate(schedule.finishTime)}</TableCell>
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>{formatTime(schedule.finishTime)}</TableCell>
+                <TableCell onClick={() => toManufacturingOrderInfo(schedule.orderId)}>
                   <span className={schedule.status}>
                     <Chip size="small" label={formatstatus(schedule.status)} />
                   </span>

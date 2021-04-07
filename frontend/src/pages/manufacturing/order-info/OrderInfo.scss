@@ -19,6 +19,35 @@
     }
   }
 
+  .info-label {
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--text-faded);
+  }
+
+  .order-info {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+
+    thead {
+      font-weight: 500;
+      color: var(--font-faded);
+      text-transform: uppercase;
+    }
+    tr {
+      border-bottom: 1px solid var(--border);
+      height: 50px;
+    }
+
+    .total {
+      text-transform: uppercase;
+      border-bottom: none;
+      font-weight: 500;
+    }
+  }
+
   .label {
     position: relative;
     padding-left: 36px;

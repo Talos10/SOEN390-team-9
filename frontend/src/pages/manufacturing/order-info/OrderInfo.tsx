@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { Button } from '@material-ui/core';
 import { useBackend, useSnackbar } from '../../../contexts';
 import { Card, Progress, ReturnButton } from '../../../components';
@@ -12,6 +12,7 @@ export default function OrderInfo() {
   const [info, setInfo] = useState<Order>();
   const { manufacturing } = useBackend();
   const snackbar = useSnackbar();
+  const history = useHistory();
 
   const getInfo = useCallback(async () => {
     const order = await manufacturing.getOrder(id);
@@ -31,6 +32,10 @@ export default function OrderInfo() {
         date.getFullYear().toString()
       );
     }
+  };
+
+  const toScheduling = () => {
+    history.push('/scheduling');
   };
 
   useEffect(() => {
@@ -56,7 +61,7 @@ export default function OrderInfo() {
       </div>
 
       <Card>
-        <p className="label">General Information</p>
+        <p className="info-label">General Information</p>
 
         <table className="general-info">
           <tbody>
@@ -77,8 +82,39 @@ export default function OrderInfo() {
           </tbody>
         </table>
       </Card>
+      <Card>
+        <p className="info-label">Order Information</p>
+
+        <table className="order-info">
+          <thead>
+            <tr>
+              <td style={{ width: '35%' }}>Item</td>
+              <td style={{ width: '15%' }}>Unit Cost</td>
+              <td style={{ width: '15%' }}>Quantity</td>
+              <td style={{ width: '10%' }}>Cost</td>
+            </tr>
+          </thead>
+          <tbody>
+            {info.orderedGoods.map(good => (
+              <tr key={good.compositeId}>
+                <td>
+                  {good.item.name}
+                </td>
+                <td>$ {good.item.cost}</td>
+                <td>{good.quantity}</td>
+                <td>$ {good.totalCost}</td>
+              </tr>
+            ))}
+            <tr className="total">
+              <td colSpan={3}>Total</td>
+              <td>$ {info.totalCost}</td>
+            </tr>
+          </tbody>
+        </table>
+      </Card>
+
       {info.orderedGoods.map(good => (
-        <Card className="info">
+        <Card key={good.compositeId} className="info">
           <p className={`label ${info.status}`}>
             {good.item.name} {good.quantity}× ({info.status})
           </p>
@@ -103,11 +139,10 @@ export default function OrderInfo() {
               Cancel
             </Button>
             <Button
-              disabled
               variant="contained"
               color="primary"
-              onClick={() => changeStatus('processing')}>
-              Start Production
+              onClick={toScheduling}>
+              Schedule Order
             </Button>
           </>
         ) : (
@@ -116,11 +151,10 @@ export default function OrderInfo() {
 
         {info.status === 'processing' ? (
           <Button
-            disabled
             variant="contained"
             color="primary"
-            onClick={() => changeStatus('completed')}>
-            Mark as completed
+            onClick={toScheduling}>
+            See in Scheduling tab
           </Button>
         ) : (
           <></>
