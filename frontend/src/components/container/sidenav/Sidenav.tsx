@@ -8,6 +8,7 @@ import {
   CalendarToday,
   Build,
   Timeline,
+  QueryBuilder,
   CollectionsBookmark
 } from '@material-ui/icons';
 
@@ -73,6 +74,16 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
             to="/manufacturing">
             <Build style={{ paddingRight: 16 }} />
             Manufacturing
+          </Button>
+        </div>
+
+        <div className="Sidenav__button">
+          <Button
+            color={location.pathname.indexOf('/scheduling') === 0 ? 'primary' : 'default'}
+            component={Link}
+            to="/scheduling">
+            <QueryBuilder style={{ paddingRight: 16 }} />
+            Scheduling
           </Button>
         </div>
 

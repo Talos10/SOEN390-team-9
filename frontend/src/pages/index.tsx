@@ -20,6 +20,8 @@ import SalesCreateOrder from './sales/create-order/CreateOrder';
 import Accounting from './accounting/Accounting';
 import SalesCustomers from './sales/customers/Customers';
 import NewCustomer from './sales/customers/NewCustomer';
+import Scheduling from './scheduling/Scheduling';
+import ScheduleMachine from './scheduling/ScheduleMachine';
 
 export {
   Home,
@@ -43,5 +45,7 @@ export {
   SalesCreateOrder,
   Accounting,
   SalesCustomers,
-  NewCustomer
+  NewCustomer,
+  Scheduling,
+  ScheduleMachine
 };

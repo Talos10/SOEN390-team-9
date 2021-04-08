@@ -7,6 +7,8 @@ import { sales, Sales } from './Sales';
 import { customer, Customers } from './Customers';
 import { accounting, Accounting } from './Accounting';
 import { useAuth } from '../Auth';
+import { machine, Machines } from './Machines';
+import { schedule, Schedules } from './Schedules';
 
 interface Backend {
   inventory: Inventory;
@@ -15,6 +17,8 @@ interface Backend {
   planning: Planning;
   sales: Sales;
   customer: Customers;
+  machine: Machines;
+  schedule: Schedules;
   accounting: Accounting;
 }
 
@@ -44,6 +48,8 @@ export const BackendProvider = ({ client, children }: Props) => {
     planning: planning(client, validateResponse),
     sales: sales(client, validateResponse),
     customer: customer(client, validateResponse),
+    machine: machine(client, validateResponse),
+    schedule: schedule(client, validateResponse),
     accounting: accounting(client, validateResponse)
   };
 
