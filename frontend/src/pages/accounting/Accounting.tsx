@@ -1,8 +1,7 @@
 import { Line, Pie } from 'react-chartjs-2';
 
 import './Accounting.scss';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { Card, CardContent, Button } from '@material-ui/core';
 import goldMedal from '../../assets/accounting/gold-medal.png';
 import silverMedal from '../../assets/accounting/silver-medal.png';
 import bronzeMedal from '../../assets/accounting/bronze-medal.png';
@@ -128,6 +127,9 @@ export default function Accounting() {
     <main className="Accouting">
       <div className="accounting__top">
         <h1 className="title">Overview</h1>
+        <Button variant="contained" color="primary" onClick={window.print}>
+          Print
+        </Button>
       </div>
       <div className="overview__card">
         <hr className="line line__income"></hr>
