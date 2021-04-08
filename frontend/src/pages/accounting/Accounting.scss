@@ -1,0 +1,153 @@
+.Accouting {
+  .accounting__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    h1 {
+      margin-right: 45px;
+    }
+
+    p {
+      align-self: center;
+    }
+  }
+
+  .overview__card {
+    background-color: #ffffff;
+    width: 297px;
+    height: 163px;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
+    border-radius: 5px;
+
+    @media (min-width: 768px) {
+      display: inline-flex;
+    }
+
+    h2 {
+      position: absolute;
+      width: 200px;
+      height: 28px;
+      top: 10px;
+      padding-left: 50px;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 28px;
+    }
+
+    .income__title {
+      color: #3a89f0;
+    }
+
+    .expense__title {
+      color: #a61919;
+    }
+
+    .gross__revenue__title {
+      color: #458e0b;
+    }
+
+    p {
+      position: absolute;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 36px;
+      line-height: 42px;
+      color: #000000;
+      align-self: center;
+      top: 45%;
+      left: 25%;
+    }
+
+    .line {
+      position: relative;
+      width: 130px;
+      height: 0px;
+      right: 47%;
+      top: 70px;
+      border: 3.5px solid;
+      border-radius: 10px;
+      transform: rotate(-90deg);
+    }
+
+    .line__income {
+      color: #3a89f0;
+      background-color: #3a89f0;
+    }
+
+    .line__expense {
+      color: #a61919;
+      background-color: #a61919;
+    }
+
+    .line__gross__revenue {
+      color: #458e0b;
+      background-color: #458e0b;
+    }
+  }
+
+  .customer__card {
+    margin-left: 50px;
+    margin-bottom: 30px;
+    width: 310px;
+    height: 200px;
+
+    @media (min-width: 768px) {
+      display: inline-flex;
+    }
+
+    .thumbnail {
+      float: left;
+    }
+
+    .thumbnail img {
+      width: 100px;
+      height: 100px;
+      margin-top: 25px;
+    }
+
+    .content {
+      margin-left: 110px;
+    }
+
+    .card__title {
+      font-weight: bold;
+      font-size: 120%;
+    }
+
+    .email {
+      margin-top: -40px;
+      font-weight: 400;
+      color: grey;
+    }
+  }
+
+  .line__chart {
+    display: inline-flex;
+    background-color: #ffffff;
+    margin-left: 50px;
+    margin-bottom: 30px;
+    width: 400px;
+
+    @media (min-width: 768px) {
+      width: 700px;
+    }
+
+    .toggle {
+      position: absolute;
+    }
+  }
+
+  .pie__chart {
+    display: inline-flex;
+    vertical-align: top;
+    background-color: #ffffff;
+    width: 250px;
+    margin-left: 60px;
+  }
+}

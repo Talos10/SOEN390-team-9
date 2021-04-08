@@ -1,5 +1,5 @@
-.Manufacturing {
-  .manufacturing__top {
+.Scheduling {
+  .scheduling__top {
     display: flex;
     justify-content: space-between;
 
@@ -23,7 +23,7 @@
       }
     }
   }
-  .manufacturing__top__buttons > :not(:last-child) {
+  .scheduling__top__buttons > :not(:last-child) {
     margin-right: 10px;
   }
 
@@ -43,36 +43,6 @@
       @media (min-width: 768px) {
         font-size: 14px;
         color: var(--text);
-      }
-
-      &__search {
-        padding: 12px;
-        display: flex;
-
-        th {
-          padding-top: 10px;
-          padding-bottom: 0px;
-          border-bottom: none;
-        }
-
-        .search {
-          margin-right: 12px;
-          border: 1px solid var(--border);
-          border-radius: 5px;
-          min-height: 40px;
-          svg {
-            margin: 0 5px 0 5px;
-          }
-        }
-
-        &__filter {
-          display: flex;
-          align-items: center;
-
-          label {
-            padding-right: 10px;
-          }
-        }
       }
 
       &__tr {
@@ -96,35 +66,23 @@
           font-weight: 400;
           color: var(--text-faded);
           text-align: left;
-          div {
-            display: flex;
-          }
         }
       }
-
       tbody tr {
         height: 50px;
 
         &:hover {
-          cursor: pointer;
           background-color: #f5f5f5;
           transition: var(--bg-transition);
         }
       }
 
-      .cancelled .MuiChip-root {
-        text-transform: capitalize;
+      .busy .MuiChip-root {
         background-color: var(--red);
       }
 
-      .completed .MuiChip-root {
-        text-transform: capitalize;
+      .free .MuiChip-root {
         background-color: var(--green);
-      }
-
-      .confirmed .MuiChip-root {
-        text-transform: capitalize;
-        background-color: var(--blue);
       }
     }
   }

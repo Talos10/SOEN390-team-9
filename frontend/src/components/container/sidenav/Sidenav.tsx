@@ -7,7 +7,9 @@ import {
   SupervisorAccount,
   CalendarToday,
   Build,
-  Timeline
+  Timeline,
+  QueryBuilder,
+  CollectionsBookmark
 } from '@material-ui/icons';
 
 import { useAuth } from '../../../contexts';
@@ -77,6 +79,16 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
 
         <div className="Sidenav__button">
           <Button
+            color={location.pathname.indexOf('/scheduling') === 0 ? 'primary' : 'default'}
+            component={Link}
+            to="/scheduling">
+            <QueryBuilder style={{ paddingRight: 16 }} />
+            Scheduling
+          </Button>
+        </div>
+
+        <div className="Sidenav__button">
+          <Button
             color={location.pathname.indexOf('/sales') === 0 ? 'primary' : 'default'}
             component={Link}
             to="/sales">
@@ -92,6 +104,16 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
             to="/planning">
             <CalendarToday style={{ paddingRight: 16 }} />
             Planning
+          </Button>
+        </div>
+
+        <div className="Sidenav__button">
+          <Button
+            color={location.pathname.indexOf('/accounting') === 0 ? 'primary' : 'default'}
+            component={Link}
+            to="/accounting">
+            <CollectionsBookmark style={{ paddingRight: 16 }} />
+            Accounting
           </Button>
         </div>
       </nav>

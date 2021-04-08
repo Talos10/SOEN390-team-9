@@ -3,12 +3,12 @@ interface Item {
   name: string;
   quantity: number;
   cost: number;
-  type: 'raw' | 'semi-finished' | 'finished';
+  price: number;
+  components: Component[];
+  properties: Property[];
+  type: string;
   vendor: string;
   processTime: number;
-  properties: Property[];
-  components: Component[];
-  price: number;
 }
 
 interface Component {

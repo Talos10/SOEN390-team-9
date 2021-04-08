@@ -1,0 +1,35 @@
+.ScheduleMachine {
+  .schedule__machine__top {
+    display: flex;
+    justify-content: space-between;
+
+    h1 {
+      margin-right: 45px;
+    }
+
+    button {
+      min-height: 36px;
+      max-height: 36px;
+      margin-right: 10px;
+    }
+
+    p {
+      align-self: center;
+    }
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .title {
+      margin-bottom: 0;
+    }
+  }
+
+  .machine {
+    padding-bottom: 18px;
+  }
+}

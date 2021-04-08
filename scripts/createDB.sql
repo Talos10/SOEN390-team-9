@@ -290,22 +290,22 @@ VALUES
 
 INSERT `inventory_good` (`name`, `type`, `quantity`, `processTime`, `cost`) 
 VALUES
-("carbon fiber", "raw", 5, 1440, 5),
-("steel", "raw", 10, 1440, 10.5),
-("rubber", "raw", 7, 1440, 15.5),
-("leather", "raw", 5, 720, 20.5),
-("titanum dioxide", "raw", 5, 800, 30.5),
-("ethylene glycol", "raw", 5, 30, 40.5),
-("paint concentrate", "raw", 7, 5, 50.5),
-("paint", "semi-finished", 4, 10, 55.5),
-("bike seat", "semi-finished", 2, 60, 32.23),
-("carbon frame", "semi-finished", 3, 24, 34.43),
-("rubber tire", "semi-finished", 4, 365, 24.23),
-("steel wheel frame", "semi-finished", 4, 10, 25.25),
-("steel bike handles", "semi-finished", 2, 40, 26.25),
-("bike gears", "semi-finished", 3, 400, 24.52),
-("steel breaks", "semi-finished", 2, 100, 251.21),
-("le sebastien", "finished", 20, 2000, 1245.99)
+("carbon fiber", "raw", 1000, 1440, 5),
+("steel", "raw", 1000, 1440, 10.5),
+("rubber", "raw", 700, 1440, 15.5),
+("leather", "raw", 600, 720, 20.5),
+("titanum dioxide", "raw", 500, 800, 30.5),
+("ethylene glycol", "raw", 800, 30, 40.5),
+("paint concentrate", "raw", 700, 5, 50.5),
+("paint", "semi-finished", 500, 10, 55.5),
+("bike seat", "semi-finished", 150, 60, 32.23),
+("carbon frame", "semi-finished", 155, 24, 34.43),
+("rubber tire", "semi-finished", 160, 365, 24.23),
+("steel wheel frame", "semi-finished", 150, 10, 25.25),
+("steel bike handles", "semi-finished", 150, 40, 26.25),
+("bike gears", "semi-finished", 400, 400, 24.52),
+("steel breaks", "semi-finished", 120, 100, 251.21),
+("le sebastien", "finished", 40, 2000, 300)
 ;
 
 INSERT `raw_good` (`id`, `vendor`) 
@@ -336,20 +336,16 @@ VALUES
 (16, 1245.99)
 ;
 
-INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`) 
-VALUES
-("processing", '2021-05-10 13:17:17', 55.55)
-;
-
 INSERT `manufacturing_order` (`status`, `creationDate`, `totalCost`, `completionDate`) 
 VALUES
-("completed", '2021-01-10 13:17:17', 1245.99, '2021-01-11 13:17:17'),
+("completed", '2021-01-10 13:17:17', 300, '2021-01-11 13:17:17'),
+("completed", '2021-01-10 13:17:17', 300, '2021-01-11 13:17:17'),
 ("completed", '2021-02-10 13:17:17', 31, '2021-02-11 13:17:17'),
-("completed", '2021-03-10 13:17:17', 1245.99, '2021-03-11 13:17:17'),
+("completed", '2021-03-10 13:17:17', 300, '2021-03-11 13:17:17'),
 ("completed", '2021-04-10 13:17:17', 20.50, '2021-04-11 13:17:17'),
 ("completed", '2021-05-10 13:17:17', 51.50, '2021-05-11 13:17:17'),
-("completed", '2021-06-10 13:17:17', 1245.99, '2021-06-11 13:17:17'),
-("completed", '2021-07-10 13:17:17', 1278.22, '2021-07-11 13:17:17'),
+("completed", '2021-06-10 13:17:17', 300, '2021-06-11 13:17:17'),
+("completed", '2021-07-10 13:17:17', 332.23, '2021-07-11 13:17:17'),
 ("completed", '2021-08-10 13:17:17', 40.50, '2021-08-11 13:17:17'),
 ("completed", '2021-09-10 13:17:17', 55.50, '2021-09-11 13:17:17'),
 ("completed", '2021-10-10 13:17:17', 34.43, '2021-10-11 13:17:17'),
@@ -413,17 +409,17 @@ VALUES
 
 INSERT `manufacturing_ordered_good` (`orderId`, `compositeId`, `quantity`, `totalCost`)
 VALUES
-(1, 16, 1, 1245.99),
-(2, 16, 1, 1245.99),
+(1, 16, 1, 300),
+(2, 16, 1, 300),
 (3, 1, 1, 5.00),
 (3, 2, 1, 10.50),
 (3, 3, 1, 15.50),
-(4, 16, 1, 1245.99),
+(4, 16, 1, 300),
 (5, 4, 1, 20.50),
 (6, 12, 1, 25.25),
 (6, 13, 1, 26.25),
-(7, 16, 1, 1245.99),
-(8, 16, 1, 1245.99),
+(7, 16, 1, 300),
+(8, 16, 1, 300),
 (8, 9, 1, 32.23),
 (9, 6, 1, 40.50),
 (10, 8, 1, 55.50),
@@ -462,14 +458,8 @@ VALUES
 INSERT `machine` (`status`, `numberOrderCompleted`)
 VALUES
 ("free", 5),
-("busy", 10),
-("busy", 2)
-;
-
-INSERT `schedule` (`machineId`, `orderId`)
-VALUES
-(2, 1),
-(2, 2)
+("free", 10),
+("free", 2)
 ;
 
 INSERT `property_of_good` (`compositeId`, `name`, `value`)
