@@ -35,7 +35,7 @@ export default function Login() {
   };
 
   const handleLoginSuccess = () => {
-    history.push('/home');
+    history.push('/inventory');
   };
 
   return (

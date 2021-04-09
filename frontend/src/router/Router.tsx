@@ -1,7 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 import {
   Login,
-  Home,
   NotFound,
   Inventory,
   AddItem,
@@ -33,14 +32,11 @@ export default function Router() {
 
   return (
     <Switch>
-      <Guard path="/" allowIf={!auth.isLoggedIn} component={Login} redirect="/home" exact />
+      <Guard path="/" allowIf={!auth.isLoggedIn} component={Login} redirect="/inventory" exact />
       <Route path="/forgot" component={ForgotPassword} exact />
       <Route path="/reset/:token" component={ResetPassword} exact />
       <>
         <Container>
-          {/* Home */}
-          <Guard path="/home" component={Home} allowIf={auth.isLoggedIn} exact />
-
           {/* Admin */}
           <Guard path="/admin" component={Admin} allowIf={auth.getRole() === 'admin'} exact />
 

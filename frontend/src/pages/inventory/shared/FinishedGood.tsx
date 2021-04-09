@@ -6,6 +6,19 @@ export default function FinishedGood() {
   return (
     <Card>
       <p>Finished Good</p>
+      <label htmlFor="cost">Manufacturing Cost</label>
+      <TextField
+        type="number"
+        inputProps={{ min: '0.01', step: '0.01' }}
+        id="cost"
+        name="cost"
+        variant="outlined"
+        required
+        fullWidth
+        InputProps={{
+          startAdornment: <InputAdornment position="start">$</InputAdornment>
+        }}
+      />
       <label htmlFor="selling-price">Selling Price</label>
       <TextField
         type="number"

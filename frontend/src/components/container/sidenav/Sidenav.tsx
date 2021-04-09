@@ -2,7 +2,6 @@ import { Dispatch, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import {
-  Home,
   Widgets,
   SupervisorAccount,
   CalendarToday,
@@ -34,16 +33,6 @@ export default function Sidenav({ showSidenav, toggleSidenav }: Props) {
     <aside className={`Sidenav ${styles.Sidenav} ${showSidenav ? styles.sidenavOpen : ''}`}>
       <nav>
         <div className={styles.SidenavLogo}>Supreme ERP</div>
-
-        <div className="Sidenav__button">
-          <Button
-            color={location.pathname.indexOf('home') === 0 ? 'primary' : 'default'}
-            component={Link}
-            to="/home">
-            <Home style={{ paddingRight: 16 }} />
-            Home
-          </Button>
-        </div>
 
         {auth.getRole() === 'admin' && (
           <div className="Sidenav__button">

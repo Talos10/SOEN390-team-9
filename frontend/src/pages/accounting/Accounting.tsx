@@ -158,13 +158,13 @@ export default function Accounting() {
           <RadioGroup row aria-label="chart" name="chart" value={chartDisplay}>
             <FormControlLabel
               value="month"
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="month"
               onClick={() => setChartDisplay('month')}
             />
             <FormControlLabel
               value="quarter"
-              control={<Radio />}
+              control={<Radio color="primary" />}
               label="quarter"
               onClick={() => setChartDisplay('quarter')}
             />
@@ -176,7 +176,9 @@ export default function Accounting() {
             datasets: [
               {
                 label: 'Income',
-                data: x_axis.length === 12 ? monthlyIncome : quarterlyIncome,
+                data: (x_axis.length === 12 ? monthlyIncome : quarterlyIncome).map(
+                  num => Math.round(num * 100 + Number.EPSILON) / 100
+                ),
                 borderColor: ['#3A89F0'],
                 pointBackgroundColor: '#FFFFFF',
                 pointBorderColor: 'black',
@@ -185,7 +187,9 @@ export default function Accounting() {
               },
               {
                 label: 'Expense',
-                data: x_axis.length === 12 ? monthlyExpense : quarterlyExpense,
+                data: (x_axis.length === 12 ? monthlyExpense : quarterlyExpense).map(
+                  num => Math.round(num * 100 + Number.EPSILON) / 100
+                ),
                 borderColor: ['#A61919'],
                 pointBackgroundColor: '#FFFFFF',
                 pointBorderColor: 'black',

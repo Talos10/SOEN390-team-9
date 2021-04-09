@@ -1,4 +1,3 @@
-import Home from './home/Home';
 import Inventory from './inventory/Inventory';
 import AddItem from './inventory/add-item/AddItem';
 import ItemInfo from './inventory/ItemInfo';
@@ -24,7 +23,6 @@ import Scheduling from './scheduling/Scheduling';
 import ScheduleMachine from './scheduling/ScheduleMachine';
 
 export {
-  Home,
   Inventory,
   AddItem,
   Login,
